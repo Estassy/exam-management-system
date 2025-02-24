@@ -1,11 +1,13 @@
-#spring:
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/exam_management
-#    username: postgres  # Remplace par ton username PostgreSQL
-#    password: mypassword  # Remplace par ton mot de passe PostgreSQL
-#    driver-class-name: org.postgresql.Driver
-#  jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    hibernate:
-#      ddl-auto: update  # Ou "create-drop" pour initialiser la DB
-#    show-sql: true  # Active l'affichage des requêtes SQL
+spring:
+  application:
+    name: backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: postgres
+    password:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
