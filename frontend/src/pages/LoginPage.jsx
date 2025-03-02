@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
-import { login } from '../services/authService';
-import { useNavigate } from 'react-router-dom';
+
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../services/authService";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const data = await login(username, password);
-      // Stockage du token pour les requêtes futures
-      localStorage.setItem('token', data.token);
-      // Redirection vers le dashboard ou la page d'accueil
-      navigate('/dashboard');
+      console.log("data", data);
+      localStorage.setItem("token", data.token);
+      navigate("/dashboard");
     } catch (err) {
-      setError('Erreur lors de la connexion. Veuillez vérifier vos identifiants.');
+      setError("Erreur lors de la connexion. Veuillez vérifier vos identifiants.");
+      console.error(err);
     }
   };
 
   return (
-    <div className="login-page">
+    <div>
       <h2>Connexion</h2>
-      {error && <p className="error">{error}</p>}
+      {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Nom d'utilisateur :</label>
@@ -32,7 +33,6 @@ const LoginPage = () => {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Votre nom d'utilisateur"
           />
         </div>
         <div>
@@ -41,7 +41,6 @@ const LoginPage = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Votre mot de passe"
           />
         </div>
         <button type="submit">Se connecter</button>

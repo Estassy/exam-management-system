@@ -1,14 +1,19 @@
+// src/routes/AppRouter.jsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
-import Dashboard from '../pages/Dashboard'; // Créez ce composant pour la page d'accueil après connexion
+import Dashboard from '../pages/Dashboard';
 import ProtectedRoute from './ProtectedRoute';
 
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
+        {/* Redirection de la racine vers /login */}
+        <Route path="/" element={<Navigate to="/login" />} />
+
         <Route path="/login" element={<LoginPage />} />
+
         <Route
           path="/dashboard"
           element={
@@ -17,7 +22,6 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-        {/* Ajoutez d'autres routes au besoin */}
       </Routes>
     </Router>
   );
