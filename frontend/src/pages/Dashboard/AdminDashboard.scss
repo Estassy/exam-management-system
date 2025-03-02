@@ -1,0 +1,41 @@
+.dashboard {
+    padding: 20px;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  
+  .statBox {
+    background: #28a745;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    flex: 1;
+  }
+  
+  .recentActions {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 15px;
+  }
+  

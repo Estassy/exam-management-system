@@ -14,6 +14,7 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    private UUID userId;
     private String message;
 
     private Boolean read;
@@ -31,7 +32,12 @@ public class Notification {
     }
 
     // Getters and Setters
-
+    public UUID getUserId() {
+        return userId;
+    }
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
     public UUID getId() {
         return id;
     }
