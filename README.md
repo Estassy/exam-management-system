@@ -102,8 +102,3 @@ npm run dev
 
 Ce projet est sous licence **MIT**. Libre d’utilisation et de modification.
 
-## 📩 Contact & Contribution
-
-- **Développeur principal** : [Ton Nom]
-- **Email** : [ton.email@example.com]
-- **Contributions** : Les PRs sont les bienvenues !
