@@ -6,7 +6,7 @@ export const fetchNotifications = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (!user || !user.id) {
-    console.error("❌ Erreur : `user.id` est undefined.");
+    console.error("Erreur : `user.id` est undefined.");
     return [];
   }
 
@@ -14,7 +14,7 @@ export const fetchNotifications = async () => {
     const response = await api.get(`/api/notifications/user/${user.id}`);
     return response.data;
   } catch (error) {
-    console.error("❌ Erreur lors de la récupération des notifications :", error);
+    console.error("Erreur lors de la récupération des notifications :", error);
     return [];
   }
 };
@@ -27,7 +27,7 @@ export const sendNotificationToUser = async (userId, message) => {
     });
     return response.data;
   } catch (error) {
-    console.error("❌ Erreur lors de l'envoi de la notification :", error);
+    console.error("Erreur lors de l'envoi de la notification :", error);
   }
 };
 
@@ -39,6 +39,6 @@ export const sendNotificationToRole = async (role, message) => {
     });
     return response.data;
   } catch (error) {
-    console.error("❌ Erreur lors de l'envoi des notifications aux " + role + "s :", error);
+    console.error("Erreur lors de l'envoi des notifications aux " + role + "s :", error);
   }
 };
