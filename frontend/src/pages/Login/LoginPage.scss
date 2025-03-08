@@ -1,0 +1,91 @@
+$primary-color: #4a90e2;
+$background-color: #121212;
+$card-bg: rgba(255, 255, 255, 0.1);
+$border-color: rgba(255, 255, 255, 0.2);
+@use "sass:color";
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 95vh;
+  background: url("https://images.unsplash.com/photo-1531297484001-80022131f5a1") no-repeat center center/cover;
+}
+
+.login-card {
+  background: $card-bg;
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  color: white;
+  width: 350px;
+
+  h1 {
+    margin-bottom: 1rem;
+    font-size: 24px;
+  }
+
+  .error-message {
+    color: #ff4c4c;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid $border-color;
+      border-radius: 5px;
+      background: transparent;
+      color: white;
+      font-size: 16px;
+      outline: none;
+      transition: border 0.3s;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      &:focus {
+        border-color: $primary-color;
+      }
+    }
+    
+    button {
+      background: $primary-color;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      background: $primary-color;
+      transition: background-color 0.3s ease-in-out;
+      &:hover {
+        background-color: color.adjust($primary-color, $lightness: -10%);
+
+      }
+    }
+  }
+
+  .forgot-password {
+    margin-top: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

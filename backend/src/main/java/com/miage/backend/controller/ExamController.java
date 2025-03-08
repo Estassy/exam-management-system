@@ -1,6 +1,7 @@
 package com.miage.backend.controller;
 
 import com.miage.backend.entity.Exam;
+import com.miage.backend.entity.User;
 import com.miage.backend.service.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -49,8 +50,8 @@ public class ExamController {
     }
 
     @GetMapping("/teacher/{teacher}")
-    public ResponseEntity<Exam> getFirstExamByTeacher(@PathVariable String teacher) {
-        return examService.getFirstExamByTeacher(teacher)
+    public ResponseEntity<Exam> getFirstExamByTeacher(@PathVariable User teacher) {
+        return examService.getFirstExamByTeacher(teacher.getId())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

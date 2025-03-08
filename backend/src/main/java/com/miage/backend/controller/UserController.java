@@ -1,5 +1,6 @@
 package com.miage.backend.controller;
 
+import com.miage.backend.dto.CreateUserRequest;
 import com.miage.backend.entity.User;
 import com.miage.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,10 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User created = userService.createUser(user);
+    public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
+        User created = userService.createUser(createUserRequest.getUsername(),
+                createUserRequest.getPassword(),
+                createUserRequest.getRole());
         return ResponseEntity.ok(created);
     }
 
@@ -30,15 +33,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable UUID id) {
-        User user = userService.getUserById(id);
-        if(user == null)
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(user);
+        return userService.getUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User user) {
-        User updated = userService.updateUser(id, user);
+    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody CreateUserRequest updateUserRequest) {
+        User updated = userService.updateUser(id, updateUserRequest.getUsername(), updateUserRequest.getPassword(), updateUserRequest.getRole());
         return ResponseEntity.ok(updated);
     }
 

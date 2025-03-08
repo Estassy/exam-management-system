@@ -65,7 +65,13 @@ public class ExamService {
         return examRepository.findById(id);
     }
 
-    public Optional<Exam> getFirstExamByTeacher(String teacher) {
+    public Optional<Exam> getFirstExamByTeacher(UUID teacherId) {
+        // Cherche l'enseignant par ID
+        User teacher = userRepository.findById(teacherId)
+                .orElseThrow(() -> new ResourceNotFoundException("Enseignant non trouvé avec l'ID : " + teacherId));
+
+        // Recherche l'examen correspondant à cet enseignant
         return examRepository.findFirstByTeacherOrderByDateAsc(teacher);
     }
+
 }

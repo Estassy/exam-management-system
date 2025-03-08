@@ -1,6 +1,7 @@
 package com.miage.backend.controller;
 
 import com.miage.backend.entity.Notification;
+import com.miage.backend.enums.Role;
 import com.miage.backend.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,40 +11,63 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/notifications")
 public class NotificationController {
 
     @Autowired
     private NotificationService notificationService;
 
-    @PostMapping
-    public ResponseEntity<Notification> createNotification(@RequestBody Notification notification) {
-        Notification created = notificationService.createNotification(notification);
-        return ResponseEntity.ok(created);
+    /**
+     * 🔹 Récupérer toutes les notifications d'un utilisateur par son `userId`
+     */
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Notification>> getNotificationsByUserId(@PathVariable UUID userId) {
+        return ResponseEntity.ok(notificationService.getNotificationsByUserId(userId));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Notification>> getAllNotifications() {
-        List<Notification> notifications = notificationService.getAllNotifications();
-        return ResponseEntity.ok(notifications);
+    /**
+     * 🔹 Envoyer une notification à un utilisateur spécifique
+     */
+    @PostMapping("/send")
+    public ResponseEntity<Notification> sendNotification(
+            @RequestParam UUID userId,
+            @RequestParam String message) {
+        return ResponseEntity.ok(notificationService.createNotification(userId, message));
     }
 
+    /**
+     * 🔹 Envoyer une notification à tous les utilisateurs ayant un rôle donné (Etudiants, Enseignants, Admins)
+     */
+    @PostMapping("/send-to-role")
+    public ResponseEntity<String> sendNotificationToRole(
+            @RequestParam Role role,
+            @RequestParam String message) {
+        notificationService.sendNotificationToRole(role, message);
+        return ResponseEntity.ok("✅ Notification envoyée aux " + role + "s.");
+    }
+
+    /**
+     * 🔹 Récupérer une notification par son `id`
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Notification> getNotificationById(@PathVariable UUID id) {
-        Notification notification = notificationService.getNotificationById(id);
-        return ResponseEntity.ok(notification);
+        return ResponseEntity.ok(notificationService.getNotificationById(id));
     }
 
+    /**
+     * 🔹 Marquer une notification comme lue
+     */
     @PutMapping("/{id}/read")
     public ResponseEntity<Notification> markAsRead(@PathVariable UUID id) {
-        Notification updated = notificationService.markAsRead(id);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(notificationService.markAsRead(id));
     }
 
+    /**
+     * 🔹 Supprimer une notification
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNotification(@PathVariable UUID id) {
         notificationService.deleteNotification(id);
         return ResponseEntity.noContent().build();
     }
 }
-

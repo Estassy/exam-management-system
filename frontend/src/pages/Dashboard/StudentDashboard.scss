@@ -1,0 +1,25 @@
+.dashboard {
+    padding: 20px;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  .exams, .results, .notifications {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 15px;
+  }
+  

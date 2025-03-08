@@ -1,8 +1,14 @@
 package com.miage.backend.exception;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ErrorResponse {
 
+    // Getters et Setters
     private int status;
     private String message;
     private String details;
@@ -13,23 +19,4 @@ public class ErrorResponse {
         this.details = details;
     }
 
-    // Getters et Setters
-    public int getStatus() {
-        return status;
-    }
-    public void setStatus(int status) {
-        this.status = status;
-    }
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    public String getDetails() {
-        return details;
-    }
-    public void setDetails(String details) {
-        this.details = details;
-    }
 }
