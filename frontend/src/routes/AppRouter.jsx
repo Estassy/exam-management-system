@@ -37,8 +37,15 @@ const AppRouter = () => {
     <Router>
       <AppLayout>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<LoginPage />} />
+        <Route 
+          path="/" 
+          element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} 
+        />
+        <Route 
+          path="/login" 
+          element={user ? <Navigate to="/dashboard" /> : <LoginPage />} 
+        />
+
 
           <Route
             path="/dashboard"

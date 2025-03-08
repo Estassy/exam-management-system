@@ -1,6 +1,7 @@
 package com.miage.backend.repository;
 
 import com.miage.backend.entity.User;
+import com.miage.backend.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-    List<User> findByRole(String role);
+    List<User> findByRole(Role role);
     User findByUsername(String username);
 }

@@ -4,11 +4,11 @@ import { AuthContext } from "../../context/AuthContext";
 import "./Header.scss";
 
 const Header = () => {
-  const { logoutUser } = useContext(AuthContext); // Fonction logout
+    const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logoutUser(); // Déconnexion
+    logout(); // Déconnexion
     navigate("/login"); // Redirection
   };
 

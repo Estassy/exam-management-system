@@ -1,6 +1,7 @@
 package com.miage.backend.service;
 
 import com.miage.backend.entity.User;
+import com.miage.backend.enums.Role;
 import com.miage.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +20,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User createUser(String username, String password, String role) {
+    public User createUser(String username, String password, Role role) {
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User(username, encodedPassword, role);
         return userRepository.save(user);
@@ -33,7 +34,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User updateUser(UUID id, String username, String password, String role) {
+    public User updateUser(UUID id, String username, String password, Role role) {
         return userRepository.findById(id).map(existingUser -> {
             existingUser.setUsername(username);
             if (password != null && !password.isEmpty()) {
@@ -45,8 +46,14 @@ public class UserService {
     }
 
     public void deleteUser(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        if (user.getRole() == Role.ADMIN) {
+            throw new RuntimeException("Impossible de supprimer un administrateur.");
+        }
         userRepository.deleteById(id);
     }
+
 
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username);

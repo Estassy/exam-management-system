@@ -10,9 +10,3 @@ export const login = async (username, password) => {
     throw error;
   }
 };
-
-// Déconnexion
-export const logoutUser = () => {
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
-};

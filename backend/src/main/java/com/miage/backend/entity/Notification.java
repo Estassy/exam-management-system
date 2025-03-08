@@ -1,9 +1,7 @@
 package com.miage.backend.entity;
 
-
 import jakarta.persistence.*;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -14,13 +12,16 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
     private String message;
 
-    private Boolean read;
+    private Boolean read = false;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Notification() {
     }
@@ -28,38 +29,46 @@ public class Notification {
     public Notification(String message) {
         this.message = message;
         this.read = false;
-        this.timestamp = new Date();
     }
 
-    // Getters and Setters
-    public UUID getUserId() {
-        return userId;
-    }
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
+    // Getters et Setters
     public UUID getId() {
         return id;
     }
+
     public void setId(UUID id) {
         this.id = id;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getMessage() {
         return message;
     }
+
     public void setMessage(String message) {
         this.message = message;
     }
+
     public Boolean getRead() {
         return read;
     }
+
     public void setRead(Boolean read) {
         this.read = read;
     }
-    public Date getTimestamp() {
-        return timestamp;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

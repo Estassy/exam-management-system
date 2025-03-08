@@ -1,6 +1,7 @@
 package com.miage.backend.controller;
 
 import com.miage.backend.entity.Notification;
+import com.miage.backend.enums.Role;
 import com.miage.backend.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class NotificationController {
      */
     @PostMapping("/send-to-role")
     public ResponseEntity<String> sendNotificationToRole(
-            @RequestParam String role,
+            @RequestParam Role role,
             @RequestParam String message) {
         notificationService.sendNotificationToRole(role, message);
         return ResponseEntity.ok("✅ Notification envoyée aux " + role + "s.");

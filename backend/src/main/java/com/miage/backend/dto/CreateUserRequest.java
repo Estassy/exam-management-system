@@ -1,18 +1,21 @@
 package com.miage.backend.dto;
 
+import com.miage.backend.enums.Role;
+
 public class CreateUserRequest {
     private String username;
     private String password;
-    private String role;
+    private Role role;
 
     public CreateUserRequest() {}
 
-    public CreateUserRequest(String username, String password, String role) {
+    public CreateUserRequest(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
+    // Getters et Setters
     public String getUsername() {
         return username;
     }
@@ -29,11 +32,11 @@ public class CreateUserRequest {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

@@ -2,6 +2,7 @@ package com.miage.backend.service;
 
 import com.miage.backend.entity.Notification;
 import com.miage.backend.entity.User;
+import com.miage.backend.enums.Role;
 import com.miage.backend.exception.ResourceNotFoundException;
 import com.miage.backend.repository.NotificationRepository;
 import com.miage.backend.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -36,13 +38,16 @@ public class NotificationService {
      * 🔹 Créer une notification pour un utilisateur spécifique
      */
     public Notification createNotification(UUID userId, String message) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé."));
         Notification notification = new Notification();
-        notification.setUserId(userId);
+        notification.setUser(user);
         notification.setMessage(message);
-        notification.setTimestamp(new Date());
+        notification.setCreatedAt(LocalDateTime.now());
         notification.setRead(false);
         return notificationRepository.save(notification);
     }
+
 
     /**
      * 🔹 Récupérer une notification par ID
@@ -55,7 +60,7 @@ public class NotificationService {
     /**
      * 🔹 Envoyer une notification à tous les utilisateurs d'un rôle donné
      */
-    public void sendNotificationToRole(String role, String message) {
+    public void sendNotificationToRole(Role role, String message) {
         List<User> users = userRepository.findByRole(role);
 
         if (users.isEmpty()) {
