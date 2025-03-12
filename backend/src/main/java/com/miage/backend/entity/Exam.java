@@ -28,6 +28,10 @@ public class Exam {
     @JoinColumn(name = "teacher_id", nullable = true)
     private User teacher;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
+
     @ManyToMany
     @JoinTable(name = "exam_students",
             joinColumns = @JoinColumn(name = "exam_id"),
@@ -78,6 +82,10 @@ public class Exam {
     public void setTeacher(User teacher) {
         this.teacher = teacher;
     }
+
+    public Course getCourse() { return course; }
+
+    public void setCourse(Course course) { this.course = course; }
 
     public Set<User> getStudents() {
         return students;

@@ -1,8 +1,10 @@
 package com.miage.backend.service;
 
+import com.miage.backend.entity.Course;
 import com.miage.backend.entity.Exam;
 import com.miage.backend.entity.User;
 import com.miage.backend.exception.ResourceNotFoundException;
+import com.miage.backend.repository.CourseRepository;
 import com.miage.backend.repository.ExamRepository;
 import com.miage.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class ExamService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
     public Exam createExam(Exam exam) {
         return examRepository.save(exam);
     }
@@ -31,6 +36,7 @@ public class ExamService {
         exam.setTitle(updatedExam.getTitle());
         exam.setDate(updatedExam.getDate());
         exam.setTeacher(updatedExam.getTeacher());
+        exam.setCourse(updatedExam.getCourse());
         // Mettez à jour d'autres champs si nécessaire
         return examRepository.save(exam);
     }
@@ -50,6 +56,16 @@ public class ExamService {
         User student = userRepository.findById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé pour l'ID : " + studentId));
         exam.getStudents().remove(student);
+        return examRepository.save(exam);
+    }
+
+    public Exam assignCourseToExam(UUID examId, UUID courseId) {
+        Exam exam = examRepository.findById(examId)
+                .orElseThrow(() -> new ResourceNotFoundException("Examen non trouvé pour l'ID : " + examId));
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé pour l'ID : " + courseId));
+
+        exam.setCourse(course);
         return examRepository.save(exam);
     }
 
