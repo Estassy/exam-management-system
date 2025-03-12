@@ -14,6 +14,10 @@ import AdminDashboard from "../pages/Dashboard/AdminDashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
+import ManageExams from "../pages/Exams/ManageExams";
+import ExamForm from "../pages/Exams/ExamForm";
+import CourseForm from "../pages/Courses/CourseForm";
+
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -83,6 +87,38 @@ const AppRouter = () => {
                 <StudentDashboard />
               </ProtectedRoute>
             }
+          />
+          <Route
+              path="/exams/manage"
+              element={
+                <ProtectedRoute allowedRoles={["ADMIN"]}>
+                  <ManageExams />
+                </ProtectedRoute>
+              }
+          />
+          <Route
+              path="/create-exam"
+              element={
+                  <ProtectedRoute allowedRoles={["TEACHER"]}>
+                      <ExamForm />
+                  </ProtectedRoute>
+              }
+          />
+          <Route
+            path="/create-course"
+            element={
+                <ProtectedRoute allowedRoles={["TEACHER"]}>
+                    <CourseForm />
+                </ProtectedRoute>
+            }
+          />
+          <Route
+             path="/edit-exam/:id"
+             element={
+                 <ProtectedRoute allowedRoles={["TEACHER"]}>
+                     <ExamForm />
+                 </ProtectedRoute>
+             }
           />
         </Routes>
       </AppLayout>
