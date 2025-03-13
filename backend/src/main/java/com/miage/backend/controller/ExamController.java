@@ -66,4 +66,10 @@ public class ExamController {
         Exam updatedExam = examService.removeStudentFromExam(examId, studentId);
         return ResponseEntity.ok(updatedExam);
     }
+
+    @PostMapping("/{examId}/course/{courseId}")
+    public ResponseEntity<Exam> assignCourseToExam(@PathVariable UUID examId, @PathVariable UUID courseId) {
+        Exam exam = examService.assignCourseToExam(examId, courseId);
+        return ResponseEntity.ok(exam);
+    }
 }

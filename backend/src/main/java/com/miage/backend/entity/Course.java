@@ -1,6 +1,6 @@
 package com.miage.backend.entity;
 
-import com.miage.backend.enums.ExamStatus;
+import com.miage.backend.enums.CourseStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -9,9 +9,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "exams")
-public class Exam {
-
+@Table(name = "courses")
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -22,23 +21,15 @@ public class Exam {
     private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)
-    private ExamStatus status = ExamStatus.PENDING;
-
-    @ManyToOne
-    @JoinColumn(name = "teacher_id", nullable = true)
-    private User teacher;
-
-    @ManyToOne
-    @JoinColumn(name = "course_id", nullable = false)
-    private Course course;
+    private CourseStatus status = CourseStatus.PENDING;
 
     @ManyToMany
-    @JoinTable(name = "exam_students",
-            joinColumns = @JoinColumn(name = "exam_id"),
+    @JoinTable(name = "course_students",
+            joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<User> students;
 
-    public Exam() {
+    public Course() {
         this.students = new HashSet<>();
     }
 
@@ -67,25 +58,13 @@ public class Exam {
         this.date = date;
     }
 
-    public ExamStatus getStatus() {
+    public CourseStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ExamStatus status) {
+    public void setStatus(CourseStatus status) {
         this.status = status;
     }
-
-    public User getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(User teacher) {
-        this.teacher = teacher;
-    }
-
-    public Course getCourse() { return course; }
-
-    public void setCourse(Course course) { this.course = course; }
 
     public Set<User> getStudents() {
         return students;

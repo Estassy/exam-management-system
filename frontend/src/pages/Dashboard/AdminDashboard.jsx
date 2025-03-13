@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.scss";
 import Button from "../../components/UI/Button";
+
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({ exams: 12, students: 250, teachers: 20 });
@@ -8,6 +10,8 @@ const AdminDashboard = () => {
     "Ajout d'un nouvel utilisateur",
     "Mise à jour des résultats d'examen"
   ]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simuler un appel API pour récupérer les stats et les actions
@@ -34,7 +38,7 @@ const AdminDashboard = () => {
 
       <div className="actions">
         <Button text="Gérer Utilisateurs" variant="primary" onClick={() => alert("Gérer utilisateurs")} />
-        <Button text="Gérer Examens" variant="secondary" onClick={() => alert("Gérer examens")} />
+        <Button text="Gérer Examens" variant="secondary" onClick={() => navigate("/exams/manage")} />
       </div>
     </div>
   );

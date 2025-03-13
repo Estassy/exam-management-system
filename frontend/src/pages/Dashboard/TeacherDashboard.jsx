@@ -1,17 +1,41 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ExamService from "../../services/examService";
 import "./TeacherDashboard.scss";
 import Button from "../../components/UI/Button";
 import Notification from "../../components/UI/Notification";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({ name: "Prof. Dupont" });
-  const [stats, setStats] = useState({ exams: 3, students: 45 });
-  const [nextExam, setNextExam] = useState({ subject: "Math", date: "10 Mars 2025" });
+  const [stats, setStats] = useState({ exams: 0, students: 0 });
+  const [nextExam, setNextExam] = useState(null);
   const [notifications, setNotifications] = useState(["Nouvelle inscription", "Mise à jour examen"]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simuler un appel API pour récupérer les données
-    // fetch("/api/dashboard") -> setUser, setStats, setNextExam, setNotifications
+    // Récupérer les examens depuis le backend
+    const fetchExams = async () => {
+      try {
+        const exams = await ExamService.getAllExams();
+        if (exams.length > 0) {
+          setStats({ exams: exams.length, students: 45 }); // Nombre d'étudiants à récupérer dynamiquement
+
+          // Trouver l'examen le plus proche
+          const upcomingExam = exams
+            .filter(exam => new Date(exam.date) > new Date()) // Exclure les examens passés
+            .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+
+          setNextExam(upcomingExam || null);
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des examens :", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExams();
   }, []);
 
   return (
@@ -23,10 +47,16 @@ const Dashboard = () => {
         <div className="statBox">👥 Étudiants : {stats.students}</div>
       </div>
 
-      <div className="nextExam">
-        <h2>📅 Prochain Examen</h2>
-        <p>{nextExam.subject} - {nextExam.date}</p>
-      </div>
+      {loading ? (
+        <p>Chargement des examens...</p>
+      ) : nextExam ? (
+        <div className="nextExam">
+          <h2>📅 Prochain Examen</h2>
+          <p>{nextExam.title} - {new Date(nextExam.date).toLocaleDateString()}</p>
+        </div>
+      ) : (
+        <p>Aucun examen à venir.</p>
+      )}
 
       <div className="notifications">
         <h2>🔔 Notifications récentes</h2>
@@ -34,8 +64,20 @@ const Dashboard = () => {
       </div>
 
       <div className="actions">
-        <Button text="Créer un examen" variant="primary" onClick={() => alert("Créer examen")} />
-        <Button text="Gérer les étudiants" variant="secondary" onClick={() => alert("Voir étudiants")} />
+        <Button
+          text="Créer un examen"
+          variant="primary"
+          onClick={() => navigate("/create-exam")}
+        />
+        <Button
+            text="Créer un cours"
+            variant="primary"
+            onClick={() => navigate("/create-course")} />
+        <Button
+          text="Gérer les étudiants"
+          variant="secondary"
+          onClick={() => alert("Voir étudiants")}
+        />
       </div>
     </div>
   );
