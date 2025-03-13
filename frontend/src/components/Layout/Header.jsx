@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import "./Header.scss";
 
 const Header = () => {
-    const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,9 +19,15 @@ const Header = () => {
       </div>
       <nav>
         <ul>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><Link to="/profile">Profil</Link></li>
-          <li><button onClick={handleLogout} className="logout-btn">Déconnexion</button></li>
+          <li>
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li>{user?.role}</li>
+          <li>
+            <button onClick={handleLogout} className="logout-btn">
+              Déconnexion
+            </button>
+          </li>
         </ul>
       </nav>
     </header>

@@ -12,6 +12,7 @@ $border-color: rgba(255, 255, 255, 0.2);
   background: url("https://images.unsplash.com/photo-1531297484001-80022131f5a1") no-repeat center center/cover;
 }
 
+
 .login-card {
   background: $card-bg;
   backdrop-filter: blur(10px);
@@ -57,6 +58,8 @@ $border-color: rgba(255, 255, 255, 0.2);
         border-color: $primary-color;
       }
     }
+
+      
     
     button {
       background: $primary-color;
@@ -74,6 +77,11 @@ $border-color: rgba(255, 255, 255, 0.2);
 
       }
     }
+    button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(74, 144, 226, 0.5);
+      }
+      
   }
 
   .forgot-password {
