@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { createCourse } from "../../services/courseService";
+import { createCourse } from "../../services/course/courseService";
 import "./CourseForm.scss";
 
-
 function CourseForm({ onCourseCreated }) {
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
-  const [status, setStatus] = useState('PENDING');
-  const [confirmation, setConfirmation] = useState('');
-  const [error, setError] = useState('');
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [status, setStatus] = useState("PENDING");
+  const [confirmation, setConfirmation] = useState("");
+  const [error, setError] = useState("");
 
   // Nouvel état pour stocker les erreurs de champs
   const [fieldErrors, setFieldErrors] = useState({});
@@ -38,15 +37,15 @@ function CourseForm({ onCourseCreated }) {
       const newCourse = {
         title,
         date: date || null,
-        status
+        status,
       };
       const response = await createCourse(newCourse);
       setConfirmation("Cours créé avec succès !");
       setError("");
       setFieldErrors({});
-      setTitle('');
-      setDate('');
-      setStatus('PENDING');
+      setTitle("");
+      setDate("");
+      setStatus("PENDING");
     } catch (err) {
       console.error("Erreur lors de la création du cours", err);
       setError("Erreur lors de la création du cours.", err);
@@ -84,10 +83,7 @@ function CourseForm({ onCourseCreated }) {
 
         <div className="form-group">
           <label>Statut :</label>
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="">-- Sélectionnez un statut --</option>
             <option value="PENDING">En attente</option>
             <option value="ONGOING">En cours</option>

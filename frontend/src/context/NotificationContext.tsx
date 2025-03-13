@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode, useContext } from "react";
-import { fetchNotifications } from "../services/notificationService";
+import { fetchNotifications } from "../services/notification/notificationService";
 import { AuthContext } from "./AuthContext";
 
 // Définition du type Notification

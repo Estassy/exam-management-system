@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { login } from "../services/authService";
+import { login } from "../services/auth/authService";
 import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
@@ -20,7 +20,9 @@ export const AuthProvider = ({ children }) => {
         const isExpired = expirationDate < new Date();
 
         if (isExpired) {
-          console.warn("⚠️ Token expiré au démarrage, mais on attend la connexion.");
+          console.warn(
+            "⚠️ Token expiré au démarrage, mais on attend la connexion."
+          );
           logout();
         } else {
           const storedUser = JSON.parse(localStorage.getItem("user"));

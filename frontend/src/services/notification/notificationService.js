@@ -1,4 +1,4 @@
- import api from "./api/api";
+ import api from "../api";
 
 
 // 🔹 Récupérer les notifications d'un utilisateur (étudiant, enseignant, admin)

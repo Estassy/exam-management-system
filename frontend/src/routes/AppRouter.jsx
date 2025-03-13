@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import LoginPage from "../pages/Login/LoginPage";
-import TeacherDashboard from "../pages/Dashboard/TeacherDashboard";
 import StudentDashboard from "../pages/Dashboard/StudentDashboard";
 import AdminDashboard from "../pages/Dashboard/AdminDashboard";
 import ProtectedRoute from "./ProtectedRoute";
@@ -17,11 +16,11 @@ import Footer from "../components/Layout/Footer";
 import ManageExams from "../pages/Exams/ManageExams";
 import ExamForm from "../pages/Exams/ExamForm";
 import CourseForm from "../pages/Courses/CourseForm";
-
+import TeacherDashboard from "../pages/Dashboard/TeacherDashboard";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
-  const hideLayout = location.pathname === "/login"; // Ne pas afficher sur /login
+  const hideLayout = location.pathname === "/login";
 
   return (
     <>
@@ -41,16 +40,16 @@ const AppRouter = () => {
     <Router>
       <AppLayout>
         <Routes>
-        <Route 
-          path="/" 
-          element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/login" 
-          element={user ? <Navigate to="/dashboard" /> : <LoginPage />} 
-        />
-
-
+          <Route
+            path="/"
+            element={
+              user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/dashboard" /> : <LoginPage />}
+          />
           <Route
             path="/dashboard"
             element={
@@ -61,7 +60,6 @@ const AppRouter = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/admin"
             element={
@@ -70,7 +68,6 @@ const AppRouter = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/teacher"
             element={
@@ -79,7 +76,6 @@ const AppRouter = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/student"
             element={
@@ -89,36 +85,36 @@ const AppRouter = () => {
             }
           />
           <Route
-              path="/exams/manage"
-              element={
-                <ProtectedRoute allowedRoles={["ADMIN"]}>
-                  <ManageExams />
-                </ProtectedRoute>
-              }
+            path="/exams/manage"
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN"]}>
+                <ManageExams />
+              </ProtectedRoute>
+            }
           />
           <Route
-              path="/create-exam"
-              element={
-                  <ProtectedRoute allowedRoles={["TEACHER"]}>
-                      <ExamForm />
-                  </ProtectedRoute>
-              }
+            path="/create-exam"
+            element={
+              <ProtectedRoute allowedRoles={["TEACHER"]}>
+                <ExamForm />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/create-course"
             element={
-                <ProtectedRoute allowedRoles={["TEACHER"]}>
-                    <CourseForm />
-                </ProtectedRoute>
+              <ProtectedRoute allowedRoles={["TEACHER"]}>
+                <CourseForm />
+              </ProtectedRoute>
             }
           />
           <Route
-             path="/edit-exam/:id"
-             element={
-                 <ProtectedRoute allowedRoles={["TEACHER"]}>
-                     <ExamForm />
-                 </ProtectedRoute>
-             }
+            path="/edit-exam/:id"
+            element={
+              <ProtectedRoute allowedRoles={["TEACHER"]}>
+                <ExamForm />
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </AppLayout>

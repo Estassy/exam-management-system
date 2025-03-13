@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ExamService from "../../services/examService";
+import ExamService from "../../services/exam/examService";
 import "./TeacherDashboard.scss";
 import Button from "../../components/UI/Button";
 import Notification from "../../components/UI/Notification";
 
-const Dashboard = () => {
+const TeacherDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({ name: "Prof. Dupont" });
   const [stats, setStats] = useState({ exams: 0, students: 0 });
   const [nextExam, setNextExam] = useState(null);
-  const [notifications, setNotifications] = useState(["Nouvelle inscription", "Mise à jour examen"]);
+  const [notifications, setNotifications] = useState([
+    "Nouvelle inscription",
+    "Mise à jour examen",
+  ]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,7 +26,7 @@ const Dashboard = () => {
 
           // Trouver l'examen le plus proche
           const upcomingExam = exams
-            .filter(exam => new Date(exam.date) > new Date()) // Exclure les examens passés
+            .filter((exam) => new Date(exam.date) > new Date()) // Exclure les examens passés
             .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
 
           setNextExam(upcomingExam || null);
@@ -52,7 +55,9 @@ const Dashboard = () => {
       ) : nextExam ? (
         <div className="nextExam">
           <h2>📅 Prochain Examen</h2>
-          <p>{nextExam.title} - {new Date(nextExam.date).toLocaleDateString()}</p>
+          <p>
+            {nextExam.title} - {new Date(nextExam.date).toLocaleDateString()}
+          </p>
         </div>
       ) : (
         <p>Aucun examen à venir.</p>
@@ -60,7 +65,9 @@ const Dashboard = () => {
 
       <div className="notifications">
         <h2>🔔 Notifications récentes</h2>
-        {notifications.map((notif, index) => <Notification key={index} message={notif} />)}
+        {notifications.map((notif, index) => (
+          <Notification key={index} message={notif} />
+        ))}
       </div>
 
       <div className="actions">
@@ -70,9 +77,10 @@ const Dashboard = () => {
           onClick={() => navigate("/create-exam")}
         />
         <Button
-            text="Créer un cours"
-            variant="primary"
-            onClick={() => navigate("/create-course")} />
+          text="Créer un cours"
+          variant="primary"
+          onClick={() => navigate("/create-course")}
+        />
         <Button
           text="Gérer les étudiants"
           variant="secondary"
@@ -83,4 +91,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default TeacherDashboard;
