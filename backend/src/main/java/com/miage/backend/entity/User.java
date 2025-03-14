@@ -31,6 +31,10 @@ public class User implements Serializable {
 
     private boolean active = true;
 
+    @Basic (optional = true)
+    private String Promotion;
+
+
     @Transient // Exclut du mapping Hibernate, mais injecté par Spring
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

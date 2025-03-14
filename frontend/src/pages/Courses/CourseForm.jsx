@@ -81,19 +81,22 @@ function CourseForm({ onCourseCreated }) {
           )}
         </div>
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Statut :</label>
           <select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="">-- Sélectionnez un statut --</option>
-            <option value="PENDING">En attente</option>
             <option value="ONGOING">En cours</option>
-            <option value="COMPLETED">Terminé</option>
-            <option value="CANCELLED">Annulé</option>
+            <option value="COMPLETED">Passés</option>
+            <option value="CANCELLED">A venir</option>
           </select>
           {fieldErrors.status && (
             <span className="error-text">{fieldErrors.status}</span>
           )}
-        </div>
+        </div> */}
+
+        {/* Il faudrait gérer le statut du cours : lorsque le prof créé le cours, son statut est automatiquement 'à venir'. 
+        Le prof a la possibilité (plus tard) de modifier le statut du cours de 'à venir' à 'en cours' lorsque le prof décide de le rendre visible aux étudiants. 
+        Puis lorsque les étudiants ont passé l'exam. Le statut du cours passe de 'en cours' à 'passé'*/}
 
         <button type="submit">Créer le cours</button>
       </form>

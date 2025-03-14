@@ -16,30 +16,30 @@ const TeacherDashboard = () => {
   ]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Récupérer les examens depuis le backend
-    const fetchExams = async () => {
-      try {
-        const exams = await ExamService.getAllExams();
-        if (exams.length > 0) {
-          setStats({ exams: exams.length, students: 45 }); // Nombre d'étudiants à récupérer dynamiquement
+  // useEffect(() => {
+  //   // Récupérer les examens depuis le backend
+  //   const fetchExams = async () => {
+  //     try {
+  //       const exams = await ExamService.getAllExams();
+  //       if (exams.length > 0) {
+  //         setStats({ exams: exams.length, students: 45 }); // Nombre d'étudiants à récupérer dynamiquement
 
-          // Trouver l'examen le plus proche
-          const upcomingExam = exams
-            .filter((exam) => new Date(exam.date) > new Date()) // Exclure les examens passés
-            .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+  //         // Trouver l'examen le plus proche
+  //         const upcomingExam = exams
+  //           .filter((exam) => new Date(exam.date) > new Date()) // Exclure les examens passés
+  //           .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
 
-          setNextExam(upcomingExam || null);
-        }
-      } catch (error) {
-        console.error("Erreur lors du chargement des examens :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //         setNextExam(upcomingExam || null);
+  //       }
+  //     } catch (error) {
+  //       console.error("Erreur lors du chargement des examens :", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchExams();
-  }, []);
+  //   fetchExams();
+  // }, []);
 
   return (
     <div className="dashboard">
@@ -85,6 +85,11 @@ const TeacherDashboard = () => {
           text="Gérer les étudiants"
           variant="secondary"
           onClick={() => alert("Voir étudiants")}
+        />
+        <Button
+          text="Créer un Quiz"
+          variant="secondary"
+          onClick={() => navigate("#")}
         />
       </div>
     </div>
