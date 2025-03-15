@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -33,6 +35,8 @@ public class User implements Serializable {
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private Set<Grade> grades = new HashSet<>();
 
     private boolean active = true;
 
