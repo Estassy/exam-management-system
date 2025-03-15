@@ -29,11 +29,12 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Role role;
 
+    @ManyToOne
+    @JoinColumn(name = "promotion_id")
+    private Promotion promotion;
+
+
     private boolean active = true;
-
-    @Basic (optional = true)
-    private String Promotion;
-
 
     @Transient // Exclut du mapping Hibernate, mais injecté par Spring
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -54,7 +55,6 @@ public class User implements Serializable {
         }
     }
 
-    // Getters et Setters
     public UUID getId() {
         return id;
     }
@@ -78,7 +78,6 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public Role getRole() {
         return role;

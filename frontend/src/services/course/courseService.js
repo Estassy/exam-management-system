@@ -1,5 +1,4 @@
-// src/services/courseService.js
-import api from '../api'; // <-- Ton instance Axios avec interceptors
+import api from '../api'; 
 
 /**
  * Récupère tous les cours
@@ -12,6 +11,20 @@ export async function getAllCourses() {
     throw error;
   }
 }
+
+/**
+ * Met à jour le statut d'un cours
+ */
+export async function updateCourseStatus(courseId, newStatus) {
+  try {
+    const response = await api.put(`/courses/${courseId}/update-status?status=${newStatus}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du statut :", error);
+    throw error;
+  }
+}
+
 
 /**
  * Récupère un cours par son ID

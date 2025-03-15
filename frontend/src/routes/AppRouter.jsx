@@ -100,6 +100,7 @@ const AppRouter = () => {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/create-course"
             element={
@@ -108,6 +109,7 @@ const AppRouter = () => {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/edit-exam/:id"
             element={
