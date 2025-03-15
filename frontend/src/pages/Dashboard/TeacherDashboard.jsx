@@ -5,8 +5,11 @@ import "./TeacherDashboard.scss";
 import { getAllStudents } from "../../services/user/userService";
 import { getAllExams } from "../../services/exam/examService";
 import { getGradesByStudent } from "../../services/exam/gradeService";
+import Button from "../../components/UI/Button";
+import { useNavigate } from "react-router-dom";
 
 function TeacherDashboard() {
+  const navigate = useNavigate();
   const [exams, setExams] = useState([]);
   const [students, setStudents] = useState([]);
   const [courses, setCourses] = useState(0);
@@ -137,6 +140,23 @@ function TeacherDashboard() {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="actions">
+        <Button
+          text="Créer un examen"
+          variant="primary"
+          onClick={() => navigate("/create-exam")}
+        />
+        <Button
+          text="Créer un cours"
+          variant="primary"
+          onClick={() => navigate("/create-course")}
+        />
+        <Button
+          text="Créer un Quiz"
+          variant="secondary"
+          onClick={() => navigate("#")}
+        />
       </div>
     </div>
   );
