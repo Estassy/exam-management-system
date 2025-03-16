@@ -32,8 +32,6 @@ public class QuestionService {
         Question existingQuestion = questionRepository.findById(questionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Question non trouvée pour l'ID : " + questionId));
 
-        existingQuestion.setCategory(updatedQuestion.getCategory());
-        existingQuestion.setDifficultyLevel(updatedQuestion.getDifficultyLevel());
         existingQuestion.setQuestionText(updatedQuestion.getQuestionText());
         existingQuestion.setOption1(updatedQuestion.getOption1());
         existingQuestion.setOption2(updatedQuestion.getOption2());
@@ -50,11 +48,4 @@ public class QuestionService {
         questionRepository.deleteById(questionId);
     }
 
-    public List<Question> getQuestionsByCategory(String category) {
-        return questionRepository.findByCategory(category);
-    }
-
-    public List<Question> getQuestionsByDifficultyLevel(String difficultyLevel) {
-        return questionRepository.findByDifficultyLevel(difficultyLevel);
-    }
 }

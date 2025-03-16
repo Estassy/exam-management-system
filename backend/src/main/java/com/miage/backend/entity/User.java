@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,15 +27,24 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String firstName;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
+    @ManyToOne
+    @JoinColumn(name = "promotion_id")
+    private Promotion promotion;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private Set<Grade> grades = new HashSet<>();
+
     private boolean active = true;
-
-    @Basic (optional = true)
-    private String Promotion;
-
 
     @Transient // Exclut du mapping Hibernate, mais injecté par Spring
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -55,6 +66,12 @@ public class User implements Serializable {
     }
 
     // Getters et Setters
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
     public UUID getId() {
         return id;
     }
@@ -79,7 +96,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-
     public Role getRole() {
         return role;
     }
@@ -94,5 +110,21 @@ public class User implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
+
+    public Set<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Set<Grade> grades) {
+        this.grades = grades;
     }
 }

@@ -1,33 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createCourse } from "../../services/course/courseService";
 import "./CourseForm.scss";
+import { getPromotions } from "../../services/promotion/promotionService";
 
 function CourseForm({ onCourseCreated }) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
-  const [status, setStatus] = useState("PENDING");
+  const [selectedPromotions, setSelectedPromotions] = useState([]);
+  const [promotions, setPromotions] = useState([]);
   const [confirmation, setConfirmation] = useState("");
   const [error, setError] = useState("");
-
-  // Nouvel état pour stocker les erreurs de champs
   const [fieldErrors, setFieldErrors] = useState({});
+
+  // Charger les promotions disponibles
+
+  useEffect(() => {
+    getPromotions().then((data) => {
+      setPromotions(data);
+    });
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // On vérifie manuellement les champs requis
     let errors = {};
-    if (!title.trim()) {
-      errors.title = "Le titre est obligatoire.";
-    }
-    if (!date) {
-      errors.date = "La date est obligatoire.";
-    }
-    if (!status) {
-      errors.status = "Le statut est obligatoire.";
-    }
+    if (!title.trim()) errors.title = "Le titre est obligatoire.";
+    if (!date) errors.date = "La date est obligatoire.";
+    if (selectedPromotions.length === 0)
+      errors.promotions = "Sélectionnez au moins une promotion.";
 
-    // Si on détecte des erreurs, on les affiche et on arrête
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
       return;
@@ -37,18 +37,20 @@ function CourseForm({ onCourseCreated }) {
       const newCourse = {
         title,
         date: date || null,
-        status,
+        promotionIds: selectedPromotions,
       };
-      const response = await createCourse(newCourse);
+
+      await createCourse(newCourse);
       setConfirmation("Cours créé avec succès !");
       setError("");
       setFieldErrors({});
       setTitle("");
       setDate("");
-      setStatus("PENDING");
+      setSelectedPromotions([]);
+      if (onCourseCreated) onCourseCreated();
     } catch (err) {
       console.error("Erreur lors de la création du cours", err);
-      setError("Erreur lors de la création du cours.", err);
+      setError("Erreur lors de la création du cours.");
       setConfirmation("");
     }
   };
@@ -81,22 +83,27 @@ function CourseForm({ onCourseCreated }) {
           )}
         </div>
 
-        {/* <div className="form-group">
-          <label>Statut :</label>
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option value="">-- Sélectionnez un statut --</option>
-            <option value="ONGOING">En cours</option>
-            <option value="COMPLETED">Passés</option>
-            <option value="CANCELLED">A venir</option>
+        <div className="form-group">
+          <label>Choisir les promotions :</label>
+          <select
+            multiple
+            value={selectedPromotions}
+            onChange={(e) =>
+              setSelectedPromotions(
+                Array.from(e.target.selectedOptions, (option) => option.value)
+              )
+            }
+          >
+            {promotions.map((promo) => (
+              <option key={promo.id} value={promo.id}>
+                {promo.name}
+              </option>
+            ))}
           </select>
-          {fieldErrors.status && (
-            <span className="error-text">{fieldErrors.status}</span>
+          {fieldErrors.promotions && (
+            <span className="error-text">{fieldErrors.promotions}</span>
           )}
-        </div> */}
-
-        {/* Il faudrait gérer le statut du cours : lorsque le prof créé le cours, son statut est automatiquement 'à venir'. 
-        Le prof a la possibilité (plus tard) de modifier le statut du cours de 'à venir' à 'en cours' lorsque le prof décide de le rendre visible aux étudiants. 
-        Puis lorsque les étudiants ont passé l'exam. Le statut du cours passe de 'en cours' à 'passé'*/}
+        </div>
 
         <button type="submit">Créer le cours</button>
       </form>

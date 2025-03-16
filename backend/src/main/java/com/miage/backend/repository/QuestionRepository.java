@@ -9,6 +9,4 @@ import java.util.UUID;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, UUID> {
-    List<Question> findByCategory(String category);
-    List<Question> findByDifficultyLevel(String difficultyLevel);
 }

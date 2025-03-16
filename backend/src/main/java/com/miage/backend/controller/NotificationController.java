@@ -70,4 +70,9 @@ public class NotificationController {
         notificationService.deleteNotification(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<Notification>> getNotifications(@PathVariable UUID studentId) {
+        return ResponseEntity.ok(notificationService.getNotificationsByStudentId(studentId));
+    }
 }

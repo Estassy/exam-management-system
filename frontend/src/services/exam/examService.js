@@ -107,6 +107,19 @@ export async function assignCourseToExam(examId, courseId) {
   }
 }
 
+/**
+ * Récupère la liste des examens à venir pour un étudiant donné
+ */
+export async function getUpcomingExams(studentId) {
+  try {
+    const response = await api.get(`${API_URL}/upcoming/${studentId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des examens à venir :", error);
+    return [];
+  }
+}
+
 export default {
   getAllExams,
   getExamById,
@@ -116,4 +129,5 @@ export default {
   addStudentToExam,
   removeStudentFromExam,
   assignCourseToExam,
+  getUpcomingExams,
 };
