@@ -48,4 +48,8 @@ public class GradeService {
         grade.setScore(newScore);
         return gradeRepository.save(grade);
     }
+
+    public List<Grade> getStudentResults(UUID studentId) {
+        return gradeRepository.findByStudentId(studentId);
+    }
 }

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { login } from "../services/auth/authService";
 import { jwtDecode } from "jwt-decode";
+import { getUserById } from "../services/user/userService";
 
 export const AuthContext = createContext();
 
@@ -66,7 +67,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, loginUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

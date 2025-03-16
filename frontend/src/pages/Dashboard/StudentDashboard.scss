@@ -1,25 +1,109 @@
-.dashboard {
+.student-dashboard {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+  font-family: Arial, sans-serif;
+
+  .dashboard-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-section {
+    background: #f8f9fc;
     padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
-  
-  h1 {
-    color: #333;
-  }
-  
-  .exams, .results, .notifications {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-  }
-  
-  ul {
-    list-style-type: none;
+
+  .exam-list, .notification-list {
+    list-style: none;
     padding: 0;
   }
-  
+
+  .exam-item, .notif-item {
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  .status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+  }
+  .status-confirmed {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  .status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  .results-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .trend-up {
+    color: green;
+  }
+  .trend-down {
+    color: red;
+  }
+
+  .progress {
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
   .actions {
     display: flex;
-    gap: 15px;
+    justify-content: space-between;
   }
-  
+
+  .primary-button, .secondary-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+
+  .primary-button {
+    background-color: #007bff;
+    color: white;
+  }
+  .primary-button:hover {
+    background-color: #0056b3;
+  }
+
+  .secondary-button {
+    background-color: #28a745;
+    color: white;
+  }
+  .secondary-button:hover {
+    background-color: #218838;
+  }
+}

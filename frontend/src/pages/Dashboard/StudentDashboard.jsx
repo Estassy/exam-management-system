@@ -1,53 +1,134 @@
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 import "./StudentDashboard.scss";
-import Button from "../../components/UI/Button";
-import Notification from "../../components/UI/Notification";
+import { getUpcomingExams } from "../../services/exam/examService";
+import { getStudentResults } from "../../services/exam/gradeService";
+import { getNotifications } from "../../services/notification/notificationService";
+import { AuthContext } from "../../context/AuthContext";
+import { getUserById } from "../../services/user/userService";
 
 const StudentDashboard = () => {
-  const [user, setUser] = useState({ name: "Jean Dupont" });
-  const [exams, setExams] = useState([
-    { subject: "Math", date: "10 Mars 2025" },
-    { subject: "Physique", date: "15 Mars 2025" }
-  ]);
-  const [results, setResults] = useState([
-    { subject: "Histoire", score: 85 },
-    { subject: "Anglais", score: 90 }
-  ]);
-  const [notifications, setNotifications] = useState(["Nouvel examen ajouté", "Résultat disponible"]);
+  const { user, setUser } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+  const [exams, setExams] = useState([]);
+  const [results, setResults] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [averageScore, setAverageScore] = useState(0);
+  const [classAverage, setClassAverage] = useState(0);
+  const [goal, setGoal] = useState(85);
 
   useEffect(() => {
-    // Simuler un appel API pour récupérer les données de l'étudiant
-  }, []);
+    async function fetchData() {
+      if (!user?.id) return; // Vérifie que l'utilisateur est bien défini
+
+      try {
+        // Récupérer les informations complètes de l'utilisateur
+        const fullUserData = await getUserById(user.id);
+        setUser(fullUserData);
+        const examsData = await getUpcomingExams(user.id);
+        const resultsData = await getStudentResults(user.id);
+        const notificationsData = await getNotifications(user.id);
+
+        setExams(examsData);
+        setResults(resultsData);
+        setNotifications(notificationsData);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+      }
+    }
+
+    fetchData();
+  }, [user?.id]); // Relance l'effet uniquement si `user.id` change
 
   return (
-    <div className="dashboard">
-      <h1>🎓 Bienvenue, {user.name}</h1>
+    <div className="student-dashboard">
+      <h1 className="dashboard-title">
+        🎓 Bienvenue, {user.firstName} {user.lastName}
+      </h1>
 
-      <div className="exams">
+      <section className="dashboard-section exams-section">
         <h2>📅 Examens à venir</h2>
-        <ul>
-          {exams.map((exam, index) => (
-            <li key={index}>{exam.subject} - {exam.date}</li>
-          ))}
-        </ul>
-      </div>
+        {exams.length ? (
+          <ul className="exam-list">
+            {exams.map((exam) => (
+              <li key={exam.id} className="exam-item">
+                <strong>{exam.title}</strong> -{" "}
+                {new Date(exam.date).toLocaleDateString()} (
+                {exam.location || "En ligne"})
+                <span
+                  className={`status ${
+                    exam.status === "Confirmed"
+                      ? "status-confirmed"
+                      : "status-pending"
+                  }`}
+                >
+                  {exam.status === "Confirmed"
+                    ? "✅ Confirmé"
+                    : "⏳ En attente"}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Aucun examen prévu</p>
+        )}
+      </section>
 
-      <div className="results">
+      <section className="dashboard-section results-section">
         <h2>📊 Résultats</h2>
-        <ul>
-          {results.map((result, index) => (
-            <li key={index}>{result.subject} : {result.score}%</li>
+        <div className="results-container">
+          {results.map((result) => (
+            <div key={result.examId} className="result-item">
+              <span>{result.examTitle} :</span>
+              <strong>{result.score}%</strong>
+              <span
+                className={`trend ${
+                  result.trend > 0 ? "trend-up" : "trend-down"
+                }`}
+              >
+                {result.trend > 0
+                  ? `⬆️ +${result.trend}%`
+                  : `⬇️ ${result.trend}%`}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="progress">
+          <p>
+            Moyenne actuelle : <strong>{averageScore}%</strong>
+          </p>
+          <p>
+            Moyenne de la classe : <strong>{classAverage}%</strong>
+          </p>
+          <p>
+            🎯 Objectif personnel : <strong>{goal}%</strong>
+          </p>
+        </div>
+      </section>
+
+      <section className="dashboard-section notifications-section">
+        <h2>🔔 Notifications récentes</h2>
+        <ul className="notification-list">
+          {notifications.map((notif) => (
+            <li key={notif.id} className="notif-item">
+              {notif.message}
+            </li>
           ))}
         </ul>
-      </div>
-
-      <div className="notifications">
-        <h2>🔔 Notifications récentes</h2>
-        {notifications.map((notif, index) => <Notification key={index} message={notif} />)}
-      </div>
+      </section>
 
       <div className="actions">
-        <Button text="Voir tous les examens" variant="primary" onClick={() => alert("Liste des examens")} />
+        <button onClick={() => navigate("/exams")} className="primary-button">
+          📖 Voir tous les examens
+        </button>
+        <button
+          onClick={() => navigate("/quizzes")}
+          className="secondary-button"
+        >
+          📝 Faire un quiz
+        </button>
       </div>
     </div>
   );

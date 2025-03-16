@@ -93,4 +93,8 @@ public class ExamService {
         return examRepository.findFirstByTeacherOrderByDateAsc(teacher);
     }
 
+    public List<Exam> getUpcomingExams(UUID studentId) {
+        return examRepository.findByStudentsIdAndDateAfter(studentId, LocalDateTime.now());
+    }
+
 }

@@ -77,4 +77,10 @@ public class ExamController {
         Exam exam = examService.assignCourseToExam(examId, courseId);
         return ResponseEntity.ok(exam);
     }
+
+    @GetMapping("/upcoming/{studentId}")
+    public ResponseEntity<List<Exam>> getUpcomingExams(@PathVariable UUID studentId) {
+        List<Exam> exams = examService.getUpcomingExams(studentId);
+        return ResponseEntity.ok(exams);
+    }
 }

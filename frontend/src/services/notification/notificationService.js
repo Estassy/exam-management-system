@@ -1,5 +1,6 @@
  import api from "../api";
 
+ const API_URL = "/api/notifications";
 
 // 🔹 Récupérer les notifications d'un utilisateur (étudiant, enseignant, admin)
 export const fetchNotifications = async () => {
@@ -41,4 +42,21 @@ export const sendNotificationToRole = async (role, message) => {
   } catch (error) {
     console.error("Erreur lors de l'envoi des notifications aux " + role + "s :", error);
   }
+};
+
+/**
+ * Récupère la liste des notifications pour un étudiant donné
+ */
+export async function getNotifications(studentId) {
+  try {
+    const response = await api.get(`${API_URL}/student/${studentId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des notifications :", error);
+    return [];
+  }
+}
+
+export default {
+  getNotifications,
 };

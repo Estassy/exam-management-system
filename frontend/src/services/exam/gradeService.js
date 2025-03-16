@@ -44,3 +44,24 @@ export async function updateGrade(gradeId, newScore) {
     throw error;
   }
 }
+
+/**
+ * Récupère la liste des notes d'un étudiant
+ */
+export async function getStudentResults(studentId) {
+    try {
+      const response = await api.get(`${API_URL}/student/${studentId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des résultats :", error);
+      return [];
+    }
+}
+
+export default {
+  addGrade,
+  getGradesByStudent,
+  updateGrade,
+  getStudentResults,
+};
+

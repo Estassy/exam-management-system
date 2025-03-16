@@ -93,4 +93,17 @@ public class NotificationService {
         }
         notificationRepository.deleteById(id);
     }
+
+    public List<Notification> getNotificationsByStudentId(UUID studentId) {
+        User student = userRepository.findById(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'ID : " + studentId));
+
+        // Vérifier si c'est bien un étudiant
+        if (!student.getRole().equals(Role.STUDENT)) {
+            throw new IllegalStateException("L'utilisateur n'est pas un étudiant.");
+        }
+
+        return notificationRepository.findByUserAndUserRole(student, Role.STUDENT);
+    }
+
 }

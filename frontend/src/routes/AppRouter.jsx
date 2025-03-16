@@ -19,6 +19,8 @@ import CourseForm from "../pages/Courses/CourseForm";
 import TeacherDashboard from "../pages/Dashboard/TeacherDashboard";
 import StudentListPage from "../pages/Students/StudentListPage";
 import QuizForm from "../pages/Quizzes/QuizForm";
+import QuizList from "../pages/Quizzes/QuizList";
+import ExamList from "../pages/Exams/ExamList";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -83,6 +85,22 @@ const AppRouter = () => {
             element={
               <ProtectedRoute allowedRoles={["STUDENT"]}>
                 <StudentDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/quizzes"
+            element={
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
+                <QuizList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/exams"
+            element={
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
+                <ExamList />
               </ProtectedRoute>
             }
           />
