@@ -27,6 +27,12 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String firstName;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -58,6 +64,13 @@ public class User implements Serializable {
             this.password = passwordEncoder.encode(this.password);
         }
     }
+
+    // Getters et Setters
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
     public UUID getId() {
         return id;
@@ -97,5 +110,21 @@ public class User implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
+
+    public Set<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Set<Grade> grades) {
+        this.grades = grades;
     }
 }

@@ -1,6 +1,10 @@
 package com.miage.backend.entity;
 
+import com.miage.backend.enums.QuestionType;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -11,12 +15,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String category;
-
-    @Column(name = "difficulty_level")
-    private String difficultyLevel;
-
-    @Column(name = "question_text", nullable = false)
+    @Column(nullable = false)
     private String questionText;
 
     private String option1;
@@ -24,39 +23,31 @@ public class Question {
     private String option3;
     private String option4;
 
-    @Column(name = "right_answer", nullable = false)
+    @Column(nullable = false)
     private String rightAnswer;
 
-    @ManyToOne
-    @JoinColumn(name = "exam_id")
-    private Exam exam;
+    @Enumerated(EnumType.STRING)
+    private QuestionType type; // EXAM, QUIZ, TEMPLATE
 
-    public Question() {
-    }
+    @ManyToMany(mappedBy = "questions")
+    private Set<Exam> exams = new HashSet<>();
+
+    @ManyToMany(mappedBy = "questions")
+    private Set<Quiz> quizzes = new HashSet<>();
+
+    @ManyToMany(mappedBy = "questions")
+    private Set<ExamTemplate> templates = new HashSet<>();
+
+    public Question() {}
 
     // Getters et Setters
+
     public UUID getId() {
         return id;
     }
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDifficultyLevel() {
-        return difficultyLevel;
-    }
-
-    public void setDifficultyLevel(String difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
     }
 
     public String getQuestionText() {
@@ -107,11 +98,36 @@ public class Question {
         this.rightAnswer = rightAnswer;
     }
 
-    public Exam getExam() {
-        return exam;
+    public QuestionType getType() {
+        return type;
     }
 
-    public void setExam(Exam exam) {
-        this.exam = exam;
+    public void setType(QuestionType type) {
+        this.type = type;
     }
+
+    public Set<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(Set<Exam> exams) {
+        this.exams = exams;
+    }
+
+    public Set<Quiz> getQuizzes() {
+        return quizzes;
+    }
+
+    public void setQuizzes(Set<Quiz> quizzes) {
+        this.quizzes = quizzes;
+    }
+
+    public Set<ExamTemplate> getTemplates() {
+        return templates;
+    }
+
+    public void setTemplates(Set<ExamTemplate> templates) {
+        this.templates = templates;
+    }
+
 }

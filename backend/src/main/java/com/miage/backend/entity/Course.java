@@ -63,4 +63,7 @@ public class Course {
 
     public Set<Promotion> getPromotions() { return promotions; }
     public void setPromotions(Set<Promotion> promotions) { this.promotions = promotions; }
+
+    public Set<Exam> getExams() { return exams; }
+    public void setExams(Set<Exam> exams) { this.exams = exams; }
 }

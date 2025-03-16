@@ -1,15 +1,12 @@
 package com.miage.backend.service;
 
-import com.miage.backend.entity.Course;
-import com.miage.backend.entity.Exam;
-import com.miage.backend.entity.User;
+import com.miage.backend.entity.*;
 import com.miage.backend.exception.ResourceNotFoundException;
-import com.miage.backend.repository.CourseRepository;
-import com.miage.backend.repository.ExamRepository;
-import com.miage.backend.repository.UserRepository;
+import com.miage.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +22,12 @@ public class ExamService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private ExamTemplateRepository examTemplateRepository;
+
+    @Autowired
+    private PromotionRepository promotionRepository;
 
     public Exam createExam(Exam exam) {
         return examRepository.save(exam);

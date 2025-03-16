@@ -14,8 +14,6 @@ export const AuthProvider = ({ children }) => {
       try {
         const decodedToken = jwtDecode(storedToken);
         const expirationDate = new Date(decodedToken.exp * 1000);
-        console.log("📅 Expiration du token :", expirationDate);
-        console.log("⏳ Date actuelle :", new Date());
 
         const isExpired = expirationDate < new Date();
 
@@ -39,11 +37,9 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (username, password) => {
     try {
       const { user, token } = await login(username, password);
-      console.log("✅ Token reçu après connexion :", token);
 
       const decodedToken = jwtDecode(token);
       const expirationDate = new Date(decodedToken.exp * 1000);
-      console.log("📅 Expiration du nouveau token :", expirationDate);
 
       if (expirationDate < new Date()) {
         console.warn("⚠️ Le token est déjà expiré. Connexion refusée.");

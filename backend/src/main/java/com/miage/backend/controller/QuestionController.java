@@ -47,15 +47,4 @@ public class QuestionController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Question>> getQuestionsByCategory(@PathVariable String category) {
-        List<Question> questions = questionService.getQuestionsByCategory(category);
-        return ResponseEntity.ok(questions);
-    }
-
-    @GetMapping("/difficulty/{level}")
-    public ResponseEntity<List<Question>> getQuestionsByDifficultyLevel(@PathVariable String level) {
-        List<Question> questions = questionService.getQuestionsByDifficultyLevel(level);
-        return ResponseEntity.ok(questions);
-    }
 }

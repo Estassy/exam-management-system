@@ -1,12 +1,17 @@
 package com.miage.backend.controller;
 
 import com.miage.backend.entity.Exam;
+import com.miage.backend.entity.ExamTemplate;
+import com.miage.backend.entity.Promotion;
 import com.miage.backend.entity.User;
 import com.miage.backend.service.ExamService;
+import com.miage.backend.service.ExamTemplateService;
+import com.miage.backend.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

@@ -15,7 +15,8 @@ function TeacherDashboard() {
   const [courses, setCourses] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [grades, setGrades] = useState({}); // Stockage des notes par étudiant
+  const [grades, setGrades] = useState({});
+  const [showAllStudents, setShowAllStudents] = useState(false); // État pour gérer l'affichage des étudiants
 
   // Récupérer les étudiants
   useEffect(() => {
@@ -50,7 +51,6 @@ function TeacherDashboard() {
 
     fetchExams();
 
-    // Simulation des cours et notifications
     setCourses(5);
     setNotifications([
       { id: 1, message: "Nouvel étudiant inscrit", type: "info" },
@@ -78,8 +78,8 @@ function TeacherDashboard() {
         </div>
       </div>
 
-      {/* Section calendrier, notifications et suivi des étudiants */}
       <div className="main-content">
+        {/* Section calendrier */}
         <div className="calendar-container">
           <h2>Calendrier des Examens</h2>
           <Calendar onChange={setSelectedDate} value={selectedDate} />
@@ -93,6 +93,7 @@ function TeacherDashboard() {
           </p>
         </div>
 
+        {/* Notifications */}
         <div className="notifications">
           <h2>Notifications récentes</h2>
           <ul>
@@ -120,27 +121,39 @@ function TeacherDashboard() {
               </tr>
             </thead>
             <tbody>
-              {students.map((student) =>
-                grades[student.id]?.length > 0 ? (
-                  grades[student.id].map((grade) => (
-                    <tr key={`${student.id}-${grade.exam.id}`}>
+              {students
+                .slice(0, showAllStudents ? students.length : 5) // Afficher 5 étudiants par défaut
+                .map((student) =>
+                  grades[student.id]?.length > 0 ? (
+                    grades[student.id].map((grade) => (
+                      <tr key={`${student.id}-${grade.exam.id}`}>
+                        <td>{student.username}</td>
+                        <td>{grade.exam.title}</td>
+                        <td>{grade.score} / 20</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr key={student.id}>
                       <td>{student.username}</td>
-                      <td>{grade.exam.title}</td>
-                      <td>{grade.score} / 20</td>
+                      <td>Pas encore noté</td>
+                      <td>-</td>
                     </tr>
-                  ))
-                ) : (
-                  <tr key={student.id}>
-                    <td>{student.username}</td>
-                    <td>Pas encore noté</td>
-                    <td>-</td>
-                  </tr>
-                )
-              )}
+                  )
+                )}
             </tbody>
           </table>
+
+          {/* Bouton Voir plus / Voir moins */}
+          <button
+            className="toggle-students"
+            onClick={() => navigate("/students")}
+          >
+            Voir plus
+          </button>
         </div>
       </div>
+
+      {/* Actions */}
       <div className="actions">
         <Button
           text="Créer un examen"
@@ -155,7 +168,7 @@ function TeacherDashboard() {
         <Button
           text="Créer un Quiz"
           variant="secondary"
-          onClick={() => navigate("#")}
+          onClick={() => navigate("/create-quiz")}
         />
       </div>
     </div>

@@ -22,10 +22,23 @@ public class Quiz {
             inverseJoinColumns = @JoinColumn(name = "question_id"))
     private Set<Question> questions = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private User teacher;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
+
+    @ManyToOne
+    @JoinColumn(name = "promotion_id", nullable = false)
+    private Promotion promotion;
+
     public Quiz() {
     }
 
     // Getters et Setters
+
     public UUID getId() {
         return id;
     }
@@ -49,4 +62,29 @@ public class Quiz {
     public void setQuestions(Set<Question> questions) {
         this.questions = questions;
     }
+
+    public User getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
+
 }

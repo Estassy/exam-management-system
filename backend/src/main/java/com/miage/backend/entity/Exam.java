@@ -47,9 +47,35 @@ public class Exam {
     )
     private Set<Promotion> promotions = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "exam_questions",
+            joinColumns = @JoinColumn(name = "exam_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id")
+    )
+    private Set<Question> questions = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "exam_template_id", nullable = true)
+    private ExamTemplate examTemplate;
+
+    @ManyToOne
+    @JoinColumn(name = "promotion_id", nullable = false)
+    private Promotion promotion;
+
     public Exam() {}
 
     // Getters et Setters
+
+    public Set<Question> getQuestions() { return questions; }
+    public void setQuestions(Set<Question> questions) { this.questions = questions; }
+
+    public Promotion getPromotion() { return promotion; }
+    public void setPromotion(Promotion promotion) { this.promotion = promotion; }
+
+    public ExamTemplate getExamTemplate() { return examTemplate; }
+    public void setExamTemplate(ExamTemplate examTemplate) { this.examTemplate = examTemplate; }
+
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
 
