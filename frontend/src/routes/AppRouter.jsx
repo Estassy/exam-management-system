@@ -20,6 +20,7 @@ import TeacherDashboard from "../pages/Dashboard/TeacherDashboard";
 import StudentListPage from "../pages/Students/StudentListPage";
 import QuizForm from "../pages/Quizzes/QuizForm";
 import QuizList from "../pages/Quizzes/QuizList";
+import QuizExamsPage from "../pages/Quizzes/Quiz&ExamsPage";
 import ExamList from "../pages/Exams/ExamList";
 import UserManagement from "../pages/Admin/UserManagement";
 
@@ -154,6 +155,15 @@ const AppRouter = () => {
                 <CourseForm />
               </ProtectedRoute>
             }
+          />
+
+          <Route
+              path="/Quizzes&Exams"
+              element={
+                <ProtectedRoute allowedRoles={["TEACHER"]}>
+                  <QuizExamsPage />
+                </ProtectedRoute>
+              }
           />
 
           <Route
