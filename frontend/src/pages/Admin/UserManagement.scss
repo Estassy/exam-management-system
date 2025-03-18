@@ -1,0 +1,52 @@
+.user-management {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  
+    input, select {
+      padding: 8px;
+      margin: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      th, td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f8f8f8;
+      }
+    }
+  
+    .add-user-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+    }
+  
+    .add-user-form {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f4f4f4;
+      border-radius: 5px;
+    }
+  
+    .edit {
+      background-color: #ffc107;
+      color: white;
+    }
+  
+    .delete {
+      background-color: #dc3545;
+      color: white;
+    }
+  }
+  

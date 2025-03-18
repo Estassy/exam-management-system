@@ -38,13 +38,15 @@ public class User implements Serializable {
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name = "promotion_id")
+    @JoinColumn(name = "promotion_id", nullable = true)
     private Promotion promotion;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<Grade> grades = new HashSet<>();
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean active = true;
+
 
     @Transient // Exclut du mapping Hibernate, mais injecté par Spring
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

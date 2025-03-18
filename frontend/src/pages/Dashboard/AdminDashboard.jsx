@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.scss";
 import Button from "../../components/UI/Button";
 
-
 const AdminDashboard = () => {
-  const [stats, setStats] = useState({ exams: 12, students: 250, teachers: 20 });
+  const [stats, setStats] = useState({
+    exams: 12,
+    students: 250,
+    teachers: 20,
+  });
   const [recentActions, setRecentActions] = useState([
     "Ajout d'un nouvel utilisateur",
-    "Mise à jour des résultats d'examen"
+    "Mise à jour des résultats d'examen",
   ]);
 
   const navigate = useNavigate();
@@ -37,8 +40,16 @@ const AdminDashboard = () => {
       </div>
 
       <div className="actions">
-        <Button text="Gérer Utilisateurs" variant="primary" onClick={() => alert("Gérer utilisateurs")} />
-        <Button text="Gérer Examens" variant="secondary" onClick={() => navigate("/exams/manage")} />
+        <Button
+          text="Gérer Utilisateurs"
+          variant="primary"
+          onClick={() => navigate("/users/manage")}
+        />
+        <Button
+          text="Gérer Examens"
+          variant="secondary"
+          onClick={() => navigate("/exams/manage")}
+        />
       </div>
     </div>
   );

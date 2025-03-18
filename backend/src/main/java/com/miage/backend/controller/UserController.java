@@ -19,11 +19,17 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
-        User created = userService.createUser(createUserRequest.getUsername(),
+        User created = userService.createUser(
+                createUserRequest.getUsername(),
                 createUserRequest.getPassword(),
-                createUserRequest.getRole());
+                createUserRequest.getRole(),
+                createUserRequest.getFirstName(),
+                createUserRequest.getLastName(),
+                createUserRequest.getPromotion()
+        );
         return ResponseEntity.ok(created);
     }
+
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -40,7 +46,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody CreateUserRequest updateUserRequest) {
-        User updated = userService.updateUser(id, updateUserRequest.getUsername(), updateUserRequest.getPassword(), updateUserRequest.getRole());
+        User updated = userService.updateUser(id, updateUserRequest.getUsername(), updateUserRequest.getFirstName(), updateUserRequest.getLastName(), updateUserRequest.getPassword(), updateUserRequest.getRole(), updateUserRequest.getPromotion());
         return ResponseEntity.ok(updated);
     }
 
