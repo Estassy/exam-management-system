@@ -2,7 +2,8 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { motion } from "framer-motion";
-import "./LoginPage.scss"; // Import du style
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./LoginPage.scss";
 
 const LoginPage = () => {
   const { loginUser } = useContext(AuthContext);
@@ -32,35 +33,56 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-container">
-      <motion.div
-        className="login-card"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <h1>Connexion</h1>
-        {error && <p className="error-message">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="username"
-            placeholder="Nom d'utilisateur"
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-            onChange={handleChange}
-            required
-          />
-          <button type="submit">Se connecter</button>
-        </form>
-        <p className="forgot-password">Mot de passe oublié ?</p>
-      </motion.div>
-    </div>
+    <main className="login-container d-flex align-items-center justify-content-center min-vh-100">
+      <div className="container d-flex justify-content-center">
+        <motion.div
+          className="card login-card shadow-lg mx-auto"
+          style={{ maxWidth: "850px"}}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <div className="row no-gutters align-items-center">
+            <div className="col-md-6 d-none d-md-block">
+              <img src="src/assets/images/login1.jpg" alt="login" className="login-card-img img-fluid" />
+            </div>
+            <div className="col-md-6 p-4">
+              <div className="card-body text-center">
+                <div className="brand-wrapper mb-3">
+                  <img src="src/assets/images/logo.png" alt="logo" className="logo" />
+                </div>
+                <h3 className="text-center mb-3 fw-bold">Connexion</h3>
+                {error && <p className="error-message alert alert-danger">{error}</p>}
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      name="username"
+                      className="form-control"
+                      placeholder="Nom d'utilisateur"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="password"
+                      name="password"
+                      className="form-control"
+                      placeholder="Mot de passe"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-block login-btn">Se connecter</button>
+                </form>
+                <p className="forgot-password-link mt-3">Mot de passe oublié ?</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </main>
   );
 };
 

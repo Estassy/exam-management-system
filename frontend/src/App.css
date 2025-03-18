@@ -1,27 +1,66 @@
-/* Pour structurer l'affichage */
-html,
-body {
-  height: 100%;
+/* Gestion globale */
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: white; /* Fond principal */
+  color: black;
+  /*overflow: hidden; Texte principal */
+}
+
+/* Structure principale */
 #root {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Prend toute la hauteur de l'écran */
+  min-height: 100vh;
 }
 
 .main-content {
-  flex: 1; /* Permet au contenu de prendre toute la place disponible */
-  /* padding: 20px; Un peu d'espace autour du contenu */
+  flex: 1;
+  padding: 20px;
 }
 
+/* Footer */
 .footer {
-  background: #2c3e50;
-  color: white;
+  background: white;
+  color: #d0d0ce; /* Texte en couleur principale */
   text-align: center;
-  padding: 10px;
+  padding: 15px;
   width: 100%;
-  position: relative;
+  position: sticky;
   bottom: 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Boutons et éléments interactifs */
+.btn-custom {
+  background: black;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn-custom:hover {
+  background-color: #a8642a;
+}
+
+/* Liens */
+a {
+  color: #ce8738;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }

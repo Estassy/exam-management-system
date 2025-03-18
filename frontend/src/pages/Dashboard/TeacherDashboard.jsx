@@ -60,7 +60,9 @@ function TeacherDashboard() {
 
   return (
     <div className="dashboard">
-      <h1>Tableau de bord de l'enseignant</h1>
+        <h1 className="dashboard-title">
+                🎓 Bienvenue sur votre espace enseignant
+        </h1>
 
       {/* Section des statistiques */}
       <div className="stats">
@@ -109,8 +111,8 @@ function TeacherDashboard() {
           <button>Voir toutes les notifications</button>
         </div>
 
-        {/* Section de suivi des étudiants avec notes */}
-        <div className="student-progress">
+        {/* Section de suivi des étudiants avec notes
+        /*<div className="student-progress">
           <h2>Suivi des étudiants</h2>
           <table>
             <thead>
@@ -143,35 +145,16 @@ function TeacherDashboard() {
             </tbody>
           </table>
 
-          {/* Bouton Voir plus / Voir moins */}
+          Bouton Voir plus / Voir moins
           <button
             className="toggle-students"
             onClick={() => navigate("/students")}
           >
             Voir plus
           </button>
-        </div>
+        </div>*/}
       </div>
-
-      {/* Actions */}
-      <div className="actions">
-        <Button
-          text="Créer un examen"
-          variant="primary"
-          onClick={() => navigate("/create-exam")}
-        />
-        <Button
-          text="Créer un cours"
-          variant="primary"
-          onClick={() => navigate("/create-course")}
-        />
-        <Button
-          text="Créer un Quiz"
-          variant="secondary"
-          onClick={() => navigate("/create-quiz")}
-        />
-      </div>
-    </div>
+     </div>
   );
 }
 
