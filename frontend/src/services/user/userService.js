@@ -16,6 +16,19 @@ export async function getAllUsers() {
 }
 
 /**
+ * Crée un nouvel utilisateur
+ */
+export async function createUser(userData) {    
+  try {
+    const response = await api.post(API_URL, userData);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la création de l'utilisateur :", error);
+    throw error;
+  }
+}
+
+/**
  * Récupère un utilisateur par ID
  */
 export async function getUserById(userId) {
@@ -39,4 +52,29 @@ export async function getAllStudents() {
     console.error("Erreur lors de la récupération des étudiants :", error);
     throw error;
   }
+}
+
+/**
+ * Met à jour un utilisateur
+ */
+export async function updateUser(userId, userData) {
+  try {
+    const response = await api.put(`${API_URL}/${userId}`, userData);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l'utilisateur :", error);
+    throw error;
+  }
+}
+
+/**
+ * Supprime un utilisateur
+ */
+export async function deleteUser(userId) {
+  try {
+    await api.delete(`${API_URL}/${userId}`);
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'utilisateur :", error);
+    throw error;
+  } 
 }

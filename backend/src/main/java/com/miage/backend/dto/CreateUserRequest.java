@@ -2,10 +2,15 @@ package com.miage.backend.dto;
 
 import com.miage.backend.enums.Role;
 
+import java.util.UUID;
+
 public class CreateUserRequest {
     private String username;
     private String password;
     private Role role;
+    private String firstName;
+    private String lastName;
+    private UUID promotion;
 
     public CreateUserRequest() {}
 
@@ -39,4 +44,30 @@ public class CreateUserRequest {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+
+    public UUID getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(UUID promotion) {
+        this.promotion = promotion;
+    }
+
 }
