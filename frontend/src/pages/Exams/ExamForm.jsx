@@ -70,14 +70,14 @@ const ExamForm = () => {
 
   return (
     <div className="exam-form">
-      <h2>Créer un examen</h2>
+      <div className="exam-title">Créer un examen</div>
 
       <form onSubmit={handleSubmit}>
         {/* Choix du modèle */}
         <div className="form-group">
-          <label>Utiliser un modèle :</label>
+          <label className="form-label">Utiliser un modèle :</label>
           <select
-            className="input-field"
+            className="form-input"
             value={selectedTemplate}
             onChange={(e) => setSelectedTemplate(e.target.value)}
           >
@@ -92,9 +92,9 @@ const ExamForm = () => {
 
         {/* Choix de la promotion */}
         <div className="form-group">
-          <label>Associer à une promotion :</label>
+          <label className="form-label">Associer à une promotion :</label>
           <select
-            className="input-field"
+            className="form-input"
             value={selectedPromotion}
             onChange={(e) => setSelectedPromotion(e.target.value)}
           >
@@ -109,9 +109,9 @@ const ExamForm = () => {
 
         {/* Saisie manuelle du titre */}
         <div className="form-group">
-          <label>Titre de l'examen :</label>
+          <label className="form-label">Titre de l'examen :</label>
           <input
-            className="input-field"
+            className="form-input"
             type="text"
             value={examTitle}
             onChange={(e) => setExamTitle(e.target.value)}
@@ -121,9 +121,9 @@ const ExamForm = () => {
 
         {/* Sélection de la date */}
         <div className="form-group">
-          <label>Date de l'examen :</label>
+          <label className="form-label">Date de l'examen :</label>
           <input
-            className="input-field"
+            className="form-input"
             type="datetime-local"
             value={examDate}
             onChange={(e) => setExamDate(e.target.value)}

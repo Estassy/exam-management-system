@@ -1,130 +1,96 @@
 .course-form {
   max-width: 600px;
-  margin: 30px auto;
-  padding: 25px;
-  background: #ffffff;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 
-  &:hover {
-    transform: scale(1.02);
+  .course-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #333;
   }
 
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #007bff;
-    font-size: 24px;
-  }
+  .form-group {
+    margin-bottom: 1rem;
+    text-align: left;
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    .form-label {
+      display: block;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d5dae2;
+      border-radius: 5px;
+      font-size: 14px;
+      background: #f8f9fa;
+      transition: border 0.3s ease;
 
-      label {
-        font-weight: bold;
-        color: #333;
-        font-size: 16px;
-      }
-
-      input,
-      select {
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 16px;
-        background-color: #f9f9f9;
-        transition: border 0.3s ease;
-
-        &:focus {
-          border-color: #007bff;
-          outline: none;
-          box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-        }
-      }
-
-      select {
-        cursor: pointer;
-      }
-
-      .error-text {
-        color: #d9534f;
-        font-size: 14px;
-        font-weight: bold;
+      &:focus {
+        border-color: #4a90e2;
+        outline: none;
+        background: white;
       }
     }
 
-    button {
-      align-self: center;
-      background: #007bff;
-      color: white;
-      padding: 12px 18px;
-      border: none;
-      border-radius: 6px;
+    .form-select {
+      height: 45px;
+      appearance: none; // ✅ Désactive le style natif des selects
+      background: white;
       cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      transition: background 0.3s, transform 0.2s;
+    }
+  }
 
-      &:hover {
-        background: #0056b3;
-        transform: translateY(-2px);
-      }
+  .error-text {
+    font-size: 14px;
+    color: red;
+    margin-top: 5px;
+    display: block;
+  }
 
-      &:active {
-        transform: scale(0.98);
-      }
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background: black;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: #ce8738;
     }
   }
 
   .message {
-    margin-top: 15px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
+    margin-top: 1rem;
     padding: 10px;
-    border-radius: 6px;
+    font-size: 14px;
+    border-radius: 5px;
 
     &.success {
-      color: #155724;
-      background-color: #d4edda;
-      border: 1px solid #c3e6cb;
+      background: #e3fcef;
+      color: #2e7d32;
+      border: 1px solid #2e7d32;
     }
 
     &.error {
-      color: #721c24;
-      background-color: #f8d7da;
-      border: 1px solid #f5c6cb;
+      background: #fdecea;
+      color: #c62828;
+      border: 1px solid #c62828;
     }
-  }
-}
-
-/* ✅ Responsive Design */
-@media (max-width: 768px) {
-  .course-form {
-    width: 90%;
-    padding: 20px;
-  }
-
-  .form-group label {
-    font-size: 14px;
-  }
-
-  .form-group input,
-  .form-group select {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  button {
-    font-size: 14px;
-    padding: 10px 15px;
   }
 }

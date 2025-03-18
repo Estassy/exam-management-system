@@ -7,7 +7,7 @@ import "./StudentListPage.scss";
 const StudentListPage = () => {
   const [students, setStudents] = useState([]);
   const [grades, setGrades] = useState({});
-  const [searchTerm, setSearchTerm] = useState(""); // État pour la recherche
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,18 +30,15 @@ const StudentListPage = () => {
 
   // Filtrer les étudiants selon la recherche
   const filteredStudents = students.filter((student) =>
-    `${student.lastName} ${student.firstName} ${
-      student.promotion ? student.promotion.name : ""
-    }`
+    `${student.lastName} ${student.firstName} ${student.promotion ? student.promotion.name : ""}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="student-list-page">
-      <h1>Liste complète des étudiants</h1>
+      <div className="title">Liste complète des étudiants</div>
 
-      {/* Barre de recherche */}
       <input
         type="text"
         className="search-bar"
@@ -72,11 +69,7 @@ const StudentListPage = () => {
                   <tr key={`${student.id}-${grade.exam.id}`}>
                     <td>{student.lastName}</td>
                     <td>{student.firstName}</td>
-                    <td>
-                      {student.promotion
-                        ? student.promotion.name
-                        : "Non assigné"}
-                    </td>
+                    <td>{student.promotion ? student.promotion.name : "Non assigné"}</td>
                     <td>{grade.exam.title}</td>
                     <td>{grade.score} / 20</td>
                   </tr>
@@ -85,9 +78,7 @@ const StudentListPage = () => {
                 <tr key={student.id}>
                   <td>{student.lastName}</td>
                   <td>{student.firstName}</td>
-                  <td>
-                    {student.promotion ? student.promotion.name : "Non assigné"}
-                  </td>
+                  <td>{student.promotion ? student.promotion.name : "Non assigné"}</td>
                   <td>Pas encore noté</td>
                   <td>-</td>
                 </tr>
@@ -95,7 +86,7 @@ const StudentListPage = () => {
             )
           ) : (
             <tr>
-              <td colSpan="5">Aucun étudiant trouvé</td>
+              <td colSpan="5" className="no-data">Aucun étudiant trouvé</td>
             </tr>
           )}
         </tbody>
