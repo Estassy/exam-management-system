@@ -23,6 +23,8 @@ import QuizList from "../pages/Quizzes/QuizList";
 import QuizExamsPage from "../pages/Quizzes/Quiz&ExamsPage";
 import ExamList from "../pages/Exams/ExamList";
 import UserManagement from "../pages/Admin/UserManagement";
+import CoursesPage from "../pages/Courses/CoursesPage";
+import GradeForm from "../pages/Courses/GradeForm";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -156,14 +158,30 @@ const AppRouter = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/courses"
+            element={
+              <ProtectedRoute allowedRoles={["TEACHER"]}>
+                <CoursesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/courses"
+            element={
+              <ProtectedRoute allowedRoles={["TEACHER"]}>
+                <CoursesPage />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
-              path="/Quizzes&Exams"
-              element={
-                <ProtectedRoute allowedRoles={["TEACHER"]}>
-                  <QuizExamsPage />
-                </ProtectedRoute>
-              }
+            path="/grades"
+            element={
+              <ProtectedRoute allowedRoles={["TEACHER"]}>
+                <GradeForm />
+              </ProtectedRoute>
+            }
           />
 
           <Route

@@ -7,8 +7,12 @@ import { getAllExams } from "../../services/exam/examService";
 import { getGradesByStudent } from "../../services/exam/gradeService";
 import Button from "../../components/UI/Button";
 import { useNavigate } from "react-router-dom";
-import { HomeIcon, CalendarDaysIcon, UsersIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
-
+import {
+  HomeIcon,
+  CalendarDaysIcon,
+  UsersIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
 
 function TeacherDashboard() {
   const navigate = useNavigate();
@@ -26,6 +30,7 @@ function TeacherDashboard() {
     async function fetchStudents() {
       try {
         const studentData = await getAllStudents();
+        const courseData = await getCourseByTeacher(teacherId);
         setStudents(studentData);
 
         const gradesData = {};
@@ -113,33 +118,44 @@ function TeacherDashboard() {
         </div>
 
         <div className="main-content grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="calendar-container">
-                    <h2 className="text-lg font-bold mb-4">Calendrier des Examens</h2>
-                    <Calendar onChange={setSelectedDate} value={selectedDate} className="custom-calendar" />
-                    <div className="mt-4">
-                      <h3 className="font-medium">Examens programmés :</h3>
-                      {exams.map((exam) => (
-                        <p key={exam.id} className="mt-2 text-gray-600">
-                          📌 {exam.title} - {new Date(exam.date).toLocaleDateString()}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
+          <div className="calendar-container">
+            <h2 className="text-lg font-bold mb-4">Calendrier des Examens</h2>
+            <Calendar
+              onChange={setSelectedDate}
+              value={selectedDate}
+              className="custom-calendar"
+            />
+            <div className="mt-4">
+              <h3 className="font-medium">Examens programmés :</h3>
+              {exams.map((exam) => (
+                <p key={exam.id} className="mt-2 text-gray-600">
+                  📌 {exam.title} - {new Date(exam.date).toLocaleDateString()}
+                </p>
+              ))}
+            </div>
+          </div>
 
-                  <div className="notifications bg-white p-6 notifications-lg shadow-lg">
-                    <h2 className="text-lg font-bold mb-4">Notifications récentes</h2>
-                    <ul className="space-y-2">
-                      {notifications.map((notif) => (
-                        <li key={notif.id} className={`p-3 rounded-lg ${notif.type === "info" ? "bg-blue-100 text-blue-800" : "bg-yellow-100 text-yellow-800"}`}>
-                          {notif.message}
-                        </li>
-                      ))}
-                    </ul>
-                    <button className="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
-                      Voir toutes les notifications
-                    </button>
-                  </div>
-                </div>
+          <div className="notifications bg-white p-6 notifications-lg shadow-lg">
+            <h2 className="text-lg font-bold mb-4">Notifications récentes</h2>
+            <ul className="space-y-2">
+              {notifications.map((notif) => (
+                <li
+                  key={notif.id}
+                  className={`p-3 rounded-lg ${
+                    notif.type === "info"
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
+                  {notif.message}
+                </li>
+              ))}
+            </ul>
+            <button className="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+              Voir toutes les notifications
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

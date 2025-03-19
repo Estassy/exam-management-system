@@ -30,23 +30,26 @@ const Header = () => {
   let routes = [];
   if (user?.role === "ADMIN") {
     routes = [
-      { path: "/admin/dashboard", label: "Dashboard" },
+      { path: "/admin", label: "Dashboard" },
       { path: "/admin/cours", label: "Cours" },
-      { path: "/admin/exams-quiz", label: "Exams & Quiz" },
-      { path: "/admin/users", label: "Gérer les utilisateurs" },
+      { path: "/exams/manage", label: "Exams & Quiz" },
+      { path: "/users/manage", label: "Gérer les utilisateurs" },
     ];
   } else if (user?.role === "TEACHER") {
     routes = [
       { path: "/", label: "Dashboard" },
-      { path: "/create-course", label: "Cours" },
+      { path: "/courses", label: "Cours" },
+      { path: "/create-course", label: "Add Course" },
       { path: "/Quizzes&Exams", label: "Exams & Quiz" },
       { path: "/students", label: "Gérer les étudiants" },
+      { path: "/grades", label: "Notes" },
     ];
   } else {
     routes = [
-      { path: "/etudiant/dashboard", label: "Dashboard" },
+      { path: "/student", label: "Dashboard" },
       { path: "/etudiant/cours", label: "Cours" },
-      { path: "/etudiant/exams-quiz", label: "Exams & Quiz" },
+      { path: "/quizzes", label: "Quiz" },
+      { path: "/exams", label: "Exams" },
     ];
   }
 
@@ -54,7 +57,11 @@ const Header = () => {
     <header className="header">
       <div className="logo">
         <Link to="/">
-          <img src="src/assets/images/logo.png" alt="Logo" className="logo-img" />
+          <img
+            src="src/assets/images/logo.png"
+            alt="Logo"
+            className="logo-img"
+          />
         </Link>
       </div>
 

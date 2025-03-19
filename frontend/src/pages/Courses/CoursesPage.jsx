@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ Pour la navigation
 import {
   getAllCourses,
   updateCourseStatus,
@@ -7,6 +8,7 @@ import {
 function CoursesPage() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // ✅ Hook pour rediriger
 
   useEffect(() => {
     async function fetchData() {
@@ -43,6 +45,15 @@ function CoursesPage() {
   return (
     <div>
       <h2>Liste des cours</h2>
+
+      {/* ✅ Bouton pour ajouter un cours */}
+      <button
+        onClick={() => navigate("/create-course")}
+        className="add-course-btn"
+      >
+        ➕ Ajouter un cours
+      </button>
+
       {courses.map((course) => (
         <div key={course.id} className="course-card">
           <h3>{course.title}</h3>
