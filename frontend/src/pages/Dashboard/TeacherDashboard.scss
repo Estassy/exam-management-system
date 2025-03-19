@@ -1,108 +1,222 @@
-.dashboard {
+/* Décaler le contenu principal */
+.dashboard-container {
+  display: flex;
+  transition: margin-left 0.3s ease-in-out;
+
+  &.shifted {
+    margin-left: 250px; /* Largeur de la sidebar */
+  }
+}
+
+.dashboard-content {
+  flex-grow: 1;
+  background: #f9fafb;
   padding: 20px;
-  background-color: #f8f9fa;
+}
+/* Bouton Menu / Fermer */
+.menu-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background-color: #f97316;
+  color: white;
+  padding: 10px 15px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 
-  .dashboard-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
+  &:hover {
+    background-color: #ea580c;
+  }
 
-  .stats {
-    display: flex;
-    justify-content: space-around;
+  /* Style différent si le menu est ouvert */
+  &.menu-close {
+    background-color: #1e293b;
+  }
+}
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background: #1e293b;
+  color: white;
+  padding: 20px;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
     margin-bottom: 20px;
-
-    .statBox {
-      background: #ce8738;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      flex: 1;
-      margin: 0 10px;
-
-      h3 {
-        margin-bottom: 10px;
-        font-size: 1.2em;
-      }
-    }
   }
 
-  .main-content {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
 
-    .calendar-container {
-      flex: 1;
-      min-width: 300px;
-      margin-right: 20px;
-    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.3s;
 
-    .notifications {
-      flex: 1;
-      min-width: 300px;
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-      ul {
-        list-style: none;
-        padding: 0;
-
-        li {
-          padding: 8px;
-          margin-bottom: 5px;
-          border-radius: 5px;
-
-          &.info {
-            background: #d1ecf1;
-            color: #0c5460;
-          }
-
-          &.warning {
-            background: #fff3cd;
-            color: #856404;
-          }
-        }
+      &:hover {
+        background-color: #334155;
       }
-    }
 
-    .student-progress {
-      flex: 1;
-      min-width: 300px;
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-
-        th, td {
-          padding: 10px;
-          border-bottom: 1px solid #ddd;
-          text-align: left;
-        }
-
-        th {
-          background: #007bff;
-          color: white;
-        }
+      .sidebar-icon {
+        width: 20px;
+        height: 20px;
       }
-    }
-  }
-
-  .actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-
-    button {
-      margin: 0 10px;
     }
   }
 }
+
+.dashboard {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f9fafb;
+}
+
+.dashboard-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #ce8738;
+  margin-bottom: 1.5rem;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.statBox {
+  flex: 1;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: white;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.calendar-container {
+  background: white;
+  padding: 20px;
+
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .custom-calendar {
+    border: none;
+    width : 100%;
+
+    .react-calendar__tile {
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      &:hover {
+        background: #f97316;
+        color: white;
+      }
+    }
+  }
+}
+
+.notifications {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre améliorée pour un effet de profondeur */
+  transition: transform 0.3s, box-shadow 0.3s; /* Transition au survol */
+
+  &:hover {
+    transform: translateY(-5px); /* Légère élévation au survol */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Accentuation de l'ombre */
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #1e293b; /* Couleur sombre pour le titre */
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 500;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Petite ombre sur chaque notification */
+      transition: background-color 0.3s, transform 0.2s;
+
+      &.bg-blue-100 {
+        background-color: #dbeafe; /* Bleu clair */
+        color: #1d4ed8; /* Bleu foncé */
+      }
+
+      &.bg-yellow-100 {
+        background-color: #fef3c7; /* Jaune clair */
+        color: #b45309; /* Jaune foncé */
+      }
+
+      &:hover {
+        transform: translateX(5px); /* Déplacement subtil au survol */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Accentuation de l'ombre */
+      }
+
+      /* Optionnel : Ajout d'icônes pour un design plus interactif */
+      &::before {
+        content: "🔔"; /* Exemple d'icône */
+        font-size: 1.2rem;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  button {
+    display: inline-block;
+    background: #f97316; /* Orange principal */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #ea580c; /* Couleur légèrement plus foncée au survol */
+    }
+  }
+}
+
+
