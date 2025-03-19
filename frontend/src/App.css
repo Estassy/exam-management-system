@@ -9,9 +9,13 @@ html,
 body {
   height: 100%;
   font-family: Arial, sans-serif;
-  background-color: white; /* Fond principal */
+  background-color: white;
   color: black;
-  /*overflow: hidden; Texte principal */
+}
+
+/* Désactiver le défilement uniquement sur la page de connexion */
+body.login-page {
+  overflow: hidden;
 }
 
 /* Structure principale */
@@ -23,12 +27,40 @@ body {
 
 .main-content {
   flex: 1;
+  padding: 0px;
+}
+
+/* Spinner de chargement */
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #ce8738;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Footer */
 .footer {
   background: white;
-  color: #d0d0ce; /* Texte en couleur principale */
+  color: #d0d0ce;
   text-align: center;
   padding: 15px;
   width: 100%;

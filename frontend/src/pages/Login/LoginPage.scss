@@ -4,8 +4,10 @@
   justify-content: center;
   min-height: 100vh;
   background-color: #d0d0ce;
-  overflow: hidden; /* S'applique uniquement à la page de login */
-  width: 100%;
+  padding: 20px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 .loader {
   font-size: 20px;
@@ -16,20 +18,29 @@
 }
 
 
-/*html, body {
-  overflow: hidden; // Empêche le défilement vertical et horizontal
-  height: 100vh;
-  width: 100vw;
-}*/
-
 .login-card {
-  border: 0;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px 0 rgba(172, 168, 168, 0.43);
-  overflow: hidden;
-  background: white;
-  max-width: 850px;
   display: flex;
+  flex-direction: row;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 750px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    max-width: 100%;
+  }
+}
+
+.login-card-img-container {
+  width: 50%;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 200px;
+  }
 }
 
 .login-card-img {
@@ -40,46 +51,53 @@
   border-bottom-left-radius: 15px;
 }
 
-.card-body {
+.login-card-body {
+  width: 50%;
   padding: 2rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .brand-wrapper {
   margin-bottom: 1rem;
 }
 
-.logo {
-  width: 150px;
+.brand-logo {
+  width: 120px;
   height: auto;
-  max-width: 100%;
 }
 
-h3 {
+.login-title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
-.error-message {
+.login-error {
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
 }
 
-.form-group {
+.login-form-group {
   margin-bottom: 15px;
 }
 
-.form-control {
-  border: 1px solid #d5dae2;
+.login-form-control {
+  border: 1px solid #ccc;
   padding: 12px 15px;
   font-size: 14px;
   border-radius: 5px;
   width: 100%;
 }
 
-.login-btn {
+.login-button {
   background: black;
   color: white;
   padding: 12px;
@@ -90,19 +108,26 @@ h3 {
   width: 100%;
   margin-top: 15px;
   transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #ce8738;
+  }
 }
 
-.login-btn:hover {
-  background-color: #ce8738;
-}
-
-.forgot-password-link {
+.login-forgot-link {
   font-size: 14px;
-  color: #919aa3;
+  color: #555;
   margin-top: 10px;
   text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
-.forgot-password-link:hover {
-  text-decoration: underline;
+// Désactive le défilement global uniquement sur la page de connexion
+body.login-page {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
 }
