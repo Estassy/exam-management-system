@@ -57,8 +57,19 @@ public class UserService {
 
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        List<User> users = userRepository.findAll();
+
+        for (User user : users) {
+            if (user.getPromotion() != null) {
+                Promotion promotion = user.getPromotion();
+                user.setPromotion(new Promotion(promotion.getId(), promotion.getName())); // ✅ Assure que seule l'ID et le nom sont envoyés
+            }
+        }
+
+        return users;
     }
+
+
 
     public Optional<User> getUserById(UUID id) {
         return userRepository.findById(id);

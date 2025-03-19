@@ -1,5 +1,6 @@
 package com.miage.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ public class Promotion implements Serializable {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "promotion")
     private Set<User> students = new HashSet<>();
 
@@ -29,6 +31,11 @@ public class Promotion implements Serializable {
     public Promotion() {}
 
     public Promotion(String name) {
+        this.name = name;
+    }
+
+    public Promotion(UUID id, String name) {
+        this.id = id;
         this.name = name;
     }
 
