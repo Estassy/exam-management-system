@@ -10,7 +10,10 @@ import {
   CalendarDaysIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-import { getPromotions } from "../../services/promotion/promotionService";
+import {
+  getPromotionById,
+  getPromotions,
+} from "../../services/promotion/promotionService";
 import { useNavigate } from "react-router-dom";
 import "./UserManagement.scss";
 
@@ -27,7 +30,6 @@ const UserManagement = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
 
   const [newUser, setNewUser] = useState({
     username: "",
@@ -109,14 +111,33 @@ const UserManagement = () => {
 
   const handleEditUser = async (e) => {
     e.preventDefault();
-    console.log("Données envoyées pour modification :", newUser); // Debug
-    try {
-      await updateUser(isEditingUser, newUser);
+    console.log("Données envoyées pour modification :", newUser);
 
-      // ✅ Recharger la liste complète des utilisateurs après modification
-      const updatedUsers = await getAllUsers();
-      setUsers(updatedUsers);
-      setFilteredUsers(updatedUsers);
+    try {
+      const updatedUser = await updateUser(isEditingUser, newUser);
+
+      console.log("✅ Utilisateur mis à jour :", updatedUser);
+
+      // ✅ Si l'utilisateur mis à jour a une promotion, récupère-la
+      if (updatedUser.promotion) {
+        const promotionData = await getPromotionById(updatedUser.promotion);
+        console.log("✅ Promotion de l'utilisateur :", promotionData);
+        updatedUser.promotion = promotionData; // ✅ Remplace l'ID par l'objet complet de la promotion
+      }
+
+      // ✅ Mettre à jour la liste des utilisateurs avec la nouvelle promotion
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id ? { ...updatedUser } : user
+        )
+      );
+      setFilteredUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id ? { ...updatedUser } : user
+        )
+      );
+
+      console.log("setFilteredUsers", filteredUsers);
 
       setIsEditingUser(null);
       setNewUser({
@@ -144,209 +165,213 @@ const UserManagement = () => {
     }
   };
 
-  return(
+  return (
     <div
-          className={`manage-exams-dashboard-container ${
-            isSidebarOpen ? "shifted" : ""
-          }`}
-        >
-          {/* Bouton Menu / Fermer */}
-          <button className="menu-button" onClick={toggleSidebar}>
-            {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
-          </button>
-
-            {/* Sidebar */}
-            <aside
-              className={`user-management-sidebar ${
-                isSidebarOpen ? "open" : "closed"
-              }`}
-            >
-              <div className="user-management-sidebar-logo">
-                <img
-                  src="src/assets/images/logo.png"
-                  alt="Logo"
-                  className="user-management-logo-image"
-                />
-              </div>
-              <ul className="user-management-sidebar-menu">
-                <li
-                  className="user-management-sidebar-item"
-                  onClick={() => navigate("/dashboard")}
-                >
-                  <HomeIcon className="user-management-sidebar-icon" />
-                  Accueil
-                </li>
-                <li
-                  className="user-management-sidebar-item"
-                  onClick={() => navigate("/exams/manage")}
-                >
-                  <CalendarDaysIcon className="user-management-sidebar-icon" />
-                  Examens
-                </li>
-                <li
-                  className="user-management-sidebar-item"
-                  onClick={() => navigate("/users/manage")}
-                >
-                  <UsersIcon className="user-management-sidebar-icon" />
-                  Utilisateurs
-                </li>
-              </ul>
-            </aside>
-    <div className="user-management">
-      <h2>Gestion des utilisateurs</h2>
-
-      {/* 🔍 Barre de recherche */}
-      <input
-        type="text"
-        placeholder="Rechercher un utilisateur..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-
-      {/* 📌 Filtre par rôle */}
-      <select onChange={(e) => setFilterRole(e.target.value)}>
-        <option value="Tous">Tous</option>
-        <option value="STUDENT">Étudiants</option>
-        <option value="TEACHER">Professeurs</option>
-      </select>
-
-      {/* 📋 Tableau des utilisateurs */}
-      <table>
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Rôle</th>
-            <th>Promotion</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredUsers.map((user) => (
-            <tr key={user.id}>
-              <td>{user.lastName}</td>
-              <td>{user.firstName}</td>
-              <td>{user.role === "STUDENT" ? "Étudiant" : "Professeur"}</td>
-              <td>
-                {user.role === "STUDENT" && user.promotion
-                  ? user.promotion.name // ✅ Afficher seulement le nom au lieu de l'objet entier
-                  : "Aucune"}
-              </td>
-
-              <td>
-                <button
-                  className="edit"
-                  onClick={() => handleEditUserClick(user)}
-                >
-                  ✏️ Modifier
-                </button>
-                <button
-                  className="delete"
-                  onClick={() => handleDeleteUser(user.id)}
-                >
-                  ❌ Supprimer
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* ➕ Ajouter un utilisateur */}
-      <button className="add-user-btn" onClick={() => setIsAddingUser(true)}>
-        ➕ Ajouter un utilisateur
+      className={`manage-exams-dashboard-container ${
+        isSidebarOpen ? "shifted" : ""
+      }`}
+    >
+      {/* Bouton Menu / Fermer */}
+      <button className="menu-button" onClick={toggleSidebar}>
+        {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
       </button>
 
-      {/* Formulaire d'ajout / édition */}
-      {(isAddingUser || isEditingUser) && (
-        <div className="add-user-form">
-          <h3>
-            {isEditingUser
-              ? "Modifier l'utilisateur"
-              : "Ajouter un utilisateur"}
-          </h3>
-          <form onSubmit={isEditingUser ? handleEditUser : handleAddUser}>
-            <input
-              type="text"
-              placeholder="Nom"
-              value={newUser.lastName || ""}
-              onChange={(e) =>
-                setNewUser({ ...newUser, lastName: e.target.value })
-              }
-              required
-            />
+      {/* Sidebar */}
+      <aside
+        className={`user-management-sidebar ${
+          isSidebarOpen ? "open" : "closed"
+        }`}
+      >
+        <div className="user-management-sidebar-logo">
+          <img
+            src="src/assets/images/logo.png"
+            alt="Logo"
+            className="user-management-logo-image"
+          />
+        </div>
+        <ul className="user-management-sidebar-menu">
+          <li
+            className="user-management-sidebar-item"
+            onClick={() => navigate("/dashboard")}
+          >
+            <HomeIcon className="user-management-sidebar-icon" />
+            Accueil
+          </li>
+          <li
+            className="user-management-sidebar-item"
+            onClick={() => navigate("/exams/manage")}
+          >
+            <CalendarDaysIcon className="user-management-sidebar-icon" />
+            Examens
+          </li>
+          <li
+            className="user-management-sidebar-item"
+            onClick={() => navigate("/users/manage")}
+          >
+            <UsersIcon className="user-management-sidebar-icon" />
+            Utilisateurs
+          </li>
+        </ul>
+      </aside>
+      <div className="user-management">
+        <h2>Gestion des utilisateurs</h2>
 
-            <input
-              type="text"
-              placeholder="Prénom"
-              value={newUser.firstName || ""}
-              onChange={(e) =>
-                setNewUser({ ...newUser, firstName: e.target.value })
-              }
-              required
-            />
+        {/* 🔍 Barre de recherche */}
+        <input
+          type="text"
+          placeholder="Rechercher un utilisateur..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
 
-            <input
-              type="text"
-              placeholder="Username"
-              value={newUser.username || ""}
-              onChange={(e) =>
-                setNewUser({ ...newUser, username: e.target.value })
-              }
-              required
-            />
+        {/* 📌 Filtre par rôle */}
+        <select onChange={(e) => setFilterRole(e.target.value)}>
+          <option value="Tous">Tous</option>
+          <option value="STUDENT">Étudiants</option>
+          <option value="TEACHER">Professeurs</option>
+        </select>
 
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              value={newUser.password || ""}
-              onChange={(e) =>
-                setNewUser({ ...newUser, password: e.target.value })
-              }
-              required
-            />
+        {/* 📋 Tableau des utilisateurs */}
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Username</th>
+              <th>Rôle</th>
+              <th>Promotion</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.map((user) => (
+              <tr key={user.id}>
+                <td>{user.lastName}</td>
+                <td>{user.firstName}</td>
+                <td>{user.username}</td>
+                <td>{user.role === "STUDENT" ? "Étudiant" : "Professeur"}</td>
+                <td>
+                  {user.role === "STUDENT" && user.promotion
+                    ? user.promotion.name // ✅ Afficher seulement le nom au lieu de l'objet entier
+                    : "Aucune"}
+                </td>
 
-            <select
-              value={newUser.role || "STUDENT"}
-              onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-            >
-              <option value="STUDENT">Étudiant</option>
-              <option value="TEACHER">Professeur</option>
-            </select>
+                <td>
+                  <button
+                    className="edit"
+                    onClick={() => handleEditUserClick(user)}
+                  >
+                    ✏️ Modifier
+                  </button>
+                  <button
+                    className="delete"
+                    onClick={() => handleDeleteUser(user.id)}
+                  >
+                    ❌ Supprimer
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-            {/* 🎓 Sélection de la promotion (visible seulement si Étudiant) */}
-            {newUser.role === "STUDENT" && (
-              <select
-                value={newUser.promotion || ""}
+        {/* ➕ Ajouter un utilisateur */}
+        <button className="add-user-btn" onClick={() => setIsAddingUser(true)}>
+          ➕ Ajouter un utilisateur
+        </button>
+
+        {/* Formulaire d'ajout / édition */}
+        {(isAddingUser || isEditingUser) && (
+          <div className="add-user-form">
+            <h3>
+              {isEditingUser
+                ? "Modifier l'utilisateur"
+                : "Ajouter un utilisateur"}
+            </h3>
+            <form onSubmit={isEditingUser ? handleEditUser : handleAddUser}>
+              <input
+                type="text"
+                placeholder="Nom"
+                value={newUser.lastName || ""}
                 onChange={(e) =>
-                  setNewUser({ ...newUser, promotion: e.target.value })
+                  setNewUser({ ...newUser, lastName: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="text"
+                placeholder="Prénom"
+                value={newUser.firstName || ""}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, firstName: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="text"
+                placeholder="Username"
+                value={newUser.username || ""}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, username: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="password"
+                placeholder="Mot de passe"
+                value={newUser.password || ""}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, password: e.target.value })
+                }
+                required
+              />
+
+              <select
+                value={newUser.role || "STUDENT"}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, role: e.target.value })
                 }
               >
-                <option value="">-- Sélectionnez une promotion --</option>
-                {promotions.map((promo) => (
-                  <option key={promo.id} value={promo.id}>
-                    {promo.name}
-                  </option>
-                ))}
+                <option value="STUDENT">Étudiant</option>
+                <option value="TEACHER">Professeur</option>
               </select>
-            )}
-            <button type="submit" className="user-management-submit-button">
-              {isEditingUser ? "Modifier" : "Créer"}
-            </button>
-            <button
-              type="button"
-              className="user-management-cancel-button"
-              onClick={() => {
-                setIsAddingUser(false);
-                setIsEditingUser(null);
-              }}
-            >
-              Annuler
-            </button>
-          </form>
-        </div>
-      )}
-    </div>
+
+              {/* 🎓 Sélection de la promotion (visible seulement si Étudiant) */}
+              {newUser.role === "STUDENT" && (
+                <select
+                  value={newUser.promotion || ""}
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, promotion: e.target.value })
+                  }
+                >
+                  <option value="">-- Sélectionnez une promotion --</option>
+                  {promotions.map((promo) => (
+                    <option key={promo.id} value={promo.id}>
+                      {promo.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <button type="submit" className="user-management-submit-button">
+                {isEditingUser ? "Modifier" : "Créer"}
+              </button>
+              <button
+                type="button"
+                className="user-management-cancel-button"
+                onClick={() => {
+                  setIsAddingUser(false);
+                  setIsEditingUser(null);
+                }}
+              >
+                Annuler
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

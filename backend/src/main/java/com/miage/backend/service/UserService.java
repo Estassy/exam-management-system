@@ -5,6 +5,8 @@ import com.miage.backend.entity.User;
 import com.miage.backend.enums.Role;
 import com.miage.backend.repository.PromotionRepository;
 import com.miage.backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -75,10 +77,9 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    @Transactional
     public User updateUser(UUID id, String username, String firstName, String lastName, String password, Role role, UUID promotionId) {
         return userRepository.findById(id).map(existingUser -> {
-            System.out.println("Promotion reçue pour mise à jour : " + promotionId);
-
             existingUser.setUsername(username);
             existingUser.setFirstName(firstName);
             existingUser.setLastName(lastName);
@@ -87,10 +88,8 @@ public class UserService {
                 Promotion promotion = promotionRepository.findById(promotionId)
                         .orElseThrow(() -> new RuntimeException("Promotion non trouvée avec l'ID : " + promotionId));
                 existingUser.setPromotion(promotion);
-                System.out.println("Promotion associée : " + promotion.getName());
             } else {
                 existingUser.setPromotion(null);
-                System.out.println("Aucune promotion définie.");
             }
 
             if (password != null && !password.isEmpty()) {
@@ -98,12 +97,20 @@ public class UserService {
             }
 
             existingUser.setRole(role);
-            return userRepository.save(existingUser);
+
+            // 🔥 Sauvegarder d'abord les modifications
+            userRepository.save(existingUser);
+
+            // 🔥 Charger l'utilisateur mis à jour avec la promotion
+            User updatedUser = userRepository.findById(existingUser.getId())
+                    .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé après mise à jour"));
+
+            // ✅ Charger explicitement la promotion avant de renvoyer l'utilisateur
+            Hibernate.initialize(updatedUser.getPromotion());
+
+            return updatedUser; // ✅ Retourne l'utilisateur avec la promotion
         }).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
     }
-
-
-
 
 
     public void deleteUser(UUID id) {
