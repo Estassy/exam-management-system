@@ -75,7 +75,7 @@ const StudentDashboard = () => {
                           <li className="sidebar-item" onClick={() => navigate("/etudiant/cours")}>
                               <CalendarDaysIcon className="sidebar-icon" /> Cours
                           </li>
-                          <li className="sidebar-item" onClick={() => navigate("/quizzes")}>
+                          <li className="sidebar-item" onClick={() => navigate("/Quiz")}>
                             <CalendarDaysIcon className="sidebar-icon" /> Quiz
                           </li>
                           <li className="sidebar-item" onClick={() => navigate("/exams")}>

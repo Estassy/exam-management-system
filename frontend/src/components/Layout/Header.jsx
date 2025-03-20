@@ -31,7 +31,6 @@ const Header = () => {
     async function fetchData() {
       // if (!user?.id) return;
       console.log("👤 ID utilisateur :", user.id);
-
       try {
         const fullUserData = await getUserById(user.id);
         console.log("👤 Données utilisateur complètes :", fullUserData);
