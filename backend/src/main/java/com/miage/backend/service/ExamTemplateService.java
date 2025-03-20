@@ -3,6 +3,7 @@ package com.miage.backend.service;
 import com.miage.backend.entity.*;
 import com.miage.backend.exception.ResourceNotFoundException;
 import com.miage.backend.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +28,24 @@ public class ExamTemplateService {
     @Autowired
     private PromotionRepository promotionRepository;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
     public List<ExamTemplate> getAllTemplates() {
         return examTemplateRepository.findAll();
     }
 
+    @Transactional
     public Exam createExamFromTemplate(UUID templateId, LocalDateTime date, UUID teacherId, UUID courseId, UUID promotionId) {
+        // 🔍 Vérifie si un examen existe déjà pour ce cours et cette date
+        if (examRepository.existsByCourseIdAndDate(courseId, date)) {
+            throw new IllegalStateException("Un examen existe déjà pour ce cours à cette date !");
+        }
+
+        // ✅ Récupération des entités requises
         ExamTemplate template = examTemplateRepository.findById(templateId)
                 .orElseThrow(() -> new ResourceNotFoundException("Modèle d'examen introuvable"));
 
@@ -41,13 +55,22 @@ public class ExamTemplateService {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Promotion non trouvée"));
 
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé"));
+
+        // ✅ Création de l'examen
         Exam exam = new Exam();
         exam.setTitle(template.getTitle());
         exam.setDate(date);
         exam.setTeacher(teacher);
+        exam.setCourse(course);
+        exam.setExamTemplate(template);
         exam.getPromotions().add(promotion);
 
-        // Copier les questions
+        // ✅ Sauvegarde initiale de l'examen
+        exam = examRepository.save(exam);
+
+        // ✅ Étape 1 : Copier et attacher les questions après persistance
         Set<Question> copiedQuestions = new HashSet<>();
         for (Question q : template.getQuestions()) {
             Question newQuestion = new Question();
@@ -57,15 +80,18 @@ public class ExamTemplateService {
             newQuestion.setOption3(q.getOption3());
             newQuestion.setOption4(q.getOption4());
             newQuestion.setRightAnswer(q.getRightAnswer());
-            Set<Exam> examsSet = new HashSet<>();
-            examsSet.add(exam);
-            newQuestion.setExams(examsSet);
-
             copiedQuestions.add(newQuestion);
         }
-        exam.setQuestions(copiedQuestions);
 
+        copiedQuestions = new HashSet<>(questionRepository.saveAll(copiedQuestions));
+
+        // ✅ Étape 2 : Associer les questions à l'examen et sauvegarde finale
+        exam.setQuestions(copiedQuestions);
         return examRepository.save(exam);
     }
+
+
+
+
 
 }

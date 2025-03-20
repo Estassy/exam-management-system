@@ -21,10 +21,14 @@ public class CourseController {
 
     // ✅ Création d'un cours (statut par défaut : "PENDING")
     @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        Course createdCourse = courseService.createCourse(course);
+    public ResponseEntity<Course> createCourse(
+            @RequestBody Course course,
+            @RequestParam UUID teacherId // ✅ Ajout du teacherId comme paramètre
+    ) {
+        Course createdCourse = courseService.createCourse(course, teacherId);
         return ResponseEntity.ok(createdCourse);
     }
+
 
     // ✅ Récupérer tous les cours
     @GetMapping
@@ -74,4 +78,12 @@ public class CourseController {
         Course updatedCourse = courseService.removeStudentFromCourse(courseId, studentId);
         return ResponseEntity.ok(updatedCourse);
     }
+
+    // ✅ Récupérer les cours d'un enseignant
+    @GetMapping("/teacher/{teacherId}")
+    public ResponseEntity<List<Course>> getCoursesByTeacher(@PathVariable UUID teacherId) {
+        List<Course> courses = courseService.getCoursesByTeacherId(teacherId);
+        return ResponseEntity.ok(courses);
+    }
+
 }

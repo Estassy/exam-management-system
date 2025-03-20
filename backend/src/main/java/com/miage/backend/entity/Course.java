@@ -1,5 +1,6 @@
 package com.miage.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miage.backend.enums.CourseStatus;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -37,10 +38,17 @@ public class Course {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "promotion_id")
     )
+    @JsonIgnore
     private Set<Promotion> promotions = new HashSet<>();
 
     @OneToMany(mappedBy = "course")
+    @JsonIgnore
     private Set<Exam> exams;
+
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = true)
+    private User teacher;
+
 
 
     public Course() {}
@@ -66,4 +74,7 @@ public class Course {
 
     public Set<Exam> getExams() { return exams; }
     public void setExams(Set<Exam> exams) { this.exams = exams; }
+
+    public User getTeacher() { return teacher; }
+    public void setTeacher(User teacher) { this.teacher = teacher; }
 }

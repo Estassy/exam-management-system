@@ -42,16 +42,17 @@ export async function getCourseById(id) {
 /**
  * Crée un nouveau cours
  */
-export async function createCourse(course) {
+export async function createCourse(course, teacherId) {
   try {
-    // Grâce à l’interceptor, le token sera automatiquement ajouté
-    const response = await api.post('/courses', course);
-    console.log(response.data);
+    const response = await api.post(`/courses?teacherId=${teacherId}`, course); // ✅ Ajout de teacherId en paramètre
+    console.log("✅ Cours créé avec succès :", response.data);
     return response.data;
   } catch (error) {
+    console.error("❌ Erreur lors de la création du cours :", error);
     throw error;
   }
 }
+
 
 /**
  * Met à jour un cours existant
@@ -112,3 +113,17 @@ export async function removeStudentFromCourse(courseId, studentId) {
     throw error;
   }
 }
+
+/**
+ * Récupère les cours d'un enseignant
+ */
+export async function getCoursesByTeacher(teacherId) {
+  try {
+    const response = await api.get(`/courses/teacher/${teacherId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des cours de l'enseignant :", error);
+    throw error;
+  }
+}
+

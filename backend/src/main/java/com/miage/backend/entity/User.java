@@ -1,5 +1,6 @@
 package com.miage.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miage.backend.enums.Role;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,6 +40,7 @@ public class User implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "promotion_id", nullable = true)
+    @JsonIgnore
     private Promotion promotion;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
@@ -46,6 +48,16 @@ public class User implements Serializable {
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean active = true;
+
+    @ManyToMany
+    @JoinTable(
+            name = "exam_students",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "exam_id")
+    )
+    @JsonIgnore
+    private Set<Exam> exams = new HashSet<>();
+
 
 
     @Transient // Exclut du mapping Hibernate, mais injecté par Spring
@@ -128,5 +140,13 @@ public class User implements Serializable {
 
     public void setGrades(Set<Grade> grades) {
         this.grades = grades;
+    }
+
+    public Set<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(Set<Exam> exams) {
+        this.exams = exams;
     }
 }

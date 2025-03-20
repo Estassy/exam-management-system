@@ -1,5 +1,6 @@
 package com.miage.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miage.backend.enums.QuestionType;
 import jakarta.persistence.*;
 
@@ -30,12 +31,15 @@ public class Question {
     private QuestionType type; // EXAM, QUIZ, TEMPLATE
 
     @ManyToMany(mappedBy = "questions")
+    @JsonIgnore
     private Set<Exam> exams = new HashSet<>();
 
     @ManyToMany(mappedBy = "questions")
+    @JsonIgnore
     private Set<Quiz> quizzes = new HashSet<>();
 
     @ManyToMany(mappedBy = "questions")
+    @JsonIgnore
     private Set<ExamTemplate> templates = new HashSet<>();
 
     public Question() {}

@@ -14,4 +14,5 @@ import java.util.UUID;
 public interface ExamRepository extends JpaRepository<Exam, UUID> {
     Optional<Exam> findFirstByTeacherOrderByDateAsc(User teacher);
     List<Exam> findByStudentsIdAndDateAfter(UUID studentId, LocalDateTime now);
+    boolean existsByCourseIdAndDate(UUID courseId, LocalDateTime date);
 }

@@ -22,11 +22,12 @@ public class Promotion implements Serializable {
     @OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
     private Set<User> students = new HashSet<>();
 
-
     @ManyToMany(mappedBy = "promotions")
+    @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
     @ManyToMany(mappedBy = "promotions")
+    @JsonIgnore
     private Set<Exam> exams = new HashSet<>();
 
     public Promotion() {}

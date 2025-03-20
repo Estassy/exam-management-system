@@ -28,35 +28,40 @@ public class CourseService {
     private PromotionRepository promotionRepository;
 
     @Transactional
-    public Course createCourse(Course course) {
-        course.setStatus(CourseStatus.PENDING); // Toujours "À venir" au départ
+    public Course createCourse(Course course, UUID teacherId) {
+        course.setStatus(CourseStatus.PENDING);
 
-        // Vérification des promotions
+        // ✅ Vérifie si le professeur existe
+        User teacher = userRepository.findById(teacherId)
+                .orElseThrow(() -> new ResourceNotFoundException("Enseignant non trouvé avec l'ID : " + teacherId));
+
+        // ✅ Associe l'enseignant à l'entité Course
+        course.setTeacher(teacher);
+        System.out.println("👨‍🏫 Professeur associé au cours : " + teacher.getFirstName() + " " + teacher.getLastName());
+
+        // ✅ Vérification des promotions
         Set<Promotion> selectedPromotions = new HashSet<>();
         if (course.getPromotions() != null) {
             for (Promotion promo : course.getPromotions()) {
                 Promotion existingPromotion = promotionRepository.findById(promo.getId())
                         .orElseThrow(() -> new ResourceNotFoundException("Promotion non trouvée : " + promo.getId()));
-
-                // 🔥 Force le chargement des étudiants
                 Hibernate.initialize(existingPromotion.getStudents());
-
                 selectedPromotions.add(existingPromotion);
             }
         }
         course.setPromotions(selectedPromotions);
-        System.out.println("Promotions ajoutées au cours : " + selectedPromotions.size());
 
-        // Ajout des étudiants des promotions dans le cours
+        // ✅ Ajout des étudiants
         Set<User> students = new HashSet<>();
         for (Promotion promo : selectedPromotions) {
             students.addAll(promo.getStudents());
         }
         course.setStudents(students);
-        System.out.println("Étudiants ajoutés au cours : " + students.size());
 
         return courseRepository.save(course);
     }
+
+
 
 
     // ✅ Mise à jour du statut d'un cours
@@ -147,4 +152,9 @@ public class CourseService {
     public List<Course> getCoursesByStudentId(UUID studentId) {
         return courseRepository.findByStudents_Id(studentId);
     }
+
+    public List<Course> getCoursesByTeacherId(UUID teacherId) {
+        return courseRepository.findByTeacherId(teacherId);
+    }
+
 }

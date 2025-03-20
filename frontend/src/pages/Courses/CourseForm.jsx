@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { createCourse } from "../../services/course/courseService";
 import { getPromotions } from "../../services/promotion/promotionService";
@@ -9,6 +9,7 @@ import {
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import "./CourseForm.scss";
+import { AuthContext } from "../../context/AuthContext";
 
 function CourseForm({ onCourseCreated }) {
   const [title, setTitle] = useState("");
@@ -21,6 +22,9 @@ function CourseForm({ onCourseCreated }) {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
+
+  const { user } = useContext(AuthContext); // ✅ Récupère l'utilisateur connecté
+  const teacherId = user?.id;
 
   // Charger les promotions disponibles
   useEffect(() => {
@@ -47,11 +51,12 @@ function CourseForm({ onCourseCreated }) {
       const newCourse = {
         title,
         date: date || null,
+        teacherId, // ✅ Ajout de l'ID du professeur
         promotions: selectedPromotion ? [{ id: selectedPromotion }] : [], // ✅ Envoie un tableau d'objets avec l'ID de la promotion.
       };
       console.log("📤 Données envoyées au backend :", newCourse);
 
-      await createCourse(newCourse);
+      await createCourse(newCourse, teacherId);
       setConfirmation("Cours créé avec succès !");
       setError("");
       setFieldErrors({});

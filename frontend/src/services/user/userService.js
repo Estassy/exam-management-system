@@ -34,6 +34,7 @@ export async function createUser(userData) {
 export async function getUserById(userId) {
   try {
     const response = await api.get(`${API_URL}/${userId}`);
+    console.log("🔍 Utilisateur reçu de l'API :", response.data);
     return response.data;
   } catch (error) {
     console.error("Erreur lors de la récupération de l'utilisateur :", error);
@@ -77,4 +78,19 @@ export async function deleteUser(userId) {
     console.error("Erreur lors de la suppression de l'utilisateur :", error);
     throw error;
   } 
+  
 }
+
+/**
+ * Récupère uniquement les enseignants
+ */
+export async function getAllTeachers() {
+  try {
+    const users = await getAllUsers();
+    return users.filter(user => user.role === "TEACHER"); // ✅ Filtre les enseignants
+  } catch (error) {
+    console.error("Erreur lors de la récupération des enseignants :", error);
+    throw error;
+  }
+}
+

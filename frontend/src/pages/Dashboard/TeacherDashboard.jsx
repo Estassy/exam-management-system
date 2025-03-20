@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./TeacherDashboard.scss";
@@ -7,12 +7,14 @@ import { getAllExams } from "../../services/exam/examService";
 import { getGradesByStudent } from "../../services/exam/gradeService";
 import Button from "../../components/UI/Button";
 import { useNavigate } from "react-router-dom";
+import { getCoursesByTeacher } from "../../services/course/courseService";
 import {
   HomeIcon,
   CalendarDaysIcon,
   UsersIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
+import { AuthContext } from "../../context/AuthContext";
 
 function TeacherDashboard() {
   const navigate = useNavigate();
@@ -24,13 +26,18 @@ function TeacherDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [grades, setGrades] = useState({});
 
+  const { user } = useContext(AuthContext); // ✅ Récupération de l'utilisateur connecté
+  const teacherId = user?.id; // 🏷️ Assure-toi que `id` est bien l'ID du professeur
+
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
 
   useEffect(() => {
     async function fetchStudents() {
       try {
         const studentData = await getAllStudents();
-        const courseData = await getCourseByTeacher(teacherId);
+        const courseData = await getCoursesByTeacher(teacherId);
+        setCourses(courseData.length);
+        console.log("👩‍🎓 course récupérés :", courseData);
         setStudents(studentData);
 
         const gradesData = {};
@@ -49,6 +56,7 @@ function TeacherDashboard() {
     async function fetchExams() {
       try {
         const examData = await getAllExams();
+        console.log("📝 Examens récupérés :", examData);
         setExams(examData);
       } catch (error) {
         console.error("Erreur lors du chargement des examens :", error);
@@ -56,12 +64,6 @@ function TeacherDashboard() {
     }
 
     fetchExams();
-
-    setCourses(5);
-    setNotifications([
-      { id: 1, message: "Nouvel étudiant inscrit", type: "info" },
-      { id: 2, message: "Mise à jour de l'examen Physique", type: "warning" },
-    ]);
   }, []);
 
   return (
@@ -73,29 +75,32 @@ function TeacherDashboard() {
 
       {/* Sidebar */}
       <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-          {/* Logo */}
-          <div className="sidebar-logo">
-            <img
-              src="src/assets/images/logo.png" // Remplacez par le chemin de votre logo
-              alt="Logo"
-              className="logo-image"
-            />
-          </div>
+        {/* Logo */}
+        <div className="sidebar-logo">
+          <img
+            src="src/assets/images/logo.png" // Remplacez par le chemin de votre logo
+            alt="Logo"
+            className="logo-image"
+          />
+        </div>
         <ul className="sidebar-menu">
           <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
             <HomeIcon className="sidebar-icon" /> Accueil
           </li>
           <li className="sidebar-item" onClick={() => navigate("/courses")}>
-              <CalendarDaysIcon className="sidebar-icon" /> Cours
+            <CalendarDaysIcon className="sidebar-icon" /> Cours
           </li>
-          <li className="sidebar-item" onClick={() => navigate("/QuizExamsPage")}>
+          <li
+            className="sidebar-item"
+            onClick={() => navigate("/QuizExamsPage")}
+          >
             <CalendarDaysIcon className="sidebar-icon" /> Examens
           </li>
           <li className="sidebar-item" onClick={() => navigate("/students")}>
             <UsersIcon className="sidebar-icon" /> Étudiants
           </li>
           <li className="sidebar-item" onClick={() => navigate("/grades")}>
-              <UsersIcon className="sidebar-icon" /> Notes
+            <UsersIcon className="sidebar-icon" /> Notes
           </li>
         </ul>
       </aside>
@@ -112,7 +117,7 @@ function TeacherDashboard() {
           </div>
           <div className="statBox bg-green-500 text-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl font-semibold">Cours</h3>
-            <p className="text-3xl mt-2">{courses}</p>
+            <p className="text-3xl mt-2">{courses.length}</p>
           </div>
         </div>
 

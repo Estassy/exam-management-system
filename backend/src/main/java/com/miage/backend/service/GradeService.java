@@ -1,8 +1,11 @@
 package com.miage.backend.service;
 
+import com.miage.backend.entity.Course;
 import com.miage.backend.entity.Grade;
 import com.miage.backend.entity.User;
 import com.miage.backend.entity.Exam;
+import com.miage.backend.exception.ResourceNotFoundException;
+import com.miage.backend.repository.CourseRepository;
 import com.miage.backend.repository.GradeRepository;
 import com.miage.backend.repository.UserRepository;
 import com.miage.backend.repository.ExamRepository;
@@ -25,14 +28,20 @@ public class GradeService {
     @Autowired
     private ExamRepository examRepository;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
     // Ajouter une note à un étudiant
-    public Grade addGrade(UUID studentId, UUID examId, double score) {
+    public Grade addGrade(UUID studentId,UUID courseId, UUID examId, double score) {
         User student = userRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Étudiant non trouvé"));
         Exam exam = examRepository.findById(examId)
                 .orElseThrow(() -> new RuntimeException("Examen non trouvé"));
 
-        Grade grade = new Grade(student, exam, score);
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé"));
+
+        Grade grade = new Grade(student,course, exam, score);
         return gradeRepository.save(grade);
     }
 

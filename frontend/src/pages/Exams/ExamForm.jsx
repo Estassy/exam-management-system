@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createExam } from "../../services/exam/examService";
 import {
   createExamFromTemplate,
@@ -6,8 +6,12 @@ import {
 } from "../../services/exam/templeteService";
 import { getPromotions } from "../../services/promotion/promotionService";
 import "./ExamForm.scss"; // Importation du style
+import { getAllTeachers } from "../../services/user/userService";
+import { AuthContext } from "../../context/AuthContext";
+import { getAllCourses } from "../../services/course/courseService";
 
 const ExamForm = () => {
+  const { user } = useContext(AuthContext);
   const [templates, setTemplates] = useState([]);
   const [promotions, setPromotions] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState("");
@@ -15,57 +19,129 @@ const ExamForm = () => {
   const [examTitle, setExamTitle] = useState("");
   const [examDate, setExamDate] = useState("");
   const [message, setMessage] = useState(""); // Pour afficher un message de confirmation
+  const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [teachers, setTeachers] = useState([]);
+  const [selectedTeacher, setSelectedTeacher] = useState(""); // ✅ Stocke l'enseignant sélectionné
+  const [teacherId, setTeacherId] = useState("");
+
+  useEffect(() => {
+    if (user && user.role === "TEACHER") {
+      setTeacherId(user.id);
+      console.log("👨‍🏫 Professeur connecté :", user);
+    }
+  }, [user]); // ✅ Met à jour teacherId lorsque user change
 
   useEffect(() => {
     async function fetchData() {
       try {
+        const courseData = await getAllCourses();
+        setCourses(courseData);
+
         const templateData = await getExamTemplates();
-        console.log("📌 Templates reçus :", templateData);
+        console.log("📌 Templates bruts reçus :", templateData);
+
+        // ✅ Vérifie si questions existe avant d'appeler map()
+        const cleanedTemplates = templateData.map((template) => ({
+          id: template.id,
+          title: template.title,
+          questions: Array.isArray(template.questions)
+            ? template.questions.map((q) => ({
+                id: q.id,
+                questionText: q.questionText,
+                option1: q.option1,
+                option2: q.option2,
+                option3: q.option3,
+                option4: q.option4,
+                rightAnswer: q.rightAnswer,
+                type: q.type,
+              }))
+            : [], // ⚠️ Si `questions` est `undefined`, mettre un tableau vide
+        }));
+
+        console.log("📌 Templates nettoyés :", cleanedTemplates);
+        setTemplates(cleanedTemplates);
+
         const promotionData = await getPromotions();
-        setTemplates(templateData);
         setPromotions(promotionData);
+
+        const teacherData = await getAllTeachers();
+        setTeachers(teacherData);
       } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
+        console.error("❌ Erreur lors de la récupération des données :", error);
       }
     }
     fetchData();
   }, []);
 
+  // 🆕 Mise à jour automatique du titre de l'examen lorsqu'un modèle est sélectionné
+  useEffect(() => {
+    if (selectedTemplate) {
+      const foundTemplate = templates.find(
+        (template) => template.id === selectedTemplate
+      );
+      if (foundTemplate) {
+        setExamTitle(foundTemplate.title);
+      }
+    } else {
+      setExamTitle(""); // Si aucun modèle sélectionné, vider le champ
+    }
+  }, [selectedTemplate, templates]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!selectedPromotion) {
-      setMessage("⚠️ Veuillez choisir une promotion !");
+    if (!selectedPromotion || !selectedCourse) {
+      setMessage("⚠️ Veuillez choisir une promotion et un cours !");
+      return;
+    }
+
+    if (!teacherId) {
+      setMessage("⚠️ Problème avec l'enseignant connecté !");
+      console.error("❌ Erreur : teacherId est vide !");
       return;
     }
 
     try {
+      console.log("📤 Envoi de la requête avec :", {
+        selectedTemplate,
+        examDate,
+        teacherId,
+        selectedCourse,
+        selectedPromotion,
+      });
+
       if (selectedTemplate) {
         await createExamFromTemplate(
           selectedTemplate,
-          examDate,
+          examDate, // ✅ Convertir la date en format ISO8601
+          teacherId,
+          selectedCourse,
           selectedPromotion
         );
         setMessage("✅ Examen créé à partir d'un modèle !");
       } else {
         await createExam({
           title: examTitle,
-          date: examDate,
+          date: examDate, // ✅ Convertir la date en format ISO8601
+          teacherId,
+          courseId: selectedCourse,
           promotionId: selectedPromotion,
         });
         setMessage("✅ Examen personnalisé créé !");
       }
 
-      // Réinitialisation du formulaire après soumission
+      // ✅ Réinitialisation du formulaire après soumission
       setSelectedTemplate("");
       setSelectedPromotion("");
+      setSelectedCourse("");
       setExamTitle("");
       setExamDate("");
     } catch (error) {
       setMessage(
         "❌ Une erreur s'est produite lors de la création de l'examen."
       );
-      console.error("Erreur :", error);
+      console.error("Erreur lors de la création de l'examen :", error);
     }
   };
 
@@ -108,6 +184,24 @@ const ExamForm = () => {
           </select>
         </div>
 
+        {/* Sélection du cours */}
+        <div className="form-group">
+          <label className="form-label">Associer à un cours :</label>
+          <select
+            className="form-input"
+            value={selectedCourse}
+            onChange={(e) => setSelectedCourse(e.target.value)}
+            required
+          >
+            <option value="">-- Sélectionnez un cours --</option>
+            {courses.map((course) => (
+              <option key={course.id} value={course.id}>
+                {course.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Saisie manuelle du titre */}
         <div className="form-group">
           <label className="form-label">Titre de l'examen :</label>
@@ -116,7 +210,7 @@ const ExamForm = () => {
             type="text"
             value={examTitle}
             onChange={(e) => setExamTitle(e.target.value)}
-            disabled={selectedTemplate} // Désactiver si un modèle est choisi
+            disabled={!!selectedTemplate} // Désactiver si un modèle est choisi
           />
         </div>
 

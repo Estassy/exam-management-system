@@ -1,5 +1,6 @@
 package com.miage.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class ExamTemplate {
             joinColumns = @JoinColumn(name = "template_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id")
     )
+    @JsonIgnore
     private Set<Question> questions = new HashSet<>();
 
     public ExamTemplate() {}

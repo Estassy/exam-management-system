@@ -93,6 +93,12 @@ function CoursesPage() {
           <li className="sidebar-item" onClick={() => navigate("/grades")}>
             <UsersIcon className="sidebar-icon" /> Notes
           </li>
+          <li
+            className="sidebar-item"
+            onClick={() => navigate("/create-course")}
+          >
+            <UsersIcon className="sidebar-icon" /> add course
+          </li>
         </ul>
       </aside>
       <div className="courses-page">
