@@ -27,40 +27,14 @@ const Header = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  // Routes dynamiques selon le rôle
-  let routes = [];
-  if (user?.role === "ADMIN") {
-    routes = [
-      { path: "/admin", label: "Dashboard" },
-      { path: "/admin/cours", label: "Cours" },
-      { path: "/exams/manage", label: "Exams & Quiz" },
-      { path: "/users/manage", label: "Gérer les utilisateurs" },
-    ];
-  } else if (user?.role === "TEACHER") {
-    routes = [
-      { path: "/", label: "Dashboard" },
-      { path: "/courses", label: "Cours" },
-      { path: "/create-course", label: "Add Course" },
-      { path: "/create-exam", label: "Exams & Quiz" },
-      { path: "/students", label: "Gérer les étudiants" },
-      { path: "/grades", label: "Notes" },
-    ];
-  } else {
-    routes = [
-      { path: "/student", label: "Dashboard" },
-      { path: "/etudiant/cours", label: "Cours" },
-      { path: "/quizzes", label: "Quiz" },
-      { path: "/exams", label: "Exams" },
-    ];
-  }
-  // Récupération des données utilisateur
   useEffect(() => {
     async function fetchData() {
-      if (!user?.id) return;
+      // if (!user?.id) return;
+      console.log("👤 ID utilisateur :", user.id);
 
       try {
         const fullUserData = await getUserById(user.id);
+        console.log("👤 Données utilisateur complètes :", fullUserData);
         setUser(fullUserData); // Met à jour le contexte avec les données complètes
       } catch (error) {
         console.error(
@@ -70,7 +44,7 @@ const Header = () => {
       }
     }
     fetchData();
-  }, [user?.id]);
+  }, []);
 
   return (
     <header className="header">
@@ -88,7 +62,7 @@ const Header = () => {
 
       {/* Message de bienvenue */}
       <div className="welcome-message">
-        Bienvenue, {user.firstName} {user.lastName}
+        Bienvenue, {user?.firstName} {user?.lastName}
       </div>
 
       {/* Menu utilisateur */}
