@@ -1,0 +1,91 @@
+/* Conteneur principal */
+.courses-page {
+  padding: 20px;
+  background-color: #f9fafb; /* Fond doux, comme dans votre style global */
+  font-family: "Poppins", sans-serif; /* Typographie moderne */
+  color: #1e293b; /* Texte sombre pour lisibilité */
+
+  h2 {
+    font-size: 1.875rem; /* Aligné avec `.dashboard-title` */
+    font-weight: bold;
+    color: black; /* Orange élégant */
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  /* Bouton pour ajouter un cours */
+  .add-course-btn {
+    background-color: black;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: #ea580c;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background-color: #d97706;
+      transform: scale(0.95);
+    }
+
+    margin-bottom: 20px;
+  }
+
+  /* Cartes des cours */
+  .course-card {
+    background-color: white; /* Fond blanc des cartes */
+    border-radius: 10px; /* Aligné avec vos autres cartes */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce pour uniformité */
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Ombre plus forte */
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1e293b; /* Texte sombre */
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #475569; /* Gris pour les descriptions */
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #6b7280; /* Texte légèrement grisé */
+    }
+
+    select {
+      display: block;
+      margin-top: 10px;
+      padding: 8px 12px; /* Espacement adapté */
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #d1d5db; /* Bordure légère */
+      background-color: white;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover,
+      &:focus {
+        border-color: #f97316; /* Accent orange au focus/survol */
+        box-shadow: 0 0 4px rgba(249, 115, 22, 0.5); /* Glow subtil */
+      }
+    }
+  }
+}

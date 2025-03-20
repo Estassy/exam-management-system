@@ -1,4 +1,4 @@
-.quiz-exams-page {
+.grade-page {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem;
@@ -56,42 +56,72 @@
     gap: 2rem;
   }
 
-  .exam-list,
-  .quiz-list {
-    background: white; /* Fond blanc pour les listes */
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
-    text-align: left;
+/* Formulaire principal */
+form {
+  max-width: 500px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-    h3 {
-      font-size: 1.25rem; /* Taille alignée avec vos titres secondaires */
-      margin-bottom: 1rem;
-      color: #1e293b; /* Texte sombre pour lisibilité */
-      font-weight: bold;
-    }
+  h2 {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #ce8738;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
 
-    ul {
-      list-style: none;
-      padding: 0;
+  select,
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    background: #f9fafb;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
-      .exam-item,
-      .quiz-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 15px;
-        background: #f9fafb; /* Fond aligné au reste */
-        border-radius: 5px;
-        margin-bottom: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: background 0.3s ease-in-out, transform 0.2s ease;
-
-        &:hover {
-          background: #eceff1; /* Changement subtil au survol */
-          transform: translateX(5px); /* Déplacement horizontal subtil */
-        }
-      }
+    &:hover,
+    &:focus {
+      border-color: #ea580c;
+      box-shadow: 0 0 5px rgba(234, 88, 12, 0.4);
     }
   }
-}
+
+  button[type="submit"] {
+    background-color: black;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background-color: #ea580c;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background-color: #d97706;
+      transform: scale(0.95);
+    }
+  }
+
+  p {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: green; /* Message de succès */
+  }
+
+  p.error {
+    color: red; /* Message d’erreur */
+  }
+  }
+  }
+
