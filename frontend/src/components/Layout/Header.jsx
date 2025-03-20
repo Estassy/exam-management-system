@@ -40,7 +40,7 @@ const Header = () => {
       { path: "/", label: "Dashboard" },
       { path: "/courses", label: "Cours" },
       { path: "/create-course", label: "Add Course" },
-      { path: "/Quizzes&Exams", label: "Exams & Quiz" },
+      { path: "/create-exam", label: "Exams & Quiz" },
       { path: "/students", label: "Gérer les étudiants" },
       { path: "/grades", label: "Notes" },
     ];
