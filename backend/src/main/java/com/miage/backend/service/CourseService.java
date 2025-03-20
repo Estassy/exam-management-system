@@ -8,6 +8,8 @@ import com.miage.backend.exception.ResourceNotFoundException;
 import com.miage.backend.repository.CourseRepository;
 import com.miage.backend.repository.PromotionRepository;
 import com.miage.backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,7 @@ public class CourseService {
     @Autowired
     private PromotionRepository promotionRepository;
 
-    // ✅ Création d'un cours avec promotions
+    @Transactional
     public Course createCourse(Course course) {
         course.setStatus(CourseStatus.PENDING); // Toujours "À venir" au départ
 
@@ -35,10 +37,15 @@ public class CourseService {
             for (Promotion promo : course.getPromotions()) {
                 Promotion existingPromotion = promotionRepository.findById(promo.getId())
                         .orElseThrow(() -> new ResourceNotFoundException("Promotion non trouvée : " + promo.getId()));
+
+                // 🔥 Force le chargement des étudiants
+                Hibernate.initialize(existingPromotion.getStudents());
+
                 selectedPromotions.add(existingPromotion);
             }
         }
         course.setPromotions(selectedPromotions);
+        System.out.println("Promotions ajoutées au cours : " + selectedPromotions.size());
 
         // Ajout des étudiants des promotions dans le cours
         Set<User> students = new HashSet<>();
@@ -46,9 +53,11 @@ public class CourseService {
             students.addAll(promo.getStudents());
         }
         course.setStudents(students);
+        System.out.println("Étudiants ajoutés au cours : " + students.size());
 
         return courseRepository.save(course);
     }
+
 
     // ✅ Mise à jour du statut d'un cours
     public Course updateCourseStatus(UUID courseId, CourseStatus newStatus) {
@@ -68,9 +77,44 @@ public class CourseService {
     }
 
     // ✅ Récupération de tous les cours
-    public List<Course> getAllCourses() {
-        return courseRepository.findAll();
+
+    public List<Map<String, Object>> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+
+        return courses.stream().map(course -> {
+            Map<String, Object> simplifiedCourse = new HashMap<>();
+            simplifiedCourse.put("id", course.getId());
+            simplifiedCourse.put("title", course.getTitle());
+            simplifiedCourse.put("date", course.getDate());
+            simplifiedCourse.put("status", course.getStatus());
+
+            // Récupérer seulement les IDs des étudiants (évite d'envoyer les passwords)
+            List<Map<String, String>> studentList = course.getStudents().stream()
+                    .map(student -> {
+                        Map<String, String> simpleStudent = new HashMap<>();
+                        simpleStudent.put("id", student.getId().toString());
+                        simpleStudent.put("firstName", student.getFirstName());
+                        simpleStudent.put("lastName", student.getLastName());
+                        return simpleStudent;
+                    })
+                    .toList();
+            simplifiedCourse.put("students", studentList);
+
+            // Récupérer seulement les noms des promotions
+            List<Map<String, String>> promotionList = course.getPromotions().stream()
+                    .map(promotion -> {
+                        Map<String, String> simplePromotion = new HashMap<>();
+                        simplePromotion.put("id", promotion.getId().toString());
+                        simplePromotion.put("name", promotion.getName());
+                        return simplePromotion;
+                    })
+                    .toList();
+            simplifiedCourse.put("promotions", promotionList);
+
+            return simplifiedCourse;
+        }).toList();
     }
+
 
     // ✅ Récupérer un cours par ID
     public Optional<Course> getCourseById(UUID courseId) {

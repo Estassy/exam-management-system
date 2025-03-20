@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,8 +28,8 @@ public class CourseController {
 
     // ✅ Récupérer tous les cours
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
-        List<Course> courses = courseService.getAllCourses();
+    public ResponseEntity<List<Map<String, Object>>> getAllCourses() {
+        List<Map<String, Object>> courses = courseService.getAllCourses();
         return ResponseEntity.ok(courses);
     }
 

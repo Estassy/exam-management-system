@@ -4,13 +4,12 @@ import com.miage.backend.entity.Course;
 import com.miage.backend.entity.Exam;
 import com.miage.backend.entity.Promotion;
 import com.miage.backend.entity.User;
+import com.miage.backend.repository.PromotionRepository;
 import com.miage.backend.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/promotions")
@@ -18,6 +17,9 @@ public class PromotionController {
 
     @Autowired
     private PromotionService promotionService;
+
+    @Autowired
+    private PromotionRepository promotionRepository;
 
     // ✅ Créer une promotion
     @PostMapping("/create")
@@ -27,8 +29,16 @@ public class PromotionController {
 
     // ✅ Récupérer toutes les promotions
     @GetMapping("/all")
-    public List<Promotion> getAllPromotions() {
-        return promotionService.getAllPromotions();
+    public List<Map<String, Object>> getAllPromotions() {
+        List<Promotion> promotions = promotionRepository.findAll();
+
+        // Convertir chaque promotion en une version simplifiée
+        return promotions.stream().map(promotion -> {
+            Map<String, Object> simplifiedPromotion = new HashMap<>();
+            simplifiedPromotion.put("id", promotion.getId());
+            simplifiedPromotion.put("name", promotion.getName());
+            return simplifiedPromotion;
+        }).toList();
     }
 
     // ✅ Récupérer une promotion par ID

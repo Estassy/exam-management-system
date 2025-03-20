@@ -25,7 +25,8 @@ function CourseForm({ onCourseCreated }) {
 
     if (!title.trim()) errors.title = "Le titre est obligatoire.";
     if (!date) errors.date = "La date est obligatoire.";
-    if (!selectedPromotion) errors.promotion = "Veuillez sélectionner une promotion.";
+    if (!selectedPromotion)
+      errors.promotion = "Veuillez sélectionner une promotion.";
 
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
@@ -36,8 +37,9 @@ function CourseForm({ onCourseCreated }) {
       const newCourse = {
         title,
         date: date || null,
-        promotionId: selectedPromotion, // ✅ Envoie une seule promotion
+        promotions: selectedPromotion ? [{ id: selectedPromotion }] : [], // ✅ Envoie un tableau d'objets avec l'ID de la promotion.
       };
+      console.log("📤 Données envoyées au backend :", newCourse);
 
       await createCourse(newCourse);
       setConfirmation("Cours créé avec succès !");
@@ -66,7 +68,9 @@ function CourseForm({ onCourseCreated }) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          {fieldErrors.title && <span className="error-text">{fieldErrors.title}</span>}
+          {fieldErrors.title && (
+            <span className="error-text">{fieldErrors.title}</span>
+          )}
         </div>
 
         <div className="form-group">
@@ -77,7 +81,9 @@ function CourseForm({ onCourseCreated }) {
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
-          {fieldErrors.date && <span className="error-text">{fieldErrors.date}</span>}
+          {fieldErrors.date && (
+            <span className="error-text">{fieldErrors.date}</span>
+          )}
         </div>
 
         <div className="form-group">
@@ -94,10 +100,14 @@ function CourseForm({ onCourseCreated }) {
               </option>
             ))}
           </select>
-          {fieldErrors.promotion && <span className="error-text">{fieldErrors.promotion}</span>}
+          {fieldErrors.promotion && (
+            <span className="error-text">{fieldErrors.promotion}</span>
+          )}
         </div>
 
-        <button type="submit" className="submit-btn">Créer le cours</button>
+        <button type="submit" className="submit-btn">
+          Créer le cours
+        </button>
       </form>
       {confirmation && <p className="message success">{confirmation}</p>}
       {error && <p className="message error">{error}</p>}

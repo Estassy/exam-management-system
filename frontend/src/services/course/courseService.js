@@ -6,6 +6,7 @@ import api from '../api';
 export async function getAllCourses() {
   try {
     const response = await api.get('/courses');
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw error;
@@ -45,6 +46,7 @@ export async function createCourse(course) {
   try {
     // Grâce à l’interceptor, le token sera automatiquement ajouté
     const response = await api.post('/courses', course);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw error;
