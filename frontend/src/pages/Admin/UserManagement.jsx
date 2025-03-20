@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import "./UserManagement.scss";
 import {
   createUser,
   getAllUsers,
   updateUser,
   deleteUser,
 } from "../../services/user/userService";
+import {
+  HomeIcon,
+  CalendarDaysIcon,
+  UsersIcon,
+} from "@heroicons/react/24/outline";
 import { getPromotions } from "../../services/promotion/promotionService";
+import { useNavigate } from "react-router-dom";
+import "./UserManagement.scss";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -17,6 +23,11 @@ const UserManagement = () => {
   const [isAddingUser, setIsAddingUser] = useState(false);
   const [isEditingUser, setIsEditingUser] = useState(null); // Stocke l'utilisateur en cours d'édition
   const [promotions, setPromotions] = useState([]);
+
+  const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
 
   const [newUser, setNewUser] = useState({
     username: "",
@@ -133,7 +144,54 @@ const UserManagement = () => {
     }
   };
 
-  return (
+  return(
+    <div
+          className={`manage-exams-dashboard-container ${
+            isSidebarOpen ? "shifted" : ""
+          }`}
+        >
+          {/* Bouton Menu / Fermer */}
+          <button className="menu-button" onClick={toggleSidebar}>
+            {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
+          </button>
+
+            {/* Sidebar */}
+            <aside
+              className={`user-management-sidebar ${
+                isSidebarOpen ? "open" : "closed"
+              }`}
+            >
+              <div className="user-management-sidebar-logo">
+                <img
+                  src="src/assets/images/logo.png"
+                  alt="Logo"
+                  className="user-management-logo-image"
+                />
+              </div>
+              <ul className="user-management-sidebar-menu">
+                <li
+                  className="user-management-sidebar-item"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  <HomeIcon className="user-management-sidebar-icon" />
+                  Accueil
+                </li>
+                <li
+                  className="user-management-sidebar-item"
+                  onClick={() => navigate("/exams/manage")}
+                >
+                  <CalendarDaysIcon className="user-management-sidebar-icon" />
+                  Examens
+                </li>
+                <li
+                  className="user-management-sidebar-item"
+                  onClick={() => navigate("/users/manage")}
+                >
+                  <UsersIcon className="user-management-sidebar-icon" />
+                  Utilisateurs
+                </li>
+              </ul>
+            </aside>
     <div className="user-management">
       <h2>Gestion des utilisateurs</h2>
 
@@ -199,7 +257,7 @@ const UserManagement = () => {
         ➕ Ajouter un utilisateur
       </button>
 
-      {/* 📌 Formulaire d'ajout / édition */}
+      {/* Formulaire d'ajout / édition */}
       {(isAddingUser || isEditingUser) && (
         <div className="add-user-form">
           <h3>
@@ -272,12 +330,12 @@ const UserManagement = () => {
                 ))}
               </select>
             )}
-
-            <button type="submit">
+            <button type="submit" className="user-management-submit-button">
               {isEditingUser ? "Modifier" : "Créer"}
             </button>
             <button
               type="button"
+              className="user-management-cancel-button"
               onClick={() => {
                 setIsAddingUser(false);
                 setIsEditingUser(null);
@@ -288,6 +346,7 @@ const UserManagement = () => {
           </form>
         </div>
       )}
+    </div>
     </div>
   );
 };

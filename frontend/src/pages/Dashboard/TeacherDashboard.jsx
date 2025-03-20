@@ -78,7 +78,7 @@ function TeacherDashboard() {
         {/* Logo */}
         <div className="sidebar-logo">
           <img
-            src="src/assets/images/logo.png" // Remplacez par le chemin de votre logo
+            src="src/assets/images/logo.png"
             alt="Logo"
             className="logo-image"
           />

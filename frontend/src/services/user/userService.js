@@ -57,6 +57,19 @@ export async function getAllStudents() {
 }
 
 /**
+ * Récupère uniquement les enseignants
+ */
+export async function getAllTeachers() {
+  try {
+    const users = await getAllUsers();
+    return users.filter(user => user.role === "TEACHER");
+  } catch (error) {
+    console.error("Erreur lors de la récupération des étudiants :", error);
+    throw error;
+  }
+}
+
+/**
  * Met à jour un utilisateur
  */
 export async function updateUser(userId, userData) {
