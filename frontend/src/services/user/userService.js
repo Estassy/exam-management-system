@@ -94,17 +94,3 @@ export async function deleteUser(userId) {
   } 
   
 }
-
-/**
- * Récupère uniquement les enseignants
- */
-export async function getAllTeachers() {
-  try {
-    const users = await getAllUsers();
-    return users.filter(user => user.role === "TEACHER"); // ✅ Filtre les enseignants
-  } catch (error) {
-    console.error("Erreur lors de la récupération des enseignants :", error);
-    throw error;
-  }
-}
-
