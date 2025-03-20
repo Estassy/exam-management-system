@@ -1,5 +1,6 @@
 package com.miage.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ public class Grade {
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
+    @JsonIgnore
     private User student;
 
     @ManyToOne

@@ -5,17 +5,21 @@ const API_URL = "/grades";
 /**
  * Ajouter une note à un étudiant
  */
-export async function addGrade(studentId, examId, score) {
+/**
+ * Ajouter une note à un étudiant
+ */
+export async function addGrade(studentId, courseId, examId, score) {
   try {
-    const response = await api.post(`${API_URL}`, null, {
-      params: { studentId, examId, score },
+    const response = await api.post(`/grades`, null, {
+      params: { studentId, courseId, examId, score },
     });
     return response.data;
   } catch (error) {
-    console.error("Erreur lors de l'ajout de la note :", error);
+    console.error("❌ Erreur lors de l'ajout de la note :", error);
     throw error;
   }
 }
+
 
 /**
  * Récupérer les notes d'un étudiant

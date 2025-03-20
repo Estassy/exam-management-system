@@ -18,9 +18,14 @@ public class GradeController {
 
     // Ajouter une note
     @PostMapping
-    public ResponseEntity<Grade> addGrade(@RequestParam UUID studentId,@RequestParam UUID courseId, @RequestParam UUID examId, @RequestParam double score) {
-        return ResponseEntity.ok(gradeService.addGrade(studentId,courseId, examId, score));
+    public ResponseEntity<Grade> addGrade(
+            @RequestParam UUID studentId,
+            @RequestParam UUID courseId,
+            @RequestParam UUID examId,
+            @RequestParam double score) {
+        return ResponseEntity.ok(gradeService.addGrade(studentId, courseId, examId, score));
     }
+
 
     // Récupérer les notes d'un étudiant
     @GetMapping("/student/{studentId}")

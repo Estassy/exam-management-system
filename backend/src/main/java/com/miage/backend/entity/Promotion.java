@@ -18,8 +18,9 @@ public class Promotion implements Serializable {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<User> students = new HashSet<>();
 
     @ManyToMany(mappedBy = "promotions")

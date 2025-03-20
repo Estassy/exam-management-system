@@ -9,6 +9,7 @@ import com.miage.backend.repository.CourseRepository;
 import com.miage.backend.repository.GradeRepository;
 import com.miage.backend.repository.UserRepository;
 import com.miage.backend.repository.ExamRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +32,31 @@ public class GradeService {
     @Autowired
     private CourseRepository courseRepository;
 
-    // Ajouter une note à un étudiant
-    public Grade addGrade(UUID studentId,UUID courseId, UUID examId, double score) {
+
+
+    @Transactional
+    public Grade addGrade(UUID studentId, UUID courseId, UUID examId, double score) {
         User student = userRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Étudiant non trouvé"));
-        Exam exam = examRepository.findById(examId)
-                .orElseThrow(() -> new RuntimeException("Examen non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé"));
 
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé"));
 
-        Grade grade = new Grade(student,course, exam, score);
+        Exam exam = examRepository.findById(examId)
+                .orElseThrow(() -> new ResourceNotFoundException("Examen non trouvé"));
+
+        // Vérifier si une note existe déjà
+        Optional<Grade> existingGrade = gradeRepository.findByStudentAndCourse(student, course);
+        if (existingGrade.isPresent()) {
+            throw new IllegalStateException("Une note existe déjà pour cet étudiant et ce cours !");
+        }
+
+        Grade grade = new Grade();
+        grade.setStudent(student);
+        grade.setExam(exam);
+        grade.setCourse(course);
+        grade.setScore(score);
+
         return gradeRepository.save(grade);
     }
 

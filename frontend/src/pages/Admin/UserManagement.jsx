@@ -30,6 +30,7 @@ const UserManagement = () => {
   useEffect(() => {
     async function fetchUsers() {
       const usersData = await getAllUsers();
+      console.log("✅ Utilisateurs reçus :", usersData);
       const promotionData = await getPromotions();
       console.log("✅ Promotions reçues :", promotionData);
       setPromotions(promotionData);
@@ -58,11 +59,17 @@ const UserManagement = () => {
   // 🆕 Ajouter un utilisateur
   const handleAddUser = async (e) => {
     e.preventDefault();
-    console.log("Données envoyées pour création :", newUser); // Debug
     try {
-      const createdUser = await createUser(newUser);
-      setUsers([...users, createdUser]);
+      await createUser(newUser);
+
+      // ✅ Rafraîchir la liste des utilisateurs après ajout
+      const updatedUsers = await getAllUsers();
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers);
+
       setIsAddingUser(false);
+
+      // ✅ Réinitialiser le formulaire après l'ajout
       setNewUser({
         username: "",
         firstName: "",
@@ -89,17 +96,16 @@ const UserManagement = () => {
     });
   };
 
-  // 📝 Modifier un utilisateur
   const handleEditUser = async (e) => {
     e.preventDefault();
     console.log("Données envoyées pour modification :", newUser); // Debug
     try {
-      const updatedUser = await updateUser(isEditingUser, newUser);
+      await updateUser(isEditingUser, newUser);
 
-      // Mettre à jour uniquement l'utilisateur modifié
-      setUsers(
-        users.map((user) => (user.id === updatedUser.id ? updatedUser : user))
-      );
+      // ✅ Recharger la liste complète des utilisateurs après modification
+      const updatedUsers = await getAllUsers();
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers);
 
       setIsEditingUser(null);
       setNewUser({
@@ -264,7 +270,6 @@ const UserManagement = () => {
                     {promo.name}
                   </option>
                 ))}
-                <option value="autre">Autre...</option>
               </select>
             )}
 

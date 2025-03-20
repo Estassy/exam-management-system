@@ -48,6 +48,7 @@ export async function getUserById(userId) {
 export async function getAllStudents() {
   try {
     const users = await getAllUsers();
+    console.log("👨‍🏫 Utilisateurs récupérés :", users);
     return users.filter(user => user.role === "STUDENT");
   } catch (error) {
     console.error("Erreur lors de la récupération des étudiants :", error);
