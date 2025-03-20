@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { createCourse } from "../../services/course/courseService";
 import { getPromotions } from "../../services/promotion/promotionService";
+import {
+  HomeIcon,
+  CalendarDaysIcon,
+  UsersIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
 import "./CourseForm.scss";
 
 function CourseForm({ onCourseCreated }) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
-  const [selectedPromotion, setSelectedPromotion] = useState(""); // ✅ Unique promotion sélectionnée
+  const [selectedPromotion, setSelectedPromotion] = useState(""); // Unique promotion sélectionnée
   const [promotions, setPromotions] = useState([]);
   const [confirmation, setConfirmation] = useState("");
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
+  const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
 
   // Charger les promotions disponibles
   useEffect(() => {
@@ -57,60 +67,98 @@ function CourseForm({ onCourseCreated }) {
   };
 
   return (
-    <div className="course-form">
-      <div className="course-title">Créer un cours</div>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">Titre :</label>
-          <input
-            type="text"
-            className="form-input"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          {fieldErrors.title && (
-            <span className="error-text">{fieldErrors.title}</span>
-          )}
-        </div>
+    <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
+      {/* Bouton Menu / Fermer */}
+      <button className="menu-button" onClick={toggleSidebar}>
+        {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
+      </button>
 
-        <div className="form-group">
-          <label className="form-label">Date :</label>
-          <input
-            type="datetime-local"
-            className="form-input"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+      {/* Sidebar */}
+      <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
+        {/* Logo */}
+        <div className="sidebar-logo">
+          <img
+            src="src/assets/images/logo.png"
+            alt="Logo"
+            className="logo-image"
           />
-          {fieldErrors.date && (
-            <span className="error-text">{fieldErrors.date}</span>
-          )}
         </div>
-
-        <div className="form-group">
-          <label className="form-label">Sélectionner une promotion :</label>
-          <select
-            className="form-select"
-            value={selectedPromotion}
-            onChange={(e) => setSelectedPromotion(e.target.value)}
+        <ul className="sidebar-menu">
+          <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
+            <HomeIcon className="sidebar-icon" /> Accueil
+          </li>
+          <li className="sidebar-item" onClick={() => navigate("/courses")}>
+            <CalendarDaysIcon className="sidebar-icon" /> Cours
+          </li>
+          <li
+            className="sidebar-item"
+            onClick={() => navigate("/QuizExamsPage")}
           >
-            <option value="">-- Choisissez une promotion --</option>
-            {promotions.map((promo) => (
-              <option key={promo.id} value={promo.id}>
-                {promo.name}
-              </option>
-            ))}
-          </select>
-          {fieldErrors.promotion && (
-            <span className="error-text">{fieldErrors.promotion}</span>
-          )}
-        </div>
+            <CalendarDaysIcon className="sidebar-icon" /> Examens
+          </li>
+          <li className="sidebar-item" onClick={() => navigate("/students")}>
+            <UsersIcon className="sidebar-icon" /> Étudiants
+          </li>
+          <li className="sidebar-item" onClick={() => navigate("/grades")}>
+            <UsersIcon className="sidebar-icon" /> Notes
+          </li>
+        </ul>
+      </aside>
+      <div className="course-form">
+        <div className="course-title">Créer un cours</div>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">Titre :</label>
+            <input
+              type="text"
+              className="form-input"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            {fieldErrors.title && (
+              <span className="error-text">{fieldErrors.title}</span>
+            )}
+          </div>
 
-        <button type="submit" className="submit-btn">
-          Créer le cours
-        </button>
-      </form>
-      {confirmation && <p className="message success">{confirmation}</p>}
-      {error && <p className="message error">{error}</p>}
+          <div className="form-group">
+            <label className="form-label">Date :</label>
+            <input
+              type="datetime-local"
+              className="form-input"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            {fieldErrors.date && (
+              <span className="error-text">{fieldErrors.date}</span>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Sélectionner une promotion :</label>
+            <select
+              className="form-select"
+              value={selectedPromotion}
+              onChange={(e) => setSelectedPromotion(e.target.value)}
+            >
+              <option value="">-- Choisissez une promotion --</option>
+              {promotions.map((promo) => (
+                <option key={promo.id} value={promo.id}>
+                  {promo.name}
+                </option>
+              ))}
+            </select>
+            {fieldErrors.promotion && (
+              <span className="error-text">{fieldErrors.promotion}</span>
+            )}
+          </div>
+
+          <button type="submit" className="submit-btn">
+            Créer le cours
+          </button>
+        </form>
+        {confirmation && <p className="message success">{confirmation}</p>}
+        {error && <p className="message error">{error}</p>}
+      </div>
     </div>
   );
 }

@@ -167,10 +167,10 @@ const AppRouter = () => {
             }
           />
           <Route
-            path="/courses"
+            path="/QuizExamsPage"
             element={
               <ProtectedRoute allowedRoles={["TEACHER"]}>
-                <CoursesPage />
+                <QuizExamsPage />
               </ProtectedRoute>
             }
           />

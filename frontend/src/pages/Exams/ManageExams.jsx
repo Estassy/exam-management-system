@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllExams, deleteExam } from "../../services/exam/examService";
+import {
+  HomeIcon,
+  CalendarDaysIcon,
+  UsersIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
 import "./ManageExams.scss";
 
 const ManageExams = () => {
   const [exams, setExams] = useState([]);
+  const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
 
   useEffect(() => {
     async function fetchExams() {

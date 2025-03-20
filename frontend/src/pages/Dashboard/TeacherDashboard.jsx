@@ -66,13 +66,6 @@ function TeacherDashboard() {
 
   return (
     <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
-      {/* Navbar dynamic */}
-      {!isSidebarOpen && (
-        <button className="menu-button" onClick={toggleSidebar}>
-          ☰ Menu
-        </button>
-      )}
-
       {/* Bouton Menu / Fermer */}
       <button className="menu-button" onClick={toggleSidebar}>
         {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
@@ -80,28 +73,34 @@ function TeacherDashboard() {
 
       {/* Sidebar */}
       <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-        <h2 className="sidebar-title">Tableau de Bord</h2>
+          {/* Logo */}
+          <div className="sidebar-logo">
+            <img
+              src="src/assets/images/logo.png" // Remplacez par le chemin de votre logo
+              alt="Logo"
+              className="logo-image"
+            />
+          </div>
         <ul className="sidebar-menu">
           <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
             <HomeIcon className="sidebar-icon" /> Accueil
           </li>
-          <li className="sidebar-item" onClick={() => navigate("/exams")}>
+          <li className="sidebar-item" onClick={() => navigate("/courses")}>
+              <CalendarDaysIcon className="sidebar-icon" /> Cours
+          </li>
+          <li className="sidebar-item" onClick={() => navigate("/QuizExamsPage")}>
             <CalendarDaysIcon className="sidebar-icon" /> Examens
           </li>
           <li className="sidebar-item" onClick={() => navigate("/students")}>
             <UsersIcon className="sidebar-icon" /> Étudiants
           </li>
-          <li className="sidebar-item" onClick={() => navigate("/settings")}>
-            <Cog6ToothIcon className="sidebar-icon" /> Paramètres
+          <li className="sidebar-item" onClick={() => navigate("/grades")}>
+              <UsersIcon className="sidebar-icon" /> Notes
           </li>
         </ul>
       </aside>
 
       <div className="dashboard bg-gray-100 p-6">
-        <h1 className="dashboard-title text-3xl font-bold mb-6 text-orange-500">
-          🎓 Bienvenue sur votre espace enseignant
-        </h1>
-
         <div className="stats grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="statBox bg-orange-400 text-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl font-semibold">Examens à venir</h3>

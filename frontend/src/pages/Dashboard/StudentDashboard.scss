@@ -77,6 +77,19 @@
     font-size: 14px;
   }
 
+  .sidebar-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .logo-image {
+    max-width: 50%;
+    height: auto;
+    border-radius: 10px;
+  }
+
   .actions {
     display: flex;
     justify-content: space-between;

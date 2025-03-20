@@ -4,12 +4,21 @@ import {
   getAllCourses,
   updateCourseStatus,
 } from "../../services/course/courseService";
+import {
+  HomeIcon,
+  CalendarDaysIcon,
+  UsersIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
 import "./CoursesPage.scss";
 
 function CoursesPage() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // ✅ Hook pour rediriger
+  const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
 
   useEffect(() => {
     async function fetchData() {
@@ -44,58 +53,65 @@ function CoursesPage() {
     return <p>⏳ Chargement des cours...</p>;
   }
 
-  return (
-    <div className="courses-page">
-      <h2 className="courses-title">📚 Liste des cours</h2>
+  // return (
+  //   <div className="courses-page">
+  //     <h2 className="courses-title">📚 Liste des cours</h2>
 
-      {/* ✅ Bouton pour ajouter un cours */}
-      <button
-        onClick={() => navigate("/create-course")}
-        className="add-course-btn"
-      >
-        ➕ Ajouter un cours
+  return (
+    <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
+      {/* Bouton Menu / Fermer */}
+      <button className="menu-button" onClick={toggleSidebar}>
+        {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
       </button>
 
-      {/* ✅ Affichage de tous les cours */}
-      <div className="course-list">
-        {courses.length > 0 ? (
-          courses.map((course) => (
-            <div key={course.id} className="course-card">
-              <h3 className="course-title">📖 {course.title}</h3>
-              <p className="course-info">
-                📅 <strong>Date :</strong>{" "}
-                {course.date
-                  ? new Date(course.date).toLocaleString()
-                  : "Non définie"}
-              </p>
+      {/* Sidebar */}
+      <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
+        {/* Logo */}
+        <div className="sidebar-logo">
+          <img
+            src="src/assets/images/logo.png"
+            alt="Logo"
+            className="logo-image"
+          />
+        </div>
+        <ul className="sidebar-menu">
+          <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
+            <HomeIcon className="sidebar-icon" /> Accueil
+          </li>
+          <li className="sidebar-item" onClick={() => navigate("/courses")}>
+            <CalendarDaysIcon className="sidebar-icon" /> Cours
+          </li>
+          <li
+            className="sidebar-item"
+            onClick={() => navigate("/QuizExamsPage")}
+          >
+            <CalendarDaysIcon className="sidebar-icon" /> Examens
+          </li>
+          <li className="sidebar-item" onClick={() => navigate("/students")}>
+            <UsersIcon className="sidebar-icon" /> Étudiants
+          </li>
+          <li className="sidebar-item" onClick={() => navigate("/grades")}>
+            <UsersIcon className="sidebar-icon" /> Notes
+          </li>
+        </ul>
+      </aside>
+      <div className="courses-page">
+        <h2>Liste des cours</h2>
 
-              {/* ✅ Affichage des promotions associées */}
-              <p className="course-info">
-                🏫 <strong>Promotion :</strong>{" "}
-                {course.promotions && course.promotions.length > 0
-                  ? course.promotions.map((promo) => promo.name).join(", ")
-                  : "Aucune"}
-              </p>
-
-              {/* ✅ Affichage des étudiants du cours */}
-              <p className="course-info">
-                👨‍🎓 <strong>Étudiants :</strong>{" "}
-                {course.students && course.students.length > 0
-                  ? course.students
-                      .map(
-                        (student) => `${student.firstName} ${student.lastName}`
-                      )
-                      .join(", ")
-                  : "Aucun étudiant inscrit"}
-              </p>
-
-              {/* ✅ Sélecteur pour changer le statut */}
-              <div className="course-status">
-                <label className="status-label">
-                  📌 <strong>Statut :</strong>
-                </label>
+        {/* ✅ Affichage de tous les cours */}
+        <div className="course-list">
+          {courses.length > 0 ? (
+            courses.map((course) => (
+              <div key={course.id} className="course-card">
+                <h3 className="course-title">📖 {course.title}</h3>
+                <p className="course-info">
+                  📅 <strong>Date :</strong>{" "}
+                  {course.date
+                    ? new Date(course.date).toLocaleString()
+                    : "Non définie"}
+                </p>
+                <label>Statut :</label>
                 <select
-                  className="status-select"
                   value={course.status}
                   onChange={(e) =>
                     handleStatusChange(course.id, e.target.value)
@@ -106,11 +122,11 @@ function CoursesPage() {
                   <option value="COMPLETED">Passé</option>
                 </select>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="no-courses-message">⚠️ Aucun cours trouvé.</p>
-        )}
+            ))
+          ) : (
+            <p>Aucun cours disponible.</p> // Added fallback message for empty course list
+          )}
+        </div>
       </div>
     </div>
   );
