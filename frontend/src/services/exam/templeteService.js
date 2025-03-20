@@ -8,6 +8,7 @@ const API_URL = "/exam-templates";
 export async function getExamTemplates() {
   try {
     const response = await api.get(API_URL);
+    console.log("🔍 Templates reçus de l'API :", response.data); 
     return response.data;
   } catch (error) {
     console.error("Erreur lors de la récupération des modèles d'examen :", error);

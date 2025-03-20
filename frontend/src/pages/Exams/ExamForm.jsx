@@ -20,6 +20,7 @@ const ExamForm = () => {
     async function fetchData() {
       try {
         const templateData = await getExamTemplates();
+        console.log("📌 Templates reçus :", templateData);
         const promotionData = await getPromotions();
         setTemplates(templateData);
         setPromotions(promotionData);
