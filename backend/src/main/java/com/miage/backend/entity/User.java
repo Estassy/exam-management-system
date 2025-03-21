@@ -40,7 +40,7 @@ public class User implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "promotion_id", nullable = true)
-    @JsonIgnore
+    //@JsonIgnore
     private Promotion promotion;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)

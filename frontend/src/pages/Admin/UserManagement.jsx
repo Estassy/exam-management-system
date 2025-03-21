@@ -118,13 +118,6 @@ const UserManagement = () => {
 
       console.log("✅ Utilisateur mis à jour :", updatedUser);
 
-      // ✅ Si l'utilisateur mis à jour a une promotion, récupère-la
-      if (updatedUser.promotion) {
-        const promotionData = await getPromotionById(updatedUser.promotion);
-        console.log("✅ Promotion de l'utilisateur :", promotionData);
-        updatedUser.promotion = promotionData; // ✅ Remplace l'ID par l'objet complet de la promotion
-      }
-
       // ✅ Mettre à jour la liste des utilisateurs avec la nouvelle promotion
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
