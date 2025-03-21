@@ -102,7 +102,7 @@ function CoursesPage() {
         </ul>
       </aside>
       <div className="courses-page">
-        <h2>Liste des cours</h2>
+        <h2 className="courses-title"> Liste des cours</h2>
 
         {/* ✅ Affichage de tous les cours */}
         <div className="course-list">
