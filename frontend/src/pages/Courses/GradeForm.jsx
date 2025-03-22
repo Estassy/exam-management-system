@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { getAllStudents } from "../../services/user/userService";
-import { getAllCourses } from "../../services/course/courseService"; // ✅ Correction ici
+import { getAllCourses } from "../../services/course/courseService";
 import { addGrade } from "../../services/exam/gradeService";
+import { getAllExams } from "../../services/exam/examService";
 import { useNavigate } from "react-router-dom";
 import {
   HomeIcon,
   CalendarDaysIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-import "./GradeForm.scss";
-import { getAllExams } from "../../services/exam/examService";
 import Sidebar from "../../components/UI/Sidebar";
 import logo from "../../../src/assets/images/logo.png";
+import "./GradeForm.scss";
 
 function GradeForm() {
   const navigate = useNavigate();
   const [students, setStudents] = useState([]);
-  const [courses, setCourses] = useState([]); // ✅ Correction ici
+  const [courses, setCourses] = useState([]);
+  const [exams, setExams] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedExam, setSelectedExam] = useState("");
   const [score, setScore] = useState("");
   const [message, setMessage] = useState("");
-  const [exams, setExams] = useState([]);
-  const [selectedExam, setSelectedExam] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
   const teacherMenuItems = [
     { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
     {
@@ -43,16 +46,15 @@ function GradeForm() {
     },
     { label: "Notes", icon: UsersIcon, onClick: () => navigate("/grades") },
   ];
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
 
-  // ✅ Charger les étudiants et les cours au montage du composant
   useEffect(() => {
     async function fetchData() {
       try {
-        const studentData = await getAllStudents();
-        const courseData = await getAllCourses();
-        const examData = await getAllExams();
-
+        const [studentData, courseData, examData] = await Promise.all([
+          getAllStudents(),
+          getAllCourses(),
+          getAllExams(),
+        ]);
         setStudents(studentData);
         setCourses(courseData);
         setExams(examData);
@@ -60,6 +62,7 @@ function GradeForm() {
         console.error("Erreur lors du chargement des données :", error);
       }
     }
+
     fetchData();
   }, []);
 
@@ -77,10 +80,13 @@ function GradeForm() {
         selectedExam,
         parseFloat(score)
       );
-      setMessage("Note attribuée avec succès !");
+      setMessage("✅ Note attribuée avec succès !");
       setScore("");
+      setSelectedStudent("");
+      setSelectedCourse("");
+      setSelectedExam("");
     } catch (error) {
-      setMessage("Erreur lors de l’attribution de la note.");
+      setMessage("❌ Erreur lors de l’attribution de la note.");
     }
   };
 
@@ -93,62 +99,83 @@ function GradeForm() {
         menuItems={teacherMenuItems}
       />
 
-      <div>
-        <div className="grade-page">
-          <div className="header">
-            <h2>Attribuer une note</h2>
-            <form onSubmit={handleSubmit}>
-              <select
-                value={selectedStudent}
-                onChange={(e) => setSelectedStudent(e.target.value)}
-              >
-                <option value="">Sélectionner un étudiant</option>
-                {students.map((student) => (
-                  <option key={student.id} value={student.id}>
-                    {student.firstName} {student.lastName}
-                  </option>
-                ))}
-              </select>
+      <div className="grade-page">
+        <h2>Attribuer une note</h2>
 
-              <select
-                value={selectedCourse}
-                onChange={(e) => setSelectedCourse(e.target.value)}
-              >
-                <option value="">Sélectionner un Cours</option>
-                {courses.map((course) => (
-                  <option key={course.id} value={course.id}>
-                    {course.title}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                value={selectedExam}
-                onChange={(e) => setSelectedExam(e.target.value)}
-              >
-                <option value="">Sélectionner un examen</option>
-                {exams.map((exam) => (
-                  <option key={exam.id} value={exam.id}>
-                    {exam.title}
-                  </option>
-                ))}
-              </select>
-
-              <input
-                type="number"
-                placeholder="Note"
-                value={score}
-                onChange={(e) => setScore(e.target.value)}
-                min="0"
-                max="20"
-              />
-
-              <button type="submit">Attribuer la note</button>
-            </form>
-
-            {message && <p>{message}</p>}
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="student">Étudiant</label>
+            <select
+              id="student"
+              value={selectedStudent}
+              onChange={(e) => setSelectedStudent(e.target.value)}
+            >
+              <option value="">Sélectionner un étudiant</option>
+              {students.map((student) => (
+                <option key={student.id} value={student.id}>
+                  {student.firstName} {student.lastName}
+                </option>
+              ))}
+            </select>
           </div>
-        </div>
+
+          <div className="form-group">
+            <label htmlFor="course">Cours</label>
+            <select
+              id="course"
+              value={selectedCourse}
+              onChange={(e) => setSelectedCourse(e.target.value)}
+            >
+              <option value="">Sélectionner un cours</option>
+              {courses.map((course) => (
+                <option key={course.id} value={course.id}>
+                  {course.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="exam">Examen</label>
+            <select
+              id="exam"
+              value={selectedExam}
+              onChange={(e) => setSelectedExam(e.target.value)}
+            >
+              <option value="">Sélectionner un examen</option>
+              {exams.map((exam) => (
+                <option key={exam.id} value={exam.id}>
+                  {exam.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="score">Note</label>
+            <input
+              id="score"
+              type="number"
+              placeholder="Note"
+              value={score}
+              onChange={(e) => setScore(e.target.value)}
+              min="0"
+              max="20"
+            />
+          </div>
+
+          <button type="submit">Attribuer la note</button>
+
+          {message && (
+            <div
+              className={`feedback ${
+                message.startsWith("❌") ? "error" : "success"
+              }`}
+            >
+              {message}
+            </div>
+          )}
+        </form>
       </div>
     </div>
   );
