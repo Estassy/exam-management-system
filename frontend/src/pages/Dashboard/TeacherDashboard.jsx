@@ -90,6 +90,12 @@ function TeacherDashboard() {
 
   return (
     <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        logoSrc={logo}
+        menuItems={teacherMenuItems}
+      />
       <div className="dashboard bg-gray-100 p-6">
         <div className="stats grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="statBox bg-orange-400 text-white p-6 rounded-lg shadow-lg">
@@ -105,13 +111,6 @@ function TeacherDashboard() {
             <p className="text-3xl mt-2">{courses.length}</p>
           </div>
         </div>
-
-        <Sidebar
-          isOpen={isSidebarOpen}
-          toggleSidebar={toggleSidebar}
-          logoSrc={logo}
-          menuItems={teacherMenuItems}
-        />
 
         <div className="main-content grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="calendar-container">
