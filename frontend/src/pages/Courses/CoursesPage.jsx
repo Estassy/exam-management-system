@@ -11,12 +11,46 @@ import {
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import "./CoursesPage.scss";
+import Sidebar from "../../components/UI/Sidebar";
+import logo from "../../../src/assets/images/logo.png";
 
 function CoursesPage() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
+  const teacherMenuItems = [
+    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Cours",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/courses"),
+    },
+    {
+      label: "Examens",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/QuizExamsPage"),
+    },
+    {
+      label: "Étudiants",
+      icon: UsersIcon,
+      onClick: () => navigate("/students"),
+    },
+    { label: "Notes", icon: UsersIcon, onClick: () => navigate("/grades") },
+  ];
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "ONGOING":
+        return "upcoming";
+      case "PENDING":
+        return "ongoing";
+      case "COMPLETED":
+        return "done";
+      default:
+        return "";
+    }
+  };
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
 
@@ -59,48 +93,12 @@ function CoursesPage() {
 
   return (
     <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
-      {/* Bouton Menu / Fermer */}
-      <button className="menu-button" onClick={toggleSidebar}>
-        {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
-      </button>
-
-      {/* Sidebar */}
-      <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-        {/* Logo */}
-        <div className="sidebar-logo">
-          <img
-            src="src/assets/images/logo.png"
-            alt="Logo"
-            className="logo-image"
-          />
-        </div>
-        <ul className="sidebar-menu">
-          <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
-            <HomeIcon className="sidebar-icon" /> Accueil
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/courses")}>
-            <CalendarDaysIcon className="sidebar-icon" /> Cours
-          </li>
-          <li
-            className="sidebar-item"
-            onClick={() => navigate("/QuizExamsPage")}
-          >
-            <CalendarDaysIcon className="sidebar-icon" /> Examens
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/students")}>
-            <UsersIcon className="sidebar-icon" /> Étudiants
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/grades")}>
-            <UsersIcon className="sidebar-icon" /> Notes
-          </li>
-          <li
-            className="sidebar-item"
-            onClick={() => navigate("/create-course")}
-          >
-            <UsersIcon className="sidebar-icon" /> add course
-          </li>
-        </ul>
-      </aside>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        logoSrc={logo}
+        menuItems={teacherMenuItems}
+      />
       <div className="courses-page">
         <h2 className="courses-title"> Liste des cours</h2>
 
@@ -108,7 +106,10 @@ function CoursesPage() {
         <div className="course-list">
           {courses.length > 0 ? (
             courses.map((course) => (
-              <div key={course.id} className="course-card">
+              <div
+                key={course.id}
+                className={`course-card ${getStatusClass(course.status)}`}
+              >
                 <h3 className="course-title">📖 {course.title}</h3>
                 <p className="course-info">
                   📅 <strong>Date :</strong>{" "}

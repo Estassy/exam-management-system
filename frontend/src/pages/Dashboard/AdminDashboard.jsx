@@ -11,7 +11,9 @@ import {
   UsersIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
+import Sidebar from "../../components/UI/Sidebar";
 
+import logo from "../../../src/assets/images/logo.png";
 
 const AdminDashboard = () => {
   const [recentActions, setRecentActions] = useState([
@@ -25,6 +27,20 @@ const AdminDashboard = () => {
   const [exams, setExams] = useState([]);
   const [students, setStudents] = useState([]);
   const [teacher, setTeachers] = useState([]);
+
+  const adminMenuItems = [
+    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Examens",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/exams/manage"),
+    },
+    {
+      label: "Utilisateurs",
+      icon: UsersIcon,
+      onClick: () => navigate("/users/manage"),
+    },
+  ];
 
   // Utilisation des useEffect et fonctions async proprement organisées
   useEffect(() => {
@@ -54,7 +70,8 @@ const AdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    async function fetchTeachers() { // Correction du nom de la fonction pour plus de clarté
+    async function fetchTeachers() {
+      // Correction du nom de la fonction pour plus de clarté
       try {
         const teacherData = await getAllTeachers();
         setTeachers(teacherData); // Assurez-vous d'avoir défini `setTeachers` correctement
@@ -67,61 +84,40 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-      <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
-            {/* Bouton Menu / Fermer */}
-            <button className="menu-button" onClick={toggleSidebar}>
-              {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
-            </button>
+    <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        logoSrc={logo}
+        menuItems={adminMenuItems}
+      />
 
-            {/* Sidebar */}
-          <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-              {/* Logo */}
-              <div className="sidebar-logo">
-                <img
-                  src="src/assets/images/logo.png" // Remplacez par le chemin de votre logo
-                  alt="Logo"
-                  className="logo-image"
-                />
-              </div>
-              <ul className="sidebar-menu">
-                <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
-                  <HomeIcon className="sidebar-icon" /> Accueil
-                </li>
-                <li className="sidebar-item" onClick={() => navigate("/exams/manage")}>
-                  <CalendarDaysIcon className="sidebar-icon" /> Examens
-                </li>
-                <li className="sidebar-item" onClick={() => navigate("/users/manage")}>
-                  <UsersIcon className="sidebar-icon" /> Utilisateurs
-                </li>
-              </ul>
-            </aside>
-
-          <div className="dashboard bg-gray-100 p-6">
-          <div className="stats grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="statBox bg-orange-400 text-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold">Examens</h3>
-              <p className="text-3xl mt-2">{exams.length}</p>
-            </div>
-            <div className="statBox bg-blue-500 text-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold">Étudiants</h3>
-              <p className="text-3xl mt-2">{students.length}</p>
-            </div>
-            <div className="statBox bg-green-500 text-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold">Enseignants</h3>
-              <p className="text-3xl mt-2">{teacher.length}</p>
-            </div>
+      <div className="dashboard bg-gray-100 p-6">
+        <div className="stats grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="statBox bg-orange-400 text-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-xl font-semibold">Examens</h3>
+            <p className="text-3xl mt-2">{exams.length}</p>
           </div>
-
-          <div className="recentActions">
-            <h2>📝 Actions récentes</h2>
-            <ul>
-              {recentActions.map((action, index) => (
-                <li key={index}>{action}</li>
-              ))}
-            </ul>
+          <div className="statBox bg-blue-500 text-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-xl font-semibold">Étudiants</h3>
+            <p className="text-3xl mt-2">{students.length}</p>
+          </div>
+          <div className="statBox bg-green-500 text-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-xl font-semibold">Enseignants</h3>
+            <p className="text-3xl mt-2">{teacher.length}</p>
           </div>
         </div>
+
+        <div className="recentActions">
+          <h2>📝 Actions récentes</h2>
+          <ul>
+            {recentActions.map((action, index) => (
+              <li key={index}>{action}</li>
+            ))}
+          </ul>
+        </div>
       </div>
+    </div>
   );
 };
 

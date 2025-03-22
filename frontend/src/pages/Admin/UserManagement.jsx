@@ -16,6 +16,7 @@ import {
 } from "../../services/promotion/promotionService";
 import { useNavigate } from "react-router-dom";
 import "./UserManagement.scss";
+import logo from "../../../src/assets/images/logo.png";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -176,11 +177,7 @@ const UserManagement = () => {
         }`}
       >
         <div className="user-management-sidebar-logo">
-          <img
-            src="src/assets/images/logo.png"
-            alt="Logo"
-            className="user-management-logo-image"
-          />
+          <img src={logo} alt="Logo" className="user-management-logo-image" />
         </div>
         <ul className="user-management-sidebar-menu">
           <li

@@ -8,7 +8,6 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
-    console.log("Token utilisé dans la requête :", token); 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,7 +19,13 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 403) {
+    // Vérifier si l'erreur est un 403 et que la requête n'est pas celle de login
+    if (
+      error.response &&
+      error.response.status === 403 &&
+      error.config &&
+      error.config.url !== "/login"
+    ) {
       console.warn("Token expiré. Suppression du token et redirection vers login.");
       localStorage.removeItem("token");
       localStorage.removeItem("user");
@@ -29,6 +34,7 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 
 
 export default api;

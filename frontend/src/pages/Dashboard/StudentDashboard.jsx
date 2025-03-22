@@ -13,6 +13,8 @@ import {
   UsersIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
+import Sidebar from "../../components/UI/Sidebar";
+import logo from "../../../src/assets/images/logo.png";
 
 const StudentDashboard = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -25,6 +27,17 @@ const StudentDashboard = () => {
   const [classAverage, setClassAverage] = useState(0);
   const [goal, setGoal] = useState(85);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
+
+  const studentMenuItems = [
+    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Cours",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/etudiant/cours"),
+    },
+    { label: "Quiz", icon: CalendarDaysIcon, onClick: () => navigate("/Quiz") },
+    { label: "Examens", icon: UsersIcon, onClick: () => navigate("/exams") },
+  ];
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
 
@@ -52,122 +65,99 @@ const StudentDashboard = () => {
   }, [user?.id]); // Relance l'effet uniquement si `user.id` change
 
   return (
-       <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
-            {/* Bouton Menu / Fermer */}
-            <button className="menu-button" onClick={toggleSidebar}>
-              {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
-            </button>
+    <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        logoSrc={logo}
+        menuItems={studentMenuItems}
+      />
 
-            {/* Sidebar */}
-            <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-                {/* Logo */}
-                <div className="sidebar-logo">
-                  <img
-                    src="src/assets/images/logo.png" // Remplacez par le chemin de votre logo
-                    alt="Logo"
-                    className="logo-image"
-                  />
-                </div>
-              <ul className="sidebar-menu">
-                          <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
-                            <HomeIcon className="sidebar-icon" /> Accueil
-                          </li>
-                          <li className="sidebar-item" onClick={() => navigate("/etudiant/cours")}>
-                              <CalendarDaysIcon className="sidebar-icon" /> Cours
-                          </li>
-                          <li className="sidebar-item" onClick={() => navigate("/Quiz")}>
-                            <CalendarDaysIcon className="sidebar-icon" /> Quiz
-                          </li>
-                          <li className="sidebar-item" onClick={() => navigate("/exams")}>
-                            <UsersIcon className="sidebar-icon" /> Examens
-                          </li>
-                        </ul>
-            </aside>
-        <div className="student-dashboard">
-          <section className="dashboard-section exams-section">
-            <h2>📅 Examens à venir</h2>
-            {exams.length ? (
-              <ul className="exam-list">
-                {exams.map((exam) => (
-                  <li key={exam.id} className="exam-item">
-                    <strong>{exam.title}</strong> -{" "}
-                    {new Date(exam.date).toLocaleDateString()} (
-                    {exam.location || "En ligne"})
-                    <span
-                      className={`status ${
-                        exam.status === "Confirmed"
-                          ? "status-confirmed"
-                          : "status-pending"
-                      }`}
-                    >
-                      {exam.status === "Confirmed"
-                        ? "✅ Confirmé"
-                        : "⏳ En attente"}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Aucun examen prévu</p>
-            )}
-          </section>
-
-          <section className="dashboard-section results-section">
-            <h2>📊 Résultats</h2>
-            <div className="results-container">
-              {results.map((result) => (
-                <div key={result.examId} className="result-item">
-                  <span>{result.examTitle} :</span>
-                  <strong>{result.score}%</strong>
+      <div className="student-dashboard">
+        <section className="dashboard-section exams-section">
+          <h2>📅 Examens à venir</h2>
+          {exams.length ? (
+            <ul className="exam-list">
+              {exams.map((exam) => (
+                <li key={exam.id} className="exam-item">
+                  <strong>{exam.title}</strong> -{" "}
+                  {new Date(exam.date).toLocaleDateString()} (
+                  {exam.location || "En ligne"})
                   <span
-                    className={`trend ${
-                      result.trend > 0 ? "trend-up" : "trend-down"
+                    className={`status ${
+                      exam.status === "Confirmed"
+                        ? "status-confirmed"
+                        : "status-pending"
                     }`}
                   >
-                    {result.trend > 0
-                      ? `⬆️ +${result.trend}%`
-                      : `⬇️ ${result.trend}%`}
+                    {exam.status === "Confirmed"
+                      ? "✅ Confirmé"
+                      : "⏳ En attente"}
                   </span>
-                </div>
-              ))}
-            </div>
-            <div className="progress">
-              <p>
-                Moyenne actuelle : <strong>{averageScore}%</strong>
-              </p>
-              <p>
-                Moyenne de la classe : <strong>{classAverage}%</strong>
-              </p>
-              <p>
-                🎯 Objectif personnel : <strong>{goal}%</strong>
-              </p>
-            </div>
-          </section>
-
-          <section className="dashboard-section notifications-section">
-            <h2>🔔 Notifications récentes</h2>
-            <ul className="notification-list">
-              {notifications.map((notif) => (
-                <li key={notif.id} className="notif-item">
-                  {notif.message}
                 </li>
               ))}
             </ul>
-          </section>
+          ) : (
+            <p>Aucun examen prévu</p>
+          )}
+        </section>
 
-          <div className="actions">
-            <button onClick={() => navigate("/exams")} className="primary-button">
-              📖 Voir tous les examens
-            </button>
-            <button
-              onClick={() => navigate("/quizzes")}
-              className="secondary-button"
-            >
-              📝 Faire un quiz
-            </button>
+        <section className="dashboard-section results-section">
+          <h2>📊 Résultats</h2>
+          <div className="results-container">
+            {results.map((result) => (
+              <div key={result.examId} className="result-item">
+                <span>{result.examTitle} :</span>
+                <strong>{result.score}%</strong>
+                <span
+                  className={`trend ${
+                    result.trend > 0 ? "trend-up" : "trend-down"
+                  }`}
+                >
+                  {result.trend > 0
+                    ? `⬆️ +${result.trend}%`
+                    : `⬇️ ${result.trend}%`}
+                </span>
+              </div>
+            ))}
           </div>
+          <div className="progress">
+            <p>
+              Moyenne actuelle : <strong>{averageScore}%</strong>
+            </p>
+            <p>
+              Moyenne de la classe : <strong>{classAverage}%</strong>
+            </p>
+            <p>
+              🎯 Objectif personnel : <strong>{goal}%</strong>
+            </p>
+          </div>
+        </section>
+
+        <section className="dashboard-section notifications-section">
+          <h2>🔔 Notifications récentes</h2>
+          <ul className="notification-list">
+            {notifications.map((notif) => (
+              <li key={notif.id} className="notif-item">
+                {notif.message}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <div className="actions">
+          <button onClick={() => navigate("/exams")} className="primary-button">
+            📖 Voir tous les examens
+          </button>
+          <button
+            onClick={() => navigate("/quizzes")}
+            className="secondary-button"
+          >
+            📝 Faire un quiz
+          </button>
         </div>
       </div>
+    </div>
   );
 };
 

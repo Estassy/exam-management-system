@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import "./CourseForm.scss";
 import { AuthContext } from "../../context/AuthContext";
+import Sidebar from "../../components/UI/Sidebar";
 
 function CourseForm({ onCourseCreated }) {
   const [title, setTitle] = useState("");
@@ -22,7 +23,25 @@ function CourseForm({ onCourseCreated }) {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
-
+  const teacherMenuItems = [
+    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Cours",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/courses"),
+    },
+    {
+      label: "Examens",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/QuizExamsPage"),
+    },
+    {
+      label: "Étudiants",
+      icon: UsersIcon,
+      onClick: () => navigate("/students"),
+    },
+    { label: "Notes", icon: UsersIcon, onClick: () => navigate("/grades") },
+  ];
   const { user } = useContext(AuthContext); // ✅ Récupère l'utilisateur connecté
   const teacherId = user?.id;
 
@@ -73,42 +92,12 @@ function CourseForm({ onCourseCreated }) {
 
   return (
     <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
-      {/* Bouton Menu / Fermer */}
-      <button className="menu-button" onClick={toggleSidebar}>
-        {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
-      </button>
-
-      {/* Sidebar */}
-      <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-        {/* Logo */}
-        <div className="sidebar-logo">
-          <img
-            src="src/assets/images/logo.png"
-            alt="Logo"
-            className="logo-image"
-          />
-        </div>
-        <ul className="sidebar-menu">
-          <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
-            <HomeIcon className="sidebar-icon" /> Accueil
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/courses")}>
-            <CalendarDaysIcon className="sidebar-icon" /> Cours
-          </li>
-          <li
-            className="sidebar-item"
-            onClick={() => navigate("/QuizExamsPage")}
-          >
-            <CalendarDaysIcon className="sidebar-icon" /> Examens
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/students")}>
-            <UsersIcon className="sidebar-icon" /> Étudiants
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/grades")}>
-            <UsersIcon className="sidebar-icon" /> Notes
-          </li>
-        </ul>
-      </aside>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        logoSrc={logo}
+        menuItems={teacherMenuItems}
+      />
       <div className="course-form">
         <div className="course-title">Créer un cours</div>
         <form onSubmit={handleSubmit}>

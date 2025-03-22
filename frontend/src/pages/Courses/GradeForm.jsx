@@ -10,6 +10,8 @@ import {
 } from "@heroicons/react/24/outline";
 import "./GradeForm.scss";
 import { getAllExams } from "../../services/exam/examService";
+import Sidebar from "../../components/UI/Sidebar";
+import logo from "../../../src/assets/images/logo.png";
 
 function GradeForm() {
   const navigate = useNavigate();
@@ -22,7 +24,25 @@ function GradeForm() {
   const [exams, setExams] = useState([]);
   const [selectedExam, setSelectedExam] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
-
+  const teacherMenuItems = [
+    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Cours",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/courses"),
+    },
+    {
+      label: "Examens",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/QuizExamsPage"),
+    },
+    {
+      label: "Étudiants",
+      icon: UsersIcon,
+      onClick: () => navigate("/students"),
+    },
+    { label: "Notes", icon: UsersIcon, onClick: () => navigate("/grades") },
+  ];
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
 
   // ✅ Charger les étudiants et les cours au montage du composant
@@ -66,42 +86,12 @@ function GradeForm() {
 
   return (
     <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
-      {/* Bouton Menu / Fermer */}
-      <button className="menu-button" onClick={toggleSidebar}>
-        {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
-      </button>
-
-      {/* Sidebar */}
-      <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-        {/* Logo */}
-        <div className="sidebar-logo">
-          <img
-            src="src/assets/images/logo.png"
-            alt="Logo"
-            className="logo-image"
-          />
-        </div>
-        <ul className="sidebar-menu">
-          <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
-            <HomeIcon className="sidebar-icon" /> Accueil
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/courses")}>
-            <CalendarDaysIcon className="sidebar-icon" /> Cours
-          </li>
-          <li
-            className="sidebar-item"
-            onClick={() => navigate("/QuizExamsPage")}
-          >
-            <CalendarDaysIcon className="sidebar-icon" /> Examens
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/students")}>
-            <UsersIcon className="sidebar-icon" /> Étudiants
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/grades")}>
-            <UsersIcon className="sidebar-icon" /> Notes
-          </li>
-        </ul>
-      </aside>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        logoSrc={logo}
+        menuItems={teacherMenuItems}
+      />
 
       <div>
         <div className="grade-page">

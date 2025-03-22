@@ -15,6 +15,8 @@ import {
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import { AuthContext } from "../../context/AuthContext";
+import Sidebar from "../../components/UI/Sidebar";
+import logo from "../../../src/assets/images/logo.png";
 
 function TeacherDashboard() {
   const navigate = useNavigate();
@@ -30,6 +32,26 @@ function TeacherDashboard() {
   const teacherId = user?.id; // 🏷️ Assure-toi que `id` est bien l'ID du professeur
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
+
+  const teacherMenuItems = [
+    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Cours",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/courses"),
+    },
+    {
+      label: "Examens",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/QuizExamsPage"),
+    },
+    {
+      label: "Étudiants",
+      icon: UsersIcon,
+      onClick: () => navigate("/students"),
+    },
+    { label: "Notes", icon: UsersIcon, onClick: () => navigate("/grades") },
+  ];
 
   useEffect(() => {
     async function fetchStudents() {
@@ -68,43 +90,6 @@ function TeacherDashboard() {
 
   return (
     <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
-      {/* Bouton Menu / Fermer */}
-      <button className="menu-button" onClick={toggleSidebar}>
-        {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
-      </button>
-
-      {/* Sidebar */}
-      <aside className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
-        {/* Logo */}
-        <div className="sidebar-logo">
-          <img
-            src="src/assets/images/logo.png"
-            alt="Logo"
-            className="logo-image"
-          />
-        </div>
-        <ul className="sidebar-menu">
-          <li className="sidebar-item" onClick={() => navigate("/dashboard")}>
-            <HomeIcon className="sidebar-icon" /> Accueil
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/courses")}>
-            <CalendarDaysIcon className="sidebar-icon" /> Cours
-          </li>
-          <li
-            className="sidebar-item"
-            onClick={() => navigate("/QuizExamsPage")}
-          >
-            <CalendarDaysIcon className="sidebar-icon" /> Examens
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/students")}>
-            <UsersIcon className="sidebar-icon" /> Étudiants
-          </li>
-          <li className="sidebar-item" onClick={() => navigate("/grades")}>
-            <UsersIcon className="sidebar-icon" /> Notes
-          </li>
-        </ul>
-      </aside>
-
       <div className="dashboard bg-gray-100 p-6">
         <div className="stats grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="statBox bg-orange-400 text-white p-6 rounded-lg shadow-lg">
@@ -120,6 +105,13 @@ function TeacherDashboard() {
             <p className="text-3xl mt-2">{courses.length}</p>
           </div>
         </div>
+
+        <Sidebar
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          logoSrc={logo}
+          menuItems={teacherMenuItems}
+        />
 
         <div className="main-content grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="calendar-container">
