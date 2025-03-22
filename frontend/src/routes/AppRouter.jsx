@@ -26,6 +26,7 @@ import UserManagement from "../pages/Admin/UserManagement";
 import CoursesPage from "../pages/Courses/CoursesPage";
 import GradeForm from "../pages/Courses/GradeForm";
 import TakeExamPage from "../pages/Exams/TakeExamPage";
+import StudentCoursePage from "../pages/Courses/StudentCoursePage ";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -114,6 +115,14 @@ const AppRouter = () => {
             element={
               <ProtectedRoute allowedRoles={["STUDENT"]}>
                 <ExamList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/etudiant/cours"
+            element={
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
+                <StudentCoursePage />
               </ProtectedRoute>
             }
           />
