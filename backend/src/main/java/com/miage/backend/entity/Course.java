@@ -24,7 +24,7 @@ public class Course {
     @Enumerated(EnumType.STRING)
     private CourseStatus status = CourseStatus.PENDING;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "course_students",
             joinColumns = @JoinColumn(name = "course_id"),
@@ -32,13 +32,14 @@ public class Course {
     )
     private Set<User> students = new HashSet<>();
 
+
     @ManyToMany
     @JoinTable(
             name = "course_promotion",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "promotion_id")
     )
-    @JsonIgnore
+//     @JsonIgnore
     private Set<Promotion> promotions = new HashSet<>();
 
     @OneToMany(mappedBy = "course")
