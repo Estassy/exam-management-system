@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllQuizzes } from "../../services/quiz/quizService";
+import "./QuizList.scss";
 
 const QuizList = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -24,10 +25,12 @@ const QuizList = () => {
       {quizzes.length === 0 ? (
         <p>Aucun quiz disponible.</p>
       ) : (
-        <ul>
+        <ul className="quiz-items">
           {quizzes.map((quiz) => (
-            <li key={quiz.id}>
-              {quiz.title}
+            <li key={quiz.id} className="quiz-item">
+              <div className="quiz-info">
+                <strong>{quiz.title}</strong>
+              </div>
               <button onClick={() => navigate(`/quiz/${quiz.id}`)}>
                 ▶ Commencer
               </button>

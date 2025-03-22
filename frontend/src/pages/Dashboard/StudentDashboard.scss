@@ -1,80 +1,166 @@
 .student-dashboard {
-  padding: 20px;
-  max-width: 900px;
-  margin: auto;
-  font-family: Arial, sans-serif;
+  max-width: 1000px;
+  margin: 30px auto;
+  font-family: "Inter", sans-serif;
 
   .dashboard-title {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    color: #1e293b;
   }
 
   .dashboard-section {
     background: #f8f9fc;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #1e293b;
+    }
   }
 
-  .exam-list, .notification-list {
+  .exam-list,
+  .notification-list {
     list-style: none;
     padding: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 6px;
+
+    // Scrollbar personnalisée (optionnel)
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 3px;
+    }
   }
 
-  .exam-item, .notif-item {
-    padding: 10px;
+  .exam-item,
+  .notif-item {
+    padding: 12px 15px;
     background: white;
-    border-radius: 5px;
+    border-radius: 6px;
     margin-bottom: 10px;
+    font-size: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   }
 
   .status {
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 5px 12px;
+    border-radius: 6px;
     font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
   }
+
   .status-confirmed {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: #dcfce7;
+    color: #15803d;
   }
+
   .status-pending {
-    background-color: #fff3cd;
-    color: #856404;
+    background-color: #fef9c3;
+    color: #a16207;
   }
 
   .results-container {
     display: flex;
     flex-direction: column;
+    gap: 12px;
   }
 
   .result-item {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    align-items: center;
+    padding: 12px 15px;
     background: white;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    border-radius: 6px;
+    border-left: 5px solid #0d9488;
   }
 
   .trend-up {
-    color: green;
+    color: #16a34a;
   }
+
   .trend-down {
-    color: red;
+    color: #dc2626;
   }
 
   .progress {
-    padding: 10px;
+    padding: 15px;
     background: white;
-    border-radius: 5px;
-    margin-top: 10px;
-    font-size: 14px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+    p {
+      margin: 6px 0;
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+
+    @media (min-width: 600px) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .primary-button,
+  .secondary-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .primary-button {
+    background-color: #0f172a;
+    color: white;
+
+    &:hover {
+      background-color: #1e3a8a;
+      transform: scale(1.03);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+
+  .secondary-button {
+    background-color: #10b981;
+    color: white;
+
+    &:hover {
+      background-color: #059669;
+      transform: scale(1.03);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
   }
 
   .sidebar-logo {
@@ -88,35 +174,5 @@
     max-width: 50%;
     height: auto;
     border-radius: 10px;
-  }
-
-  .actions {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .primary-button, .secondary-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s;
-  }
-
-  .primary-button {
-    background-color: #007bff;
-    color: white;
-  }
-  .primary-button:hover {
-    background-color: #0056b3;
-  }
-
-  .secondary-button {
-    background-color: #28a745;
-    color: white;
-  }
-  .secondary-button:hover {
-    background-color: #218838;
   }
 }

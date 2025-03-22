@@ -1,40 +1,87 @@
 import React, { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 import { getAllExams } from "../../services/exam/examService";
+import "./ExamList.scss";
+
+const groupByMonth = (exams) => {
+  return exams.reduce((acc, exam) => {
+    const month = new Date(exam.date).toLocaleString("default", {
+      month: "long",
+      year: "numeric",
+    });
+    if (!acc[month]) acc[month] = [];
+    acc[month].push(exam);
+    return acc;
+  }, {});
+};
 
 const ExamList = () => {
   const [exams, setExams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchExams() {
       try {
         const data = await getAllExams();
-        setExams(data);
+        const sorted = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        setExams(sorted);
       } catch (error) {
         console.error("Erreur lors de la récupération des examens :", error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchExams();
   }, []);
 
+  const filteredExams = exams.filter((exam) =>
+    exam.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const groupedExams = groupByMonth(filteredExams);
+
   return (
-    <div className="exam-list">
-      <h2>📘 Liste des Examens</h2>
-      {exams.length === 0 ? (
-        <p>Aucun examen disponible.</p>
+    <div className="exam-list-container">
+      <h2 className="exam-title">📘 Examens à venir</h2>
+
+      <input
+        className="exam-search"
+        type="text"
+        placeholder="🔍 Rechercher un examen..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
+      {loading ? (
+        <p className="loading">Chargement des examens...</p>
+      ) : filteredExams.length === 0 ? (
+        <p className="empty">Aucun examen trouvé.</p>
       ) : (
-        <ul>
-          {exams.map((exam) => (
-            <li key={exam.id}>
-              {exam.title} - {new Date(exam.date).toLocaleDateString()}
-              <button onClick={() => navigate(`/exam/${exam.id}`)}>
-                📄 Voir
-              </button>
-            </li>
-          ))}
-        </ul>
+        Object.entries(groupedExams).map(([month, exams]) => (
+          <div key={month} className="exam-month-group">
+            <h3 className="month-heading">{month}</h3>
+            <ul className="exam-list">
+              {exams.map((exam) => (
+                <li key={exam.id} className="exam-item">
+                  <div className="exam-info">
+                    <span className="exam-name">{exam.title}</span>
+                    <span className="exam-date">
+                      {new Date(exam.date).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <button
+                    className="view-button"
+                    onClick={() => navigate(`/exam/${exam.id}`)}
+                  >
+                    📄 Voir
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
       )}
     </div>
   );

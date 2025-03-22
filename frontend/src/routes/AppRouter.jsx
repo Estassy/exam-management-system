@@ -25,6 +25,7 @@ import ExamList from "../pages/Exams/ExamList";
 import UserManagement from "../pages/Admin/UserManagement";
 import CoursesPage from "../pages/Courses/CoursesPage";
 import GradeForm from "../pages/Courses/GradeForm";
+import TakeExamPage from "../pages/Exams/TakeExamPage";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -97,6 +98,14 @@ const AppRouter = () => {
             element={
               <ProtectedRoute allowedRoles={["STUDENT"]}>
                 <QuizList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/exam/:id"
+            element={
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
+                <TakeExamPage />
               </ProtectedRoute>
             }
           />

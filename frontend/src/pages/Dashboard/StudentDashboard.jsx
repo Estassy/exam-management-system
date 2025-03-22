@@ -35,7 +35,11 @@ const StudentDashboard = () => {
       icon: CalendarDaysIcon,
       onClick: () => navigate("/etudiant/cours"),
     },
-    { label: "Quiz", icon: CalendarDaysIcon, onClick: () => navigate("/Quiz") },
+    {
+      label: "Quiz",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/quizzes"),
+    },
     { label: "Examens", icon: UsersIcon, onClick: () => navigate("/exams") },
   ];
 
