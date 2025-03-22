@@ -9,6 +9,7 @@ import {
   CalendarDaysIcon,
   UsersIcon,
   Cog6ToothIcon,
+  PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 import "./CoursesPage.scss";
 import Sidebar from "../../components/UI/Sidebar";
@@ -27,6 +28,11 @@ function CoursesPage() {
       onClick: () => navigate("/courses"),
     },
     {
+      label: "Créer un cours", // ✅ Nouveau bouton
+      icon: PlusCircleIcon,
+      onClick: () => navigate("/create-course"),
+    },
+    {
       label: "Examens",
       icon: CalendarDaysIcon,
       onClick: () => navigate("/QuizExamsPage"),
@@ -36,9 +42,12 @@ function CoursesPage() {
       icon: UsersIcon,
       onClick: () => navigate("/students"),
     },
-    { label: "Notes", icon: UsersIcon, onClick: () => navigate("/grades") },
+    {
+      label: "Notes",
+      icon: UsersIcon,
+      onClick: () => navigate("/grades"),
+    },
   ];
-
   const getStatusClass = (status) => {
     switch (status) {
       case "ONGOING":
@@ -86,10 +95,6 @@ function CoursesPage() {
   if (loading) {
     return <p>⏳ Chargement des cours...</p>;
   }
-
-  // return (
-  //   <div className="courses-page">
-  //     <h2 className="courses-title">📚 Liste des cours</h2>
 
   return (
     <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>

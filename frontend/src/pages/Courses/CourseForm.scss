@@ -1,96 +1,118 @@
 .course-form {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  width: 100%;
+  margin: 3rem auto;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
   text-align: center;
 
   .course-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    color: #333;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #ce8738;
+  }
+
+  form {
+    text-align: left;
   }
 
   .form-group {
-    margin-bottom: 1rem;
-    text-align: left;
+    margin-bottom: 1.8rem;
 
     .form-label {
       display: block;
-      font-size: 16px;
+      font-size: 1rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
-      color: #333;
+      color: #374151;
     }
 
     .form-input,
     .form-select {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #d5dae2;
-      border-radius: 5px;
-      font-size: 14px;
-      background: #f8f9fa;
-      transition: border 0.3s ease;
+      padding: 12px;
+      font-size: 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background-color: #f9fafb;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
 
       &:focus {
-        border-color: #4a90e2;
+        border-color: #ea580c;
+        box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.3);
+        background: #ffffff;
         outline: none;
-        background: white;
       }
     }
 
     .form-select {
-      height: 45px;
-      appearance: none; // ✅ Désactive le style natif des selects
-      background: white;
+      appearance: none;
+      height: 48px;
       cursor: pointer;
     }
   }
 
   .error-text {
-    font-size: 14px;
-    color: red;
-    margin-top: 5px;
+    color: #dc2626;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
     display: block;
   }
 
   .submit-btn {
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    background: black;
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
     color: white;
+    background-color: black;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 
     &:hover {
-      background-color: #ce8738;
+      background-color: #ea580c;
+    }
+
+    &:active {
+      background-color: #d97706;
+      transform: scale(0.98);
     }
   }
 
   .message {
-    margin-top: 1rem;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 5px;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 8px;
 
     &.success {
-      background: #e3fcef;
-      color: #2e7d32;
-      border: 1px solid #2e7d32;
+      background-color: #ecfdf5;
+      color: #047857;
+      border: 1px solid #10b981;
     }
 
     &.error {
-      background: #fdecea;
-      color: #c62828;
-      border: 1px solid #c62828;
+      background-color: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #ef4444;
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 2rem 1rem;
+
+    .course-title {
+      font-size: 1.5rem;
+    }
+
+    .submit-btn {
+      font-size: 1rem;
+      padding: 12px;
     }
   }
 }

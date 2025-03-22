@@ -7,6 +7,7 @@ import {
   CalendarDaysIcon,
   UsersIcon,
   Cog6ToothIcon,
+  PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 import "./StudentListPage.scss";
 import Sidebar from "../../components/UI/Sidebar";
@@ -27,6 +28,11 @@ const StudentListPage = () => {
       onClick: () => navigate("/courses"),
     },
     {
+      label: "Créer un cours", // ✅ Nouveau bouton
+      icon: PlusCircleIcon,
+      onClick: () => navigate("/create-course"),
+    },
+    {
       label: "Examens",
       icon: CalendarDaysIcon,
       onClick: () => navigate("/QuizExamsPage"),
@@ -36,7 +42,11 @@ const StudentListPage = () => {
       icon: UsersIcon,
       onClick: () => navigate("/students"),
     },
-    { label: "Notes", icon: UsersIcon, onClick: () => navigate("/grades") },
+    {
+      label: "Notes",
+      icon: UsersIcon,
+      onClick: () => navigate("/grades"),
+    },
   ];
 
   useEffect(() => {

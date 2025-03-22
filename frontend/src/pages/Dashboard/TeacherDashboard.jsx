@@ -13,6 +13,8 @@ import {
   CalendarDaysIcon,
   UsersIcon,
   Cog6ToothIcon,
+  PencilSquareIcon,
+  PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 import { AuthContext } from "../../context/AuthContext";
 import Sidebar from "../../components/UI/Sidebar";
@@ -30,6 +32,9 @@ function TeacherDashboard() {
 
   const { user } = useContext(AuthContext); // ✅ Récupération de l'utilisateur connecté
   const teacherId = user?.id; // 🏷️ Assure-toi que `id` est bien l'ID du professeur
+  const getExamDays = () => {
+    return exams.map((exam) => new Date(exam.date).toDateString());
+  };
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
 
@@ -41,6 +46,11 @@ function TeacherDashboard() {
       onClick: () => navigate("/courses"),
     },
     {
+      label: "Créer un cours", // ✅ Nouveau bouton
+      icon: PlusCircleIcon,
+      onClick: () => navigate("/create-course"),
+    },
+    {
       label: "Examens",
       icon: CalendarDaysIcon,
       onClick: () => navigate("/QuizExamsPage"),
@@ -50,7 +60,11 @@ function TeacherDashboard() {
       icon: UsersIcon,
       onClick: () => navigate("/students"),
     },
-    { label: "Notes", icon: UsersIcon, onClick: () => navigate("/grades") },
+    {
+      label: "Notes",
+      icon: UsersIcon,
+      onClick: () => navigate("/grades"),
+    },
   ];
 
   useEffect(() => {
@@ -58,7 +72,7 @@ function TeacherDashboard() {
       try {
         const studentData = await getAllStudents();
         const courseData = await getCoursesByTeacher(teacherId);
-        setCourses(courseData.length);
+        setCourses(courseData);
         console.log("👩‍🎓 course récupérés :", courseData);
         setStudents(studentData);
 
@@ -119,13 +133,26 @@ function TeacherDashboard() {
               onChange={setSelectedDate}
               value={selectedDate}
               className="custom-calendar"
+              tileContent={({ date, view }) => {
+                if (view === "month") {
+                  const examDays = exams.map((exam) =>
+                    new Date(exam.date).toDateString()
+                  );
+
+                  if (examDays.includes(date.toDateString())) {
+                    return <div className="exam-dot" />;
+                  }
+                }
+                return null;
+              }}
             />
-            <div className="mt-4">
-              <h3 className="font-medium">Examens programmés :</h3>
+
+            <div className="exam-list">
+              <h3 className="exam-title">Examens programmés :</h3>
               {exams.map((exam) => (
-                <p key={exam.id} className="mt-2 text-gray-600">
-                  📌 {exam.title} - {new Date(exam.date).toLocaleDateString()}
-                </p>
+                <div key={exam.id} className="exam-item">
+                  {exam.title} – {new Date(exam.date).toLocaleDateString()}
+                </div>
               ))}
             </div>
           </div>

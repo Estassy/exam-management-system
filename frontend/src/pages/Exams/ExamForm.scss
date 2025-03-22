@@ -1,96 +1,98 @@
 .exam-form {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  max-width: 700px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: "Poppins", sans-serif;
 
   .exam-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    color: #333;
+    font-size: 26px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
   }
 
   .form-group {
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
     text-align: left;
 
     .form-label {
-      display: block;
       font-size: 16px;
       font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #333;
+      color: #475569;
+      margin-bottom: 8px;
     }
 
     .form-input,
     .form-select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #d5dae2;
-      border-radius: 5px;
-      font-size: 14px;
-      background: #f8f9fa;
-      transition: border 0.3s ease;
+      padding: 12px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
 
       &:focus {
-        border-color: #4a90e2;
         outline: none;
+        border-color: #ea580c;
         background: white;
+        box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.2);
       }
     }
-
-    .form-select {
-      height: 45px;
-      appearance: none; // ✅ Désactive le style natif des selects
-      background: white;
-      cursor: pointer;
-    }
-  }
-
-  .error-text {
-    font-size: 14px;
-    color: red;
-    margin-top: 5px;
-    display: block;
   }
 
   .submit-btn {
-    width: 100%;
-    padding: 12px;
+    padding: 14px;
     font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
+    font-weight: 600;
     background: black;
     color: white;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.3s ease, transform 0.2s;
 
     &:hover {
-      background-color: #ce8738;
+      background-color: #ea580c;
+      transform: scale(1.03);
+    }
+
+    &:active {
+      background-color: #d97706;
+      transform: scale(0.98);
     }
   }
 
-  .message {
+  .message,
+  .success,
+  .error {
     margin-top: 1rem;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 5px;
+    font-size: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+  }
 
-    &.success {
-      background: #e3fcef;
-      color: #2e7d32;
-      border: 1px solid #2e7d32;
-    }
+  .success {
+    background-color: #dcfce7;
+    color: #15803d;
+    border: 1px solid #15803d;
+  }
 
-    &.error {
-      background: #fdecea;
-      color: #c62828;
-      border: 1px solid #c62828;
-    }
+  .error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #b91c1c;
   }
 }
