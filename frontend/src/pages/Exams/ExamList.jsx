@@ -6,9 +6,9 @@ import Sidebar from "../../components/UI/Sidebar";
 import logo from "../../../src/assets/images/logo.png";
 import {
   HomeIcon,
-  CalendarDaysIcon,
-  UsersIcon,
-  Cog6ToothIcon,
+  BookOpenIcon,
+  ClipboardDocumentListIcon,
+  CalendarIcon,
 } from "@heroicons/react/24/outline";
 
 const groupByMonth = (exams) => {
@@ -32,18 +32,26 @@ const ExamList = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const studentMenuItems = [
-    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Accueil",
+      icon: HomeIcon,
+      onClick: () => navigate("/dashboard"),
+    },
     {
       label: "Cours",
-      icon: CalendarDaysIcon,
+      icon: BookOpenIcon,
       onClick: () => navigate("/etudiant/cours"),
     },
     {
       label: "Quiz",
-      icon: CalendarDaysIcon,
+      icon: ClipboardDocumentListIcon,
       onClick: () => navigate("/quizzes"),
     },
-    { label: "Examens", icon: UsersIcon, onClick: () => navigate("/exams") },
+    {
+      label: "Examens",
+      icon: CalendarIcon,
+      onClick: () => navigate("/exams"),
+    },
   ];
 
   useEffect(() => {

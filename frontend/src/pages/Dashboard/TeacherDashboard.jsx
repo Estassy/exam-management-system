@@ -98,10 +98,8 @@ function TeacherDashboard() {
         const studentData = await getAllStudents();
         const courseData = await getCoursesByTeacher(teacherId);
         const notifs = await getNotificationsByUser(teacherId);
-        console.log("🔔 Notifications récupérées :", notifs);
         setNotifications(notifs);
         setCourses(courseData);
-        console.log("👩‍🎓 course récupérés :", courseData);
         setStudents(studentData);
 
         const gradesData = {};
@@ -154,7 +152,7 @@ function TeacherDashboard() {
           </div>
         </div>
 
-        <div className="main-content grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="main-content grid grid-cols-1 md:grid-cols-2 gap-6 ">
           <div className="calendar-container">
             <h2 className="text-lg font-bold mb-4">Calendrier des Examens</h2>
             <Calendar

@@ -6,8 +6,10 @@ import {
   getStudentResults,
 } from "../../services/grade/gradeService";
 import {
+  deleteNotification,
   getNotifications,
   getNotificationsByUser,
+  markNotificationAsRead,
 } from "../../services/notification/notificationService";
 import { AuthContext } from "../../context/AuthContext";
 import { getUserById } from "../../services/user/userService";
@@ -15,9 +17,11 @@ import Sidebar from "../../components/UI/Sidebar";
 import logo from "../../../src/assets/images/logo.png";
 import {
   HomeIcon,
-  CalendarDaysIcon,
-  UsersIcon,
+  BookOpenIcon,
+  ClipboardDocumentListIcon,
+  CalendarIcon,
 } from "@heroicons/react/24/outline";
+
 import {
   LineChart,
   Line,
@@ -41,18 +45,26 @@ const StudentDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const studentMenuItems = [
-    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Accueil",
+      icon: HomeIcon,
+      onClick: () => navigate("/dashboard"),
+    },
     {
       label: "Cours",
-      icon: CalendarDaysIcon,
+      icon: BookOpenIcon,
       onClick: () => navigate("/etudiant/cours"),
     },
     {
       label: "Quiz",
-      icon: CalendarDaysIcon,
+      icon: ClipboardDocumentListIcon,
       onClick: () => navigate("/quizzes"),
     },
-    { label: "Examens", icon: UsersIcon, onClick: () => navigate("/exams") },
+    {
+      label: "Examens",
+      icon: CalendarIcon,
+      onClick: () => navigate("/exams"),
+    },
   ];
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -63,9 +75,6 @@ const StudentDashboard = () => {
 
       try {
         const fullUserData = await getUserById(user.id);
-
-        console.log("👩‍🎓 Données utilisateur récupérées :", fullUserData);
-
         setUser(fullUserData);
 
         const [examsData, resultsData, notificationsData, avg, promoAvg] =
@@ -79,7 +88,6 @@ const StudentDashboard = () => {
 
         setExams(examsData);
         setResults(resultsData);
-        console.log("📊 Résultats récupérés :", resultsData);
         setNotifications(notificationsData);
         setAverageScore(avg);
         setClassAverage(promoAvg);
@@ -185,7 +193,33 @@ const StudentDashboard = () => {
               <ul className="student-notification-list">
                 {notifications.map((notif) => (
                   <li key={notif.id} className={`student-notif ${notif.type}`}>
-                    {notif.message}
+                    <span className="notif-message">📢 {notif.message}</span>
+                    <div className="notif-buttons">
+                      <button
+                        className="notif-btn read"
+                        onClick={async () => {
+                          await markNotificationAsRead(notif.id);
+                          setNotifications((prev) =>
+                            prev.map((n) =>
+                              n.id === notif.id ? { ...n, read: true } : n
+                            )
+                          );
+                        }}
+                      >
+                        Lu
+                      </button>
+                      <button
+                        className="notif-btn delete"
+                        onClick={async () => {
+                          await deleteNotification(notif.id);
+                          setNotifications((prev) =>
+                            prev.filter((n) => n.id !== notif.id)
+                          );
+                        }}
+                      >
+                        ❌ Supprimer
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>

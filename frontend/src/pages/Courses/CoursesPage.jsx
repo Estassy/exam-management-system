@@ -84,7 +84,6 @@ function CoursesPage() {
     async function fetchData() {
       try {
         const data = await getAllCourses();
-        console.log("✅ Cours récupérés :", data); // Debugging
         setCourses(data);
       } catch (error) {
         console.error("❌ Erreur lors de la récupération des cours :", error);

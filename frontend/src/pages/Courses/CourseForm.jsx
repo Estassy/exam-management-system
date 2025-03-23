@@ -101,8 +101,6 @@ function CourseForm({ onCourseCreated }) {
         teacherId, // ✅ Ajout de l'ID du professeur
         promotions: selectedPromotion ? [{ id: selectedPromotion }] : [], // ✅ Envoie un tableau d'objets avec l'ID de la promotion.
       };
-      console.log("📤 Données envoyées au backend :", newCourse);
-
       await createCourse(newCourse, teacherId);
       setConfirmation("Cours créé avec succès !");
       setError("");

@@ -44,9 +44,7 @@ const UserManagement = () => {
   useEffect(() => {
     async function fetchUsers() {
       const usersData = await getAllUsers();
-      console.log("✅ Utilisateurs reçus :", usersData);
       const promotionData = await getPromotions();
-      console.log("✅ Promotions reçues :", promotionData);
       setPromotions(promotionData);
       setUsers(usersData);
       setFilteredUsers(usersData);
@@ -112,14 +110,10 @@ const UserManagement = () => {
 
   const handleEditUser = async (e) => {
     e.preventDefault();
-    console.log("Données envoyées pour modification :", newUser);
 
     try {
       const updatedUser = await updateUser(isEditingUser, newUser);
 
-      console.log("✅ Utilisateur mis à jour :", updatedUser);
-
-      // ✅ Mettre à jour la liste des utilisateurs avec la nouvelle promotion
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.id === updatedUser.id ? { ...updatedUser } : user
@@ -130,8 +124,6 @@ const UserManagement = () => {
           user.id === updatedUser.id ? { ...updatedUser } : user
         )
       );
-
-      console.log("setFilteredUsers", filteredUsers);
 
       setIsEditingUser(null);
       setNewUser({
@@ -147,7 +139,6 @@ const UserManagement = () => {
     }
   };
 
-  // ❌ Supprimer un utilisateur
   const handleDeleteUser = async (userId) => {
     if (!window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?"))
       return;

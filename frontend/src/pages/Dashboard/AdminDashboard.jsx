@@ -15,6 +15,10 @@ import Sidebar from "../../components/UI/Sidebar";
 
 import logo from "../../../src/assets/images/logo.png";
 import { useNotifications } from "../../context/NotificationContext";
+import {
+  deleteNotification,
+  markNotificationAsRead,
+} from "../../services/notification/notificationService";
 
 const AdminDashboard = () => {
   const [recentActions, setRecentActions] = useState([]);
@@ -40,14 +44,9 @@ const AdminDashboard = () => {
     },
   ];
 
-  useEffect(() => {
-    const mapped = notifications.map((n) => ` ${n.message}`);
-
-    setRecentActions((prev) => {
-      const unique = new Set([...mapped, ...prev]); // filtre les doublons
-      return Array.from(unique);
-    });
-  }, [notifications]);
+  const uniqueNotifications = notifications.filter(
+    (notif, index, self) => index === self.findIndex((n) => n.id === notif.id)
+  );
 
   // Utilisation des useEffect et fonctions async proprement organisées
   useEffect(() => {
@@ -91,7 +90,9 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
+    <div
+      className={`admin-dashboard-container ${isSidebarOpen ? "shifted" : ""}`}
+    >
       <Sidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
@@ -99,26 +100,50 @@ const AdminDashboard = () => {
         menuItems={adminMenuItems}
       />
 
-      <div className="dashboard bg-gray-100 p-6">
-        <div className="stats grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="statBox bg-orange-400 text-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold">Examens</h3>
-            <p className="text-3xl mt-2">{exams.length}</p>
+      <div className="admin-dashboard-wrapper">
+        <div className="admin-stats">
+          <div className="admin-stat-box">
+            <h3>Examens</h3>
+            <p>{exams.length}</p>
           </div>
-          <div className="statBox bg-blue-500 text-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold">Étudiants</h3>
-            <p className="text-3xl mt-2">{students.length}</p>
+          <div className="admin-stat-box">
+            <h3>Étudiants</h3>
+            <p>{students.length}</p>
           </div>
-          <div className="statBox bg-green-500 text-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold">Enseignants</h3>
-            <p className="text-3xl mt-2">{teacher.length}</p>
+          <div className="admin-stat-box">
+            <h3>Enseignants</h3>
+            <p>{teacher.length}</p>
           </div>
         </div>
-        <div className="recentActions bg-white rounded-lg shadow-md p-4 mt-4">
-          <h2 className="text-lg font-bold mb-2">🔔 Actions récentes</h2>
-          <ul className="list-disc list-inside text-gray-700">
-            {recentActions.map((action, index) => (
-              <li key={index}>{action}</li>
+
+        <div className="admin-notifications">
+          <h2 className="admin-notif-title">🔔 Actions récentes</h2>
+          <ul className="admin-notif-list">
+            {uniqueNotifications.map((notif) => (
+              <li
+                key={notif.id}
+                className={`admin-notif-item ${notif.read ? "read" : ""}`}
+              >
+                <span className="admin-notif-message">📢 {notif.message}</span>
+                <div className="admin-notif-buttons">
+                  <button
+                    className="admin-notif-btn read"
+                    onClick={async () => {
+                      await markNotificationAsRead(notif.id);
+                    }}
+                  >
+                    Lu
+                  </button>
+                  <button
+                    className="admin-notif-btn delete"
+                    onClick={async () => {
+                      await deleteNotification(notif.id);
+                    }}
+                  >
+                    ❌ Supprimer
+                  </button>
+                </div>
+              </li>
             ))}
           </ul>
         </div>
