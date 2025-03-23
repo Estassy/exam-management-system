@@ -137,10 +137,10 @@ backend/
 
 ## 📸 Aperçu
 
-![Login](./src/assets/images//login.png)
-![AdminDashboard](./screenshots/dashboard.png)
-![TeacherDashboard](./screenshots/dashboard.png)
-![StudentDashboard](./screenshots/dashboard.png)
+![Login](./frontend/src/assets/images//login.png)
+![AdminDashboard](./frontend/screenshots/dashboard.png)
+![TeacherDashboard](./frontend/screenshots/dashboard.png)
+![StudentDashboard](./frontend/screenshots/dashboard.png)
 
 ---
 
