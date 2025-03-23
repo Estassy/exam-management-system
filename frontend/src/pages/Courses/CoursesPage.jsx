@@ -8,8 +8,11 @@ import {
   HomeIcon,
   CalendarDaysIcon,
   UsersIcon,
-  Cog6ToothIcon,
+  PencilSquareIcon,
   PlusCircleIcon,
+  ClipboardDocumentListIcon,
+  DocumentDuplicateIcon,
+  AcademicCapIcon,
 } from "@heroicons/react/24/outline";
 import "./CoursesPage.scss";
 import Sidebar from "../../components/UI/Sidebar";
@@ -21,14 +24,18 @@ function CoursesPage() {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
   const teacherMenuItems = [
-    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Accueil",
+      icon: HomeIcon,
+      onClick: () => navigate("/dashboard"),
+    },
     {
       label: "Cours",
-      icon: CalendarDaysIcon,
+      icon: ClipboardDocumentListIcon,
       onClick: () => navigate("/courses"),
     },
     {
-      label: "Créer un cours", // ✅ Nouveau bouton
+      label: "Créer un cours",
       icon: PlusCircleIcon,
       onClick: () => navigate("/create-course"),
     },
@@ -38,13 +45,23 @@ function CoursesPage() {
       onClick: () => navigate("/QuizExamsPage"),
     },
     {
+      label: "Créer un examen",
+      icon: PencilSquareIcon,
+      onClick: () => navigate("/create-exam"),
+    },
+    {
+      label: "Créer un quiz",
+      icon: DocumentDuplicateIcon,
+      onClick: () => navigate("/create-quiz"),
+    },
+    {
       label: "Étudiants",
       icon: UsersIcon,
       onClick: () => navigate("/students"),
     },
     {
       label: "Notes",
-      icon: UsersIcon,
+      icon: AcademicCapIcon,
       onClick: () => navigate("/grades"),
     },
   ];

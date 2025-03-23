@@ -7,9 +7,11 @@ import {
   HomeIcon,
   CalendarDaysIcon,
   UsersIcon,
-  Cog6ToothIcon,
   PencilSquareIcon,
   PlusCircleIcon,
+  ClipboardDocumentListIcon,
+  DocumentDuplicateIcon,
+  AcademicCapIcon,
 } from "@heroicons/react/24/outline";
 import Sidebar from "../../components/UI/Sidebar";
 import logo from "../../../src/assets/images/logo.png";
@@ -29,10 +31,14 @@ const QuizForm = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const teacherMenuItems = [
-    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Accueil",
+      icon: HomeIcon,
+      onClick: () => navigate("/dashboard"),
+    },
     {
       label: "Cours",
-      icon: CalendarDaysIcon,
+      icon: ClipboardDocumentListIcon,
       onClick: () => navigate("/courses"),
     },
     {
@@ -46,17 +52,26 @@ const QuizForm = () => {
       onClick: () => navigate("/QuizExamsPage"),
     },
     {
+      label: "Créer un examen",
+      icon: PencilSquareIcon,
+      onClick: () => navigate("/create-exam"),
+    },
+    {
+      label: "Créer un quiz",
+      icon: DocumentDuplicateIcon,
+      onClick: () => navigate("/create-quiz"),
+    },
+    {
       label: "Étudiants",
       icon: UsersIcon,
       onClick: () => navigate("/students"),
     },
     {
       label: "Notes",
-      icon: UsersIcon,
+      icon: AcademicCapIcon,
       onClick: () => navigate("/grades"),
     },
   ];
-
   useEffect(() => {
     async function fetchData() {
       setTemplates(await getAllQuizTemplates());
