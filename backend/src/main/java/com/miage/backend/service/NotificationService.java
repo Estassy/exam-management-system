@@ -29,14 +29,14 @@ public class NotificationService {
     private UserRepository userRepository;
 
     /**
-     * 🔹 Récupérer toutes les notifications d'un utilisateur
+     *  Récupérer toutes les notifications d'un utilisateur
      */
     public List<Notification> getNotificationsByUserId(UUID userId) {
         return notificationRepository.findByUserId(userId);
     }
 
     /**
-     * 🔹 Créer une notification pour un utilisateur spécifique
+     *  Créer une notification pour un utilisateur spécifique
      */
     public Notification createNotification(UUID userId, String message) {
         User user = userRepository.findById(userId)
@@ -51,15 +51,15 @@ public class NotificationService {
 
 
     /**
-     * 🔹 Récupérer une notification par ID
+     *  Récupérer une notification par ID
      */
     public Notification getNotificationById(UUID id) {
         return notificationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("❌ Notification non trouvée pour l'ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(" Notification non trouvée pour l'ID: " + id));
     }
 
     /**
-     * 🔹 Envoyer une notification à tous les utilisateurs d'un rôle donné
+     *  Envoyer une notification à tous les utilisateurs d'un rôle donné
      */
     public void sendNotificationToRole(Role role, String message) {
         List<User> users = userRepository.findByRole(role);
@@ -76,7 +76,7 @@ public class NotificationService {
     }
 
     /**
-     * 🔹 Marquer une notification comme lue
+     *  Marquer une notification comme lue
      */
     public Notification markAsRead(UUID id) {
         Notification notification = getNotificationById(id);
@@ -85,11 +85,11 @@ public class NotificationService {
     }
 
     /**
-     * 🔹 Supprimer une notification
+     *  Supprimer une notification
      */
     public void deleteNotification(UUID id) {
         if (!notificationRepository.existsById(id)) {
-            throw new ResourceNotFoundException("❌ Impossible de supprimer. Notification non trouvée pour ID: " + id);
+            throw new ResourceNotFoundException(" Impossible de supprimer. Notification non trouvée pour ID: " + id);
         }
         notificationRepository.deleteById(id);
     }

@@ -46,7 +46,7 @@ public class UserService {
         user.setLastName(lastName);
         user.setActive(true); // Par défaut, utilisateur actif
 
-        // 🏷️ Ajout de la promotion si elle est définie
+        //  Ajout de la promotion si elle est définie
         if (promotionId != null) {
             Promotion promotion = promotionRepository.findById(promotionId)
                     .orElseThrow(() -> new RuntimeException("Promotion non trouvée avec l'ID : " + promotionId));
@@ -57,7 +57,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        // ✅ Envoi d'une notification aux professeurs si c'est un étudiant
+        //  Envoi d'une notification aux professeurs si c'est un étudiant
         if (role == Role.STUDENT) {
             String message = "👨‍🎓 Nouvel étudiant inscrit : " + firstName + " " + lastName;
             notificationService.sendNotificationToRole(Role.TEACHER, message);
@@ -74,7 +74,7 @@ public class UserService {
         for (User user : users) {
             if (user.getPromotion() != null) {
                 Promotion promotion = user.getPromotion();
-                user.setPromotion(new Promotion(promotion.getId(), promotion.getName())); // ✅ Assure que seule l'ID et le nom sont envoyés
+                user.setPromotion(new Promotion(promotion.getId(), promotion.getName()));
             }
         }
 

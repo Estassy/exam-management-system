@@ -44,12 +44,12 @@ public class ExamTemplateService {
 
     @Transactional
     public Exam createExamFromTemplate(UUID templateId, LocalDateTime date, UUID teacherId, UUID courseId, UUID promotionId) {
-        // 🔍 Vérifie si un examen existe déjà pour ce cours et cette date
+        //  Vérifie si un examen existe déjà pour ce cours et cette date
         if (examRepository.existsByCourseIdAndDate(courseId, date)) {
             throw new IllegalStateException("Un examen existe déjà pour ce cours à cette date !");
         }
 
-        // ✅ Récupération des entités requises
+        //  Récupération des entités requises
         ExamTemplate template = examTemplateRepository.findById(templateId)
                 .orElseThrow(() -> new ResourceNotFoundException("Modèle d'examen introuvable"));
 
@@ -62,7 +62,7 @@ public class ExamTemplateService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé"));
 
-        // ✅ Création de l'examen
+        //  Création de l'examen
         Exam exam = new Exam();
         String baseTitle = template.getTitle().replaceAll("(?i)Modèle\\s*", "").trim();
         String prefix = baseTitle.matches("^[AEIOUYaeiouy].*") ? "d’" : "de ";
@@ -98,11 +98,11 @@ public class ExamTemplateService {
 
         copiedQuestions = new HashSet<>(questionRepository.saveAll(copiedQuestions));
 
-        // ✅ Étape 2 : Associer les questions à l'examen et sauvegarde finale
+
         exam.setQuestions(copiedQuestions);
         exam = examRepository.save(exam);
 
-        // ✅ Notification envoyée aux admins
+        //  Notification envoyée aux admins
         notificationService.sendNotificationToRole(
                 Role.ADMIN,
                 "📝 Un nouvel examen '" + exam.getTitle() + "' a été créé par " +

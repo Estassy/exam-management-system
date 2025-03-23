@@ -34,7 +34,7 @@ public class ExamService {
     public Exam createExam(Exam exam) {
         Exam savedExam = examRepository.save(exam);
 
-        // ✅ Envoyer une notification aux admins
+        //  Envoyer une notification aux admins
         if (exam.getTeacher() != null) {
             notificationService.sendNotificationToRole(
                     Role.ADMIN,

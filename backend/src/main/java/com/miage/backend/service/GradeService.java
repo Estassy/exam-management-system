@@ -88,7 +88,7 @@ public class GradeService {
             // TODO: Calcul réel si tu veux afficher la progression
             dto.setTrend(0);
 
-            // ✅ Moyenne de la promotion pour l'examen concerné
+            //  Moyenne de la promotion pour l'examen concerné
             if (grade.getStudent().getPromotion() != null) {
                 UUID promoId = grade.getStudent().getPromotion().getId();
                 double promoAvg = getPromotionAverageForExam(grade.getExam().getId(), promoId);

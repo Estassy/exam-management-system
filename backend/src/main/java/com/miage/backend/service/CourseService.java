@@ -31,15 +31,15 @@ public class CourseService {
     public Course createCourse(Course course, UUID teacherId) {
         course.setStatus(CourseStatus.PENDING);
 
-        // ✅ Vérifie si le professeur existe
+        //  Vérifie si le professeur existe
         User teacher = userRepository.findById(teacherId)
                 .orElseThrow(() -> new ResourceNotFoundException("Enseignant non trouvé avec l'ID : " + teacherId));
 
-        // ✅ Associe l'enseignant à l'entité Course
+        //  Associe l'enseignant à l'entité Course
         course.setTeacher(teacher);
         System.out.println("👨‍🏫 Professeur associé au cours : " + teacher.getFirstName() + " " + teacher.getLastName());
 
-        // ✅ Vérification des promotions
+        //  Vérification des promotions
         Set<Promotion> selectedPromotions = new HashSet<>();
         if (course.getPromotions() != null) {
             for (Promotion promo : course.getPromotions()) {
@@ -51,7 +51,7 @@ public class CourseService {
         }
         course.setPromotions(selectedPromotions);
 
-        // ✅ Ajout des étudiants
+        //  Ajout des étudiants
         Set<User> students = new HashSet<>();
         for (Promotion promo : selectedPromotions) {
             students.addAll(promo.getStudents());
@@ -64,7 +64,7 @@ public class CourseService {
 
 
 
-    // ✅ Mise à jour du statut d'un cours
+    //  Mise à jour du statut d'un cours
     public Course updateCourseStatus(UUID courseId, CourseStatus newStatus) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé pour l'ID : " + courseId));
@@ -73,7 +73,7 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    // ✅ Suppression d'un cours
+    //  Suppression d'un cours
     public void deleteCourse(UUID courseId) {
         if (!courseRepository.existsById(courseId)) {
             throw new ResourceNotFoundException("Cours non trouvé pour l'ID : " + courseId);
@@ -81,7 +81,7 @@ public class CourseService {
         courseRepository.deleteById(courseId);
     }
 
-    // ✅ Récupération de tous les cours
+    //  Récupération de tous les cours
 
     public List<Map<String, Object>> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
@@ -121,12 +121,12 @@ public class CourseService {
     }
 
 
-    // ✅ Récupérer un cours par ID
+    //  Récupérer un cours par ID
     public Optional<Course> getCourseById(UUID courseId) {
         return courseRepository.findById(courseId);
     }
 
-    // ✅ Ajouter un étudiant à un cours
+    //  Ajouter un étudiant à un cours
     public Course addStudentToCourse(UUID courseId, UUID studentId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé pour l'ID : " + courseId));
@@ -137,7 +137,7 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    // ✅ Supprimer un étudiant d'un cours
+    //  Supprimer un étudiant d'un cours
     public Course removeStudentFromCourse(UUID courseId, UUID studentId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé pour l'ID : " + courseId));
@@ -148,7 +148,7 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    // ✅ Récupérer les cours d'un étudiant
+    //  Récupérer les cours d'un étudiant
     public List<Course> getCoursesByStudentId(UUID studentId) {
         return courseRepository.findByStudents_Id(studentId);
     }
