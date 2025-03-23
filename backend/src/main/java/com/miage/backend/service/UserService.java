@@ -51,7 +51,6 @@ public class UserService {
             Promotion promotion = promotionRepository.findById(promotionId)
                     .orElseThrow(() -> new RuntimeException("Promotion non trouvée avec l'ID : " + promotionId));
             user.setPromotion(promotion);
-            System.out.println("✅ Promotion associée : " + promotion.getName());
         } else {
             System.out.println("⚠️ Aucune promotion définie.");
         }
@@ -62,7 +61,6 @@ public class UserService {
         if (role == Role.STUDENT) {
             String message = "👨‍🎓 Nouvel étudiant inscrit : " + firstName + " " + lastName;
             notificationService.sendNotificationToRole(Role.TEACHER, message);
-            System.out.println("📢 Notification envoyée aux professeurs : " + message);
         }
 
         return savedUser;
