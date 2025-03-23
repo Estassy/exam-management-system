@@ -10,7 +10,7 @@ import {
   CalendarIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
-import logo from "../../../src/assets/images/logo.png";
+import logo from "../../assets/images/logo2.png";
 
 const StudentCoursePage = () => {
   const navigate = useNavigate();

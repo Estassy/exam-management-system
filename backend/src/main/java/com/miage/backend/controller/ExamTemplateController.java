@@ -28,10 +28,10 @@ public class ExamTemplateController {
     public List<ExamTemplate> getAllTemplates() {
         List<ExamTemplate> templates = examTemplateRepository.findAll();
 
-        // ✅ Évite la référence cyclique en supprimant les `questions.templates`
+        // Évite la référence cyclique en supprimant les `questions.templates`
         for (ExamTemplate template : templates) {
             for (Question question : template.getQuestions()) {
-                question.setTemplates(null); // 🔥 Supprime la référence pour éviter la boucle infinie
+                question.setTemplates(null);
             }
         }
 

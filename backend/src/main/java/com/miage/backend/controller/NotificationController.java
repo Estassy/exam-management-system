@@ -43,7 +43,7 @@ public class NotificationController {
             @RequestParam Role role,
             @RequestParam String message) {
         notificationService.sendNotificationToRole(role, message);
-        return ResponseEntity.ok("✅ Notification envoyée aux " + role + "s.");
+        return ResponseEntity.ok(" Notification envoyée aux " + role + "s.");
     }
 
     /**

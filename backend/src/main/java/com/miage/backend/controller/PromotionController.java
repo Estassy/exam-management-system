@@ -21,13 +21,13 @@ public class PromotionController {
     @Autowired
     private PromotionRepository promotionRepository;
 
-    // ✅ Créer une promotion
+    // Créer une promotion
     @PostMapping("/create")
     public Promotion createPromotion(@RequestParam String name) {
         return promotionService.createPromotion(name);
     }
 
-    // ✅ Récupérer toutes les promotions
+    // Récupérer toutes les promotions
     @GetMapping("/all")
     public List<Map<String, Object>> getAllPromotions() {
         List<Promotion> promotions = promotionRepository.findAll();
@@ -41,13 +41,13 @@ public class PromotionController {
         }).toList();
     }
 
-    // ✅ Récupérer une promotion par ID
+    // Récupérer une promotion par ID
     @GetMapping("/{id}")
     public Optional<Promotion> getPromotionById(@PathVariable UUID id) {
         return promotionService.getPromotionById(id);
     }
 
-    // ✅ Associer un étudiant à une promotion
+    //  Associer un étudiant à une promotion
     @PostMapping("/{promoId}/add-student")
     public Promotion addStudentToPromotion(@PathVariable UUID promoId, @RequestBody User student) {
         Promotion promotion = promotionService.getPromotionById(promoId).orElseThrow();
