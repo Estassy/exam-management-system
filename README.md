@@ -139,7 +139,7 @@ backend/
 
 ![Login](./frontend/src/assets/images//login.png)
 ![AdminDashboard](./frontend/src/assets/images//dashboardad.jpeg)
-![TeacherDashboard](./frontend/src/assets/images//dashboardteach.jpeg)
+![TeacherDashboard](./frontend/src/assets/images//dashboardprof.jpeg)
 ![StudentDashboard](./frontend/src/assets/images//dashboardetu.jpeg)
 
 ---
