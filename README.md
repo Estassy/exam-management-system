@@ -139,8 +139,8 @@ backend/
 
 ![Login](./frontend/src/assets/images//login.png)
 ![AdminDashboard](./frontend/src/assets/images//dashboardad.png)
-![TeacherDashboard](./frontend/screenshots/dashboardteach.png)
-![StudentDashboard](./frontend/screenshots/dashboardetu.jpeg)
+![TeacherDashboard](./frontend/src/assets/images//dashboardteach.png)
+![StudentDashboard](./frontend/src/assets/images//dashboardetu.jpeg)
 
 ---
 
