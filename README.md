@@ -141,6 +141,7 @@ backend/
 ![AdminDashboard](./frontend/src/assets/images//dashboardad.jpeg)
 ![TeacherDashboard](./frontend/src/assets/images//dashboardprof.jpeg)
 ![StudentDashboard](./frontend/src/assets/images//dashboardetu.jpeg)
+![Diagramm](./frontend/src/assets/images//diagramm.png)
 
 ---
 
