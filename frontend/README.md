@@ -1,151 +1,50 @@
-![ExamEase](./src/assets/images//logo.png)
+# React + TypeScript + Vite
 
-## ExamEase - Gestion des examens universitaires
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-> Une plateforme web pour gérer les examens, utilisateurs (étudiants/enseignants/admins), notifications, notes et quiz.
+Currently, two official plugins are available:
 
-#### Cloner le projet
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-```bash
-git clone <URL_DU_REPO>
+## Expanding the ESLint configuration
 
-cd
-.
-├── backend/       --> API Spring Boot
-└── frontend/      --> Interface React (Vite)
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
+- Configure the top-level `parserOptions` property like this:
+
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+});
 ```
 
----
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-## 🖥️ Frontend – React.js
+```js
+// eslint.config.js
+import react from "eslint-plugin-react";
 
-### 🔧 Prérequis
-
-- [Node.js](https://nodejs.org/) (v16+ recommandé)
-- [npm](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
-
-### 🚀 Lancer le projet
-
-```bash
-cd frontend
-npm install      # ou yarn install
-npm start     # ou yarn dev
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: "18.3" } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs["jsx-runtime"].rules,
+  },
+});
 ```
-
-### 🌐 Accès
-
-> Accéder à l'application via : `http://localhost:3000`
-
-### 📁 Arborescence utile
-
-```
-frontend/
-├── src/
-│   ├── assets/                # Images, logos
-│   ├── components/            # Composants UI
-│   ├── context/               # Contexte Auth & Notifications
-│   ├── pages/                 # Pages principales (Dashboard, Login, etc.)
-│   ├── services/              # Appels API (users, exams, courses, etc.)
-│   ├── App.jsx                # Point d'entrée principal
-│   └── main.jsx               # Bootstrap React app
-```
-
-### 📦 Librairies principales
-
-- `react-router-dom` (navigation)
-- `axios` (requêtes HTTP)
-- `recharts` (graphique résultats)
-- `heroicons` (icônes modernes)
-- `sass` (styles SCSS personnalisés)
-
----
-
-## ⚙️ Backend – Spring Boot (Java)
-
-### 🔧 Prérequis
-
-- Java 17
-- Maven
-- PostgreSQL (ou H2 pour dev rapide)
-
-### ⚙️ Configuration
-
-Configurer le fichier `application.properties` (ou `application.yml`) :
-
-```properties
-spring:
-  application:
-    name: backend
-  datasource:
-    url: jdbc:postgresql://localhost:5432/examease
-    username: postgres
-    password: admin
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-  sql:
-    init:
-      mode: always
-      continue-on-error: false
-```
-
-### ▶️ Lancer le backend
-
-```bash
-cd backend
-./mvnw spring-boot:run
-```
-
-> L’API sera disponible via : `http://localhost:8080`
-
-### 📁 Structure backend
-
-```
-backend/
-├── controller/               # Contrôleurs REST
-├── entity/                   # Entités JPA (User, Exam, Promotion, etc.)
-├── repository/               # Interfaces JPA
-├── service/                  # Logique métier
-├── security/                 # JWT, auth manager, filters
-└── util/                     # Utils (JwtUtil, etc.)
-```
-
----
-
-## 🔐 Authentification
-
-- JWT basé sur Spring Security
-- Rôles : `ADMIN`, `TEACHER`, `STUDENT`
-- Chaque utilisateur reçoit un token après login
-
----
-
-## ✅ Fonctionnalités principales
-
-- Gestion des utilisateurs (CRUD)
-- Création / affichage des examens
-- Génération d’examens à partir de templates
-- Notifications en temps réel (prof → admin / étudiant)
-- Résultats et graphiques
-- Interface adaptée au rôle (admin, prof, étudiant)
-
----
-
-## 📸 Aperçu
-
-![Login](./src/assets/images//login.png)
-![AdminDashboard](./screenshots/dashboard.png)
-![TeacherDashboard](./screenshots/dashboard.png)
-![StudentDashboard](./screenshots/dashboard.png)
-
----
-
-## 🧑‍💻 Contributeurs
-
-- Rizlène
-- Abir
-- Marc
