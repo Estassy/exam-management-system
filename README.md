@@ -138,8 +138,8 @@ backend/
 ## 📸 Aperçu
 
 ![Login](./frontend/src/assets/images//login.png)
-![AdminDashboard](./frontend/src/assets/images//dashboardad.png)
-![TeacherDashboard](./frontend/src/assets/images//dashboardteach.png)
+![AdminDashboard](./frontend/src/assets/images//dashboardetu.jpeg)
+![TeacherDashboard](./frontend/src/assets/images//dashboardteach.jpeg)
 ![StudentDashboard](./frontend/src/assets/images//dashboardetu.jpeg)
 
 ---
