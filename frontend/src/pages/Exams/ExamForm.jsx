@@ -224,6 +224,7 @@ const ExamForm = () => {
               className="form-input"
               value={selectedTemplate}
               onChange={(e) => setSelectedTemplate(e.target.value)}
+              required
             >
               <option value="">-- Sélectionnez un modèle --</option>
               {templates.map((template) => (

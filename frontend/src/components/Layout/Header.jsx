@@ -47,13 +47,12 @@ const Header = () => {
       {/* Texte de la bannière */}
       <div className="logo">
         <Link to="/" className="logo-text">
-          ExamEase
+          <div className="role-title">
+            {user?.role === "STUDENT" && "Espace Étudiant"}
+            {user?.role === "TEACHER" && "Espace Enseignant"}
+            {user?.role === "ADMIN" && "Espace Admin"}
+          </div>
         </Link>
-        <div className="role-title">
-          {user?.role === "STUDENT" && "Espace Étudiant"}
-          {user?.role === "TEACHER" && "Espace Enseignant"}
-          {user?.role === "ADMIN" && "Espace Admin"}
-        </div>
       </div>
 
       {/* Message de bienvenue */}

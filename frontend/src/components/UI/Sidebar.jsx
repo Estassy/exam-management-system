@@ -1,7 +1,7 @@
 import React from "react";
 // import "./Sidebar.scss"; // Tu peux copier le style de l'ancienne sidebar ici
 
-const Sidebar = ({ isOpen, toggleSidebar, logoSrc, menuItems }) => {
+const Sidebar = ({ isOpen, toggleSidebar, logo2Src = 'src/assets/images/logo2.png', menuItems }) => {
   return (
     <>
       <button className="menu-button" onClick={toggleSidebar}>
@@ -10,7 +10,7 @@ const Sidebar = ({ isOpen, toggleSidebar, logoSrc, menuItems }) => {
 
       <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
         <div className="sidebar-logo">
-          <img src={logoSrc} alt="Logo" className="logo-image" />
+          <img src={logo2Src} alt="Logo" className="logo-image" />
         </div>
         <ul className="sidebar-menu">
           {menuItems.map((item, index) => (
