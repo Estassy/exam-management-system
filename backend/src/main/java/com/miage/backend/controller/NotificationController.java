@@ -18,7 +18,7 @@ public class NotificationController {
     private NotificationService notificationService;
 
     /**
-     * 🔹 Récupérer toutes les notifications d'un utilisateur par son `userId`
+     *  Récupérer toutes les notifications d'un utilisateur par son `userId`
      */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Notification>> getNotificationsByUserId(@PathVariable UUID userId) {
@@ -26,7 +26,7 @@ public class NotificationController {
     }
 
     /**
-     * 🔹 Envoyer une notification à un utilisateur spécifique
+     *  Envoyer une notification à un utilisateur spécifique
      */
     @PostMapping("/send")
     public ResponseEntity<Notification> sendNotification(
@@ -36,7 +36,7 @@ public class NotificationController {
     }
 
     /**
-     * 🔹 Envoyer une notification à tous les utilisateurs ayant un rôle donné (Etudiants, Enseignants, Admins)
+     *  Envoyer une notification à tous les utilisateurs ayant un rôle donné (Etudiants, Enseignants, Admins)
      */
     @PostMapping("/send-to-role")
     public ResponseEntity<String> sendNotificationToRole(
@@ -47,7 +47,7 @@ public class NotificationController {
     }
 
     /**
-     * 🔹 Récupérer une notification par son `id`
+     *  Récupérer une notification par son `id`
      */
     @GetMapping("/{id}")
     public ResponseEntity<Notification> getNotificationById(@PathVariable UUID id) {
@@ -55,7 +55,7 @@ public class NotificationController {
     }
 
     /**
-     * 🔹 Marquer une notification comme lue
+     *  Marquer une notification comme lue
      */
     @PutMapping("/{id}/read")
     public ResponseEntity<Notification> markAsRead(@PathVariable UUID id) {
@@ -63,7 +63,7 @@ public class NotificationController {
     }
 
     /**
-     * 🔹 Supprimer une notification
+     *  Supprimer une notification
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNotification(@PathVariable UUID id) {

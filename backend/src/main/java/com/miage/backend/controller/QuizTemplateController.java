@@ -19,7 +19,7 @@ public class QuizTemplateController {
     private QuizTemplateService quizTemplateService;
 
     /**
-     * 📌 Récupérer tous les modèles de quiz
+     *  Récupérer tous les modèles de quiz
      */
     @GetMapping
     public ResponseEntity<List<QuizTemplate>> getAllTemplates() {
@@ -27,7 +27,7 @@ public class QuizTemplateController {
     }
 
     /**
-     * 📌 Créer un modèle de quiz avec un ensemble de questions
+     *  Créer un modèle de quiz avec un ensemble de questions
      */
     @PostMapping
     public ResponseEntity<QuizTemplate> createQuizTemplate(
@@ -39,7 +39,7 @@ public class QuizTemplateController {
     }
 
     /**
-     * 📌 Créer un quiz à partir d'un modèle existant
+     *  Créer un quiz à partir d'un modèle existant
      */
     @PostMapping("/{templateId}/create-quiz")
     public ResponseEntity<Quiz> createQuizFromTemplate(

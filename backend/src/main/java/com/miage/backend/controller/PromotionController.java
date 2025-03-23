@@ -47,28 +47,28 @@ public class PromotionController {
         return promotionService.getPromotionById(id);
     }
 
-    //  Associer un étudiant à une promotion
+    // Associer un étudiant à une promotion
     @PostMapping("/{promoId}/add-student")
     public Promotion addStudentToPromotion(@PathVariable UUID promoId, @RequestBody User student) {
         Promotion promotion = promotionService.getPromotionById(promoId).orElseThrow();
         return promotionService.addStudentToPromotion(promotion, student);
     }
 
-    // ✅ Associer un cours à une promotion
+    //  Associer un cours à une promotion
     @PostMapping("/{promoId}/add-course")
     public Promotion addCourseToPromotion(@PathVariable UUID promoId, @RequestBody Course course) {
         Promotion promotion = promotionService.getPromotionById(promoId).orElseThrow();
         return promotionService.addCourseToPromotion(promotion, course);
     }
 
-    // ✅ Associer un examen à une promotion
+    //  Associer un examen à une promotion
     @PostMapping("/{promoId}/add-exam")
     public Promotion addExamToPromotion(@PathVariable UUID promoId, @RequestBody Exam exam) {
         Promotion promotion = promotionService.getPromotionById(promoId).orElseThrow();
         return promotionService.addExamToPromotion(promotion, exam);
     }
 
-    // ✅ Supprimer une promotion
+    //  Supprimer une promotion
     @DeleteMapping("/{id}")
     public void deletePromotion(@PathVariable UUID id) {
         promotionService.deletePromotion(id);
