@@ -81,7 +81,6 @@ export async function deleteNotification(id) {
 export async function markNotificationAsRead(id) {
   try {
     const res = await api.put(`${API_URL}/${id}/read`);
-    console.log("Notification marquée comme lue :", res.data);
     return res.data;
   } catch (err) {
     console.error("Erreur lors du marquage de la notification comme lue", err);

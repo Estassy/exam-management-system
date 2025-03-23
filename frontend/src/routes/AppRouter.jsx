@@ -44,8 +44,6 @@ const AppLayout = ({ children }) => {
 const AppRouter = () => {
   const { user } = useContext(AuthContext);
 
-  console.log("👤 Utilisateur connecté :", user);
-
   return (
     <Router>
       <AppLayout>
