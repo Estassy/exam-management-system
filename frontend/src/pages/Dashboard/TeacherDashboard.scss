@@ -160,8 +160,6 @@
     border-radius: 50%;
     margin: 2px auto 0 auto;
   }
-  
-  
 
   .custom-calendar {
     border: none;
@@ -237,78 +235,96 @@
   }
 }
 
-
-.notifications {
-  background: white;
+.teacher-notifications {
+  background: #fff;
+  border-radius: 10px;
   padding: 1.5rem;
-  border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  max-height: 420px;
+  overflow-y: auto;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
-  }
-
-  h2 {
-    font-size: 1.25rem;
+  .notif-title {
+    font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 1rem;
     color: #1f2937;
   }
 
-  ul {
-    padding: 0;
+  .notif-list {
     list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-    li {
-      background-color: #f3f4f6;
-      padding: 0.75rem 1rem;
-      margin-bottom: 0.5rem;
-      border-radius: 6px;
+  .notif-card {
+    background: #fef9c3;
+    color: #92400e;
+    border-left: 4px solid #facc15;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateY(-2px);
+      background: #fef08a;
+    }
+
+    .notif-message {
+      flex: 1;
       font-size: 0.95rem;
-      color: #374151;
-      transition: 0.3s;
+    }
+
+    .notif-buttons {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      gap: 0.5rem;
 
-      &.bg-blue-100 {
-        background-color: #dbeafe;
-        color: #1e3a8a;
-      }
+      .notif-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s;
 
-      &.bg-yellow-100 {
-        background-color: #fef3c7;
-        color: #92400e;
-      }
+        &.read {
+          background: #d1fae5;
+          color: #065f46;
 
-      &:hover {
-        transform: translateX(3px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
+          &:hover {
+            background: #a7f3d0;
+          }
+        }
 
-      &::before {
-        content: "🔔";
-        font-size: 1.1rem;
+        &.delete {
+          background: #fee2e2;
+          color: #991b1b;
+
+          &:hover {
+            background: #fecaca;
+          }
+        }
       }
     }
   }
 
-  button {
+  .notif-see-all {
     margin-top: 1rem;
-    background-color: #f97316;
-    padding: 0.6rem 1.2rem;
+    background-color: #ea580c;
     color: white;
+    padding: 0.6rem 1rem;
     border: none;
-    font-weight: 600;
     border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
     transition: background 0.3s;
 
     &:hover {
-      background-color: #ea580c;
+      background-color: #c2410c;
     }
   }
 }
-
-

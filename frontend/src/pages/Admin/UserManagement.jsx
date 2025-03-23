@@ -104,7 +104,7 @@ const UserManagement = () => {
       username: user.username || "",
       firstName: user.firstName || "",
       lastName: user.lastName || "",
-      password: user.lastName || "", // Ne pas pré-remplir le mot de passe pour des raisons de sécurité
+      password: user.password || "", // Ne pas pré-remplir le mot de passe pour des raisons de sécurité
       role: user.role || "STUDENT",
       promotion: user.promotion ? user.promotion.id : "",
     });

@@ -19,6 +19,11 @@ import {
 import { AuthContext } from "../../context/AuthContext";
 import Sidebar from "../../components/UI/Sidebar";
 import logo from "../../../src/assets/images/logo.png";
+import {
+  deleteNotification,
+  getNotificationsByUser,
+  markNotificationAsRead,
+} from "../../services/notification/notificationService";
 
 function TeacherDashboard() {
   const navigate = useNavigate();
@@ -30,8 +35,8 @@ function TeacherDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [grades, setGrades] = useState({});
 
-  const { user } = useContext(AuthContext); // ✅ Récupération de l'utilisateur connecté
-  const teacherId = user?.id; // 🏷️ Assure-toi que `id` est bien l'ID du professeur
+  const { user } = useContext(AuthContext);
+  const teacherId = user?.id;
   const getExamDays = () => {
     return exams.map((exam) => new Date(exam.date).toDateString());
   };
@@ -46,7 +51,7 @@ function TeacherDashboard() {
       onClick: () => navigate("/courses"),
     },
     {
-      label: "Créer un cours", // ✅ Nouveau bouton
+      label: "Créer un cours",
       icon: PlusCircleIcon,
       onClick: () => navigate("/create-course"),
     },
@@ -67,11 +72,18 @@ function TeacherDashboard() {
     },
   ];
 
+  const dismissNotification = (id) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  };
+
   useEffect(() => {
     async function fetchStudents() {
       try {
         const studentData = await getAllStudents();
         const courseData = await getCoursesByTeacher(teacherId);
+        const notifs = await getNotificationsByUser(teacherId);
+        console.log("🔔 Notifications récupérées :", notifs);
+        setNotifications(notifs);
         setCourses(courseData);
         console.log("👩‍🎓 course récupérés :", courseData);
         setStudents(studentData);
@@ -157,25 +169,43 @@ function TeacherDashboard() {
             </div>
           </div>
 
-          <div className="notifications bg-white p-6 notifications-lg shadow-lg">
-            <h2 className="text-lg font-bold mb-4">Notifications récentes</h2>
-            <ul className="space-y-2">
-              {notifications.map((notif) => (
-                <li
-                  key={notif.id}
-                  className={`p-3 rounded-lg ${
-                    notif.type === "info"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-yellow-100 text-yellow-800"
-                  }`}
-                >
-                  {notif.message}
-                </li>
-              ))}
+          <div className="teacher-notifications">
+            <h2 className="notif-title">🔔 Notifications récentes</h2>
+            <ul className="notif-list">
+              {notifications
+                .filter((notif) => !notif.read)
+                .map((notif) => (
+                  <li key={notif.id} className="notif-card">
+                    <span className="notif-message">📣 {notif.message}</span>
+                    <div className="notif-buttons">
+                      <button
+                        className="notif-btn read"
+                        onClick={async () => {
+                          await markNotificationAsRead(notif.id);
+                          setNotifications((prev) =>
+                            prev.map((n) =>
+                              n.id === notif.id ? { ...n, read: true } : n
+                            )
+                          );
+                        }}
+                      >
+                        Lu
+                      </button>
+                      <button
+                        className="notif-btn delete"
+                        onClick={async () => {
+                          await deleteNotification(notif.id);
+                          setNotifications((prev) =>
+                            prev.filter((n) => n.id !== notif.id)
+                          );
+                        }}
+                      >
+                        ❌ Supprimer
+                      </button>
+                    </div>
+                  </li>
+                ))}
             </ul>
-            <button className="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
-              Voir toutes les notifications
-            </button>
           </div>
         </div>
       </div>

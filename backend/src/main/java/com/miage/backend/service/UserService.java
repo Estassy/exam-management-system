@@ -27,6 +27,9 @@ public class UserService {
     @Autowired
     private PromotionRepository promotionRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     public User createUser(String username, String password, Role role, String firstName, String lastName, UUID promotionId) {
         if (firstName == null || firstName.trim().isEmpty()) {
             throw new IllegalArgumentException("Le prénom ne peut pas être vide !");
@@ -53,7 +56,16 @@ public class UserService {
             System.out.println("⚠️ Aucune promotion définie.");
         }
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // ✅ Envoi d'une notification aux professeurs si c'est un étudiant
+        if (role == Role.STUDENT) {
+            String message = "👨‍🎓 Nouvel étudiant inscrit : " + firstName + " " + lastName;
+            notificationService.sendNotificationToRole(Role.TEACHER, message);
+            System.out.println("📢 Notification envoyée aux professeurs : " + message);
+        }
+
+        return savedUser;
     }
 
 
@@ -80,37 +92,79 @@ public class UserService {
     @Transactional
     public User updateUser(UUID id, String username, String firstName, String lastName, String password, Role role, UUID promotionId) {
         return userRepository.findById(id).map(existingUser -> {
-            existingUser.setUsername(username);
-            existingUser.setFirstName(firstName);
-            existingUser.setLastName(lastName);
+            boolean hasChanged = false;
+            StringBuilder messageBuilder = new StringBuilder("ℹ️ Mise à jour de l'utilisateur : ");
+
+            if (!existingUser.getUsername().equals(username)) {
+                messageBuilder.append("👤 Nom d'utilisateur modifié. ");
+                existingUser.setUsername(username);
+                hasChanged = true;
+            }
+
+            if (!existingUser.getFirstName().equals(firstName)) {
+                messageBuilder.append("🪪 Prénom changé. ");
+                existingUser.setFirstName(firstName);
+                hasChanged = true;
+            }
+
+            if (!existingUser.getLastName().equals(lastName)) {
+                messageBuilder.append("🪪 Nom changé. ");
+                existingUser.setLastName(lastName);
+                hasChanged = true;
+            }
 
             if (promotionId != null) {
                 Promotion promotion = promotionRepository.findById(promotionId)
                         .orElseThrow(() -> new RuntimeException("Promotion non trouvée avec l'ID : " + promotionId));
-                existingUser.setPromotion(promotion);
+                if (existingUser.getPromotion() == null || !existingUser.getPromotion().getId().equals(promotionId)) {
+                    messageBuilder.append("🏷️ Promotion mise à jour. ");
+                    existingUser.setPromotion(promotion);
+                    hasChanged = true;
+                }
             } else {
-                existingUser.setPromotion(null);
+                if (existingUser.getPromotion() != null) {
+                    messageBuilder.append("Promotion retirée. ");
+                    existingUser.setPromotion(null);
+                    hasChanged = true;
+                }
             }
 
-            if (password != null && !password.isEmpty()) {
+            if (password != null && !password.trim().isEmpty()) {
                 existingUser.setPassword(passwordEncoder.encode(password));
+                messageBuilder.append("🔒 Mot de passe changé. ");
+                hasChanged = true;
             }
 
-            existingUser.setRole(role);
 
-            // 🔥 Sauvegarder d'abord les modifications
-            userRepository.save(existingUser);
+            if (!existingUser.getRole().equals(role)) {
+                messageBuilder.append("🧩 Rôle modifié en ").append(role).append(". ");
+                existingUser.setRole(role);
+                hasChanged = true;
+            }
 
-            // 🔥 Charger l'utilisateur mis à jour avec la promotion
+            // 🔥 Sauvegarder si des changements ont eu lieu
+            if (hasChanged) {
+                userRepository.save(existingUser);
+
+                String notifMessage = messageBuilder.toString();
+
+                // 👨‍🏫 Notifier les admins si un étudiant est modifié, sinon notifier les profs
+                if (role == Role.STUDENT) {
+                    notificationService.sendNotificationToRole(Role.TEACHER, notifMessage);
+                } else {
+                    notificationService.sendNotificationToRole(Role.ADMIN, notifMessage);
+                }
+            }
+
+            // 🔥 Recharger l'utilisateur mis à jour
             User updatedUser = userRepository.findById(existingUser.getId())
                     .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé après mise à jour"));
-
-            // ✅ Charger explicitement la promotion avant de renvoyer l'utilisateur
             Hibernate.initialize(updatedUser.getPromotion());
 
-            return updatedUser; // ✅ Retourne l'utilisateur avec la promotion
+            return updatedUser;
         }).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
     }
+
 
 
     public void deleteUser(UUID id) {

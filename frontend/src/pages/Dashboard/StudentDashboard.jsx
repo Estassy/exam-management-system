@@ -43,8 +43,7 @@ const StudentDashboard = () => {
     { label: "Examens", icon: UsersIcon, onClick: () => navigate("/exams") },
   ];
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
-
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   useEffect(() => {
     async function fetchData() {
       if (!user?.id) return; // Vérifie que l'utilisateur est bien défini
@@ -140,13 +139,26 @@ const StudentDashboard = () => {
 
         <section className="dashboard-section notifications-section">
           <h2>🔔 Notifications récentes</h2>
-          <ul className="notification-list">
-            {notifications.map((notif) => (
-              <li key={notif.id} className="notif-item">
-                {notif.message}
-              </li>
-            ))}
-          </ul>
+          {notifications.length > 0 ? (
+            <ul className="notification-list">
+              {notifications.map((notif) => (
+                <li
+                  key={notif.id}
+                  className={`notif-item ${
+                    notif.type === "success"
+                      ? "notif-success"
+                      : notif.type === "warning"
+                      ? "notif-warning"
+                      : "notif-error"
+                  }`}
+                >
+                  {notif.message}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Aucune notification pour le moment.</p>
+          )}
         </section>
 
         <div className="actions">

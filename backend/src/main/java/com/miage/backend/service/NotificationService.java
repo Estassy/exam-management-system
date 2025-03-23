@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Service
 public class NotificationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
+    //private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
     @Autowired
     private NotificationRepository notificationRepository;
@@ -64,7 +65,6 @@ public class NotificationService {
         List<User> users = userRepository.findByRole(role);
 
         if (users.isEmpty()) {
-            logger.warn("⚠ Aucun utilisateur trouvé pour le rôle : {}", role);
             return;
         }
 
@@ -72,7 +72,7 @@ public class NotificationService {
             createNotification(user.getId(), message);
         }
 
-        logger.info("✅ Notification envoyée à {} utilisateurs avec le rôle : {}", users.size(), role);
+       // logger.info("✅ Notification envoyée à {} utilisateurs avec le rôle : {}", users.size(), role);
     }
 
     /**
@@ -105,5 +105,17 @@ public class NotificationService {
 
         return notificationRepository.findByUserAndUserRole(student, Role.STUDENT);
     }
+
+    public void sendNotificationToUsers(Collection<User> users, String message) {
+        for (User user : users) {
+            Notification notif = new Notification();
+            notif.setUser(user);
+            notif.setMessage(message);
+            notif.setCreatedAt(LocalDateTime.now());
+            notif.setRead(false);
+            notificationRepository.save(notif);
+        }
+    }
+
 
 }

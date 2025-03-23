@@ -1,6 +1,7 @@
 package com.miage.backend.service;
 
 import com.miage.backend.entity.*;
+import com.miage.backend.enums.Role;
 import com.miage.backend.exception.ResourceNotFoundException;
 import com.miage.backend.repository.*;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,9 @@ public class ExamTemplateService {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     public List<ExamTemplate> getAllTemplates() {
         return examTemplateRepository.findAll();
@@ -67,10 +71,14 @@ public class ExamTemplateService {
         exam.setExamTemplate(template);
         exam.getPromotions().add(promotion);
 
-        // ✅ Sauvegarde initiale de l'examen
         exam = examRepository.save(exam);
 
-        // ✅ Étape 1 : Copier et attacher les questions après persistance
+        Set<User> studentsToNotify = promotion.getStudents(); // promotion est déjà récupéré plus haut
+        notificationService.sendNotificationToUsers(
+                studentsToNotify,
+                "📢 Un nouvel examen '" + template.getTitle() + "' a été ajouté pour votre promotion !"
+        );
+
         Set<Question> copiedQuestions = new HashSet<>();
         for (Question q : template.getQuestions()) {
             Question newQuestion = new Question();
@@ -87,8 +95,18 @@ public class ExamTemplateService {
 
         // ✅ Étape 2 : Associer les questions à l'examen et sauvegarde finale
         exam.setQuestions(copiedQuestions);
-        return examRepository.save(exam);
+        exam = examRepository.save(exam);
+
+        // ✅ Notification envoyée aux admins
+        notificationService.sendNotificationToRole(
+                Role.ADMIN,
+                "📝 Un nouvel examen '" + exam.getTitle() + "' a été créé par " +
+                        teacher.getFirstName() + " " + teacher.getLastName() + "."
+        );
+
+        return exam;
     }
+
 
 
 

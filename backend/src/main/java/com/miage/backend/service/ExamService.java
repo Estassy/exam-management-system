@@ -1,15 +1,14 @@
 package com.miage.backend.service;
 
 import com.miage.backend.entity.*;
+import com.miage.backend.enums.Role;
 import com.miage.backend.exception.ResourceNotFoundException;
 import com.miage.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ExamService {
@@ -29,9 +28,42 @@ public class ExamService {
     @Autowired
     private PromotionRepository promotionRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     public Exam createExam(Exam exam) {
-        return examRepository.save(exam);
+        Exam savedExam = examRepository.save(exam);
+
+        // ✅ Envoyer une notification aux admins
+        if (exam.getTeacher() != null) {
+            notificationService.sendNotificationToRole(
+                    Role.ADMIN,
+                    "📢 Un nouvel examen '" + exam.getTitle() + "' a été créé par " +
+                            exam.getTeacher().getFirstName() + " " + exam.getTeacher().getLastName() + "."
+            );
+        } else {
+            notificationService.sendNotificationToRole(
+                    Role.ADMIN,
+                    "📢 Un nouvel examen '" + exam.getTitle() + "' a été créé."
+            );
+        }
+
+        Set<User> allStudents = new HashSet<>();
+        for (Promotion promo : savedExam.getPromotions()) {
+            Promotion existingPromo = promotionRepository.findById(promo.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Promotion non trouvée : " + promo.getId()));
+            allStudents.addAll(existingPromo.getStudents());
+        }
+
+        notificationService.sendNotificationToUsers(
+                allStudents,
+                "📢 Un nouvel examen '" + savedExam.getTitle() + "' a été programmé. Consultez votre espace étudiant !"
+        );
+
+
+        return savedExam;
     }
+
 
     public Exam updateExam(UUID id, Exam updatedExam) {
         Exam exam = examRepository.findById(id)

@@ -57,6 +57,41 @@ export async function getNotifications(studentId) {
   }
 }
 
+
+
+export async function getNotificationsByUser(userId) {
+  try {
+    const response = await api.get(`${API_URL}/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des notifications :", error);
+    return [];
+  }
+}
+
+export async function deleteNotification(id) {
+  try {
+    await api.delete(`${API_URL}/${id}`);
+  } catch (error) {
+    console.error("Erreur lors de la suppression de la notification :", error);
+  }
+}
+
+// services/notificationService.js
+export async function markNotificationAsRead(id) {
+  try {
+    const res = await api.put(`${API_URL}/${id}/read`);
+    console.log("Notification marquée comme lue :", res.data);
+    return res.data;
+  } catch (err) {
+    console.error("Erreur lors du marquage de la notification comme lue", err);
+  }
+}
+
+
 export default {
   getNotifications,
+  getNotificationsByUser,
+  deleteNotification,
+  markNotificationAsRead,
 };

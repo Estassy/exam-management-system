@@ -7,6 +7,8 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import "./ManageExams.scss";
+import Sidebar from "../../components/UI/Sidebar";
+import logo from "../../../src/assets/images/logo.png";
 
 const ManageExams = () => {
   const [exams, setExams] = useState([]);
@@ -14,6 +16,20 @@ const ManageExams = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const adminMenuItems = [
+    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Examens",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/exams/manage"),
+    },
+    {
+      label: "Utilisateurs",
+      icon: UsersIcon,
+      onClick: () => navigate("/users/manage"),
+    },
+  ];
 
   useEffect(() => {
     const fetchExams = async () => {
@@ -42,45 +58,12 @@ const ManageExams = () => {
         isSidebarOpen ? "shifted" : ""
       }`}
     >
-      {/* Bouton Menu / Fermer */}
-      <button className="menu-button" onClick={toggleSidebar}>
-        {isSidebarOpen ? "✖ Fermer" : "☰ Menu"}
-      </button>
-
-      {/* Sidebar */}
-      <aside
-        className={`manage-exams-sidebar ${
-          isSidebarOpen ? "open" : "closed"
-        }`}
-      >
-        <div className="manage-exams-sidebar-logo">
-          <img
-            src="src/assets/images/logo.png"
-            alt="Logo"
-            className="manage-exams-logo-image"
-          />
-        </div>
-        <ul className="manage-exams-sidebar-menu">
-          <li
-            className="manage-exams-sidebar-item"
-            onClick={() => navigate("/dashboard")}
-          >
-            <HomeIcon className="manage-exams-sidebar-icon" /> Accueil
-          </li>
-          <li
-            className="manage-exams-sidebar-item"
-            onClick={() => navigate("/exams/manage")}
-          >
-            <CalendarDaysIcon className="manage-exams-sidebar-icon" /> Examens
-          </li>
-          <li
-            className="manage-exams-sidebar-item"
-            onClick={() => navigate("/users/manage")}
-          >
-            <UsersIcon className="manage-exams-sidebar-icon" /> Utilisateurs
-          </li>
-        </ul>
-      </aside>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        logoSrc={logo}
+        menuItems={adminMenuItems}
+      />
       <div className="manage-exams-container">
         <h2>Gestion des examens</h2>
         <table className="manage-exams-table">

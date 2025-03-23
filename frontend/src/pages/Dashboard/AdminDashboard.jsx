@@ -14,14 +14,12 @@ import {
 import Sidebar from "../../components/UI/Sidebar";
 
 import logo from "../../../src/assets/images/logo.png";
+import { useNotifications } from "../../context/NotificationContext";
 
 const AdminDashboard = () => {
-  const [recentActions, setRecentActions] = useState([
-    "Ajout d'un nouvel utilisateur",
-    "Mise à jour des résultats d'examen",
-  ]);
-
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
+  const [recentActions, setRecentActions] = useState([]);
+  const { notifications } = useNotifications();
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
@@ -41,6 +39,15 @@ const AdminDashboard = () => {
       onClick: () => navigate("/users/manage"),
     },
   ];
+
+  useEffect(() => {
+    const mapped = notifications.map((n) => ` ${n.message}`);
+
+    setRecentActions((prev) => {
+      const unique = new Set([...mapped, ...prev]); // filtre les doublons
+      return Array.from(unique);
+    });
+  }, [notifications]);
 
   // Utilisation des useEffect et fonctions async proprement organisées
   useEffect(() => {
@@ -107,10 +114,9 @@ const AdminDashboard = () => {
             <p className="text-3xl mt-2">{teacher.length}</p>
           </div>
         </div>
-
-        <div className="recentActions">
-          <h2>📝 Actions récentes</h2>
-          <ul>
+        <div className="recentActions bg-white rounded-lg shadow-md p-4 mt-4">
+          <h2 className="text-lg font-bold mb-2">🔔 Actions récentes</h2>
+          <ul className="list-disc list-inside text-gray-700">
             {recentActions.map((action, index) => (
               <li key={index}>{action}</li>
             ))}

@@ -2,10 +2,35 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllQuizzes } from "../../services/quiz/quizService";
 import "./QuizList.scss";
+import Sidebar from "../../components/UI/Sidebar";
+import {
+  HomeIcon,
+  CalendarDaysIcon,
+  UsersIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
+import logo from "../../../src/assets/images/logo.png";
 
 const QuizList = () => {
   const [quizzes, setQuizzes] = useState([]);
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const studentMenuItems = [
+    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Cours",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/etudiant/cours"),
+    },
+    {
+      label: "Quiz",
+      icon: CalendarDaysIcon,
+      onClick: () => navigate("/quizzes"),
+    },
+    { label: "Examens", icon: UsersIcon, onClick: () => navigate("/exams") },
+  ];
 
   useEffect(() => {
     async function fetchQuizzes() {
@@ -20,24 +45,32 @@ const QuizList = () => {
   }, []);
 
   return (
-    <div className="quiz-list">
-      <h2>🎯 Liste des Quiz</h2>
-      {quizzes.length === 0 ? (
-        <p>Aucun quiz disponible.</p>
-      ) : (
-        <ul className="quiz-items">
-          {quizzes.map((quiz) => (
-            <li key={quiz.id} className="quiz-item">
-              <div className="quiz-info">
-                <strong>{quiz.title}</strong>
-              </div>
-              <button onClick={() => navigate(`/quiz/${quiz.id}`)}>
-                ▶ Commencer
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        logoSrc={logo}
+        menuItems={studentMenuItems}
+      />
+      <div className="quiz-list">
+        <h2>🎯 Liste des Quiz</h2>
+        {quizzes.length === 0 ? (
+          <p>Aucun quiz disponible.</p>
+        ) : (
+          <ul className="quiz-items">
+            {quizzes.map((quiz) => (
+              <li key={quiz.id} className="quiz-item">
+                <div className="quiz-info">
+                  <strong>{quiz.title}</strong>
+                </div>
+                <button onClick={() => navigate(`/quiz/${quiz.id}`)}>
+                  ▶ Commencer
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };
