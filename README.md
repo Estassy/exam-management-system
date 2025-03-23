@@ -1,4 +1,4 @@
-![ExamEase](./src/assets/images//logo.png)
+![ExamEase](./frontend/src/assets/images//logo.png)
 
 ## ExamEase - Gestion des examens universitaires
 
