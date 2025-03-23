@@ -12,9 +12,11 @@ import {
   HomeIcon,
   CalendarDaysIcon,
   UsersIcon,
-  Cog6ToothIcon,
   PencilSquareIcon,
   PlusCircleIcon,
+  ClipboardDocumentListIcon,
+  DocumentDuplicateIcon,
+  AcademicCapIcon,
 } from "@heroicons/react/24/outline";
 import { AuthContext } from "../../context/AuthContext";
 import Sidebar from "../../components/UI/Sidebar";
@@ -27,7 +29,7 @@ import {
 
 function TeacherDashboard() {
   const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [exams, setExams] = useState([]);
   const [students, setStudents] = useState([]);
   const [courses, setCourses] = useState(0);
@@ -41,13 +43,17 @@ function TeacherDashboard() {
     return exams.map((exam) => new Date(exam.date).toDateString());
   };
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // Gérer l'ouverture/fermeture
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const teacherMenuItems = [
-    { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
+    {
+      label: "Accueil",
+      icon: HomeIcon,
+      onClick: () => navigate("/dashboard"),
+    },
     {
       label: "Cours",
-      icon: CalendarDaysIcon,
+      icon: ClipboardDocumentListIcon,
       onClick: () => navigate("/courses"),
     },
     {
@@ -61,13 +67,23 @@ function TeacherDashboard() {
       onClick: () => navigate("/QuizExamsPage"),
     },
     {
+      label: "Créer un examen",
+      icon: PencilSquareIcon,
+      onClick: () => navigate("/create-exam"),
+    },
+    {
+      label: "Créer un quiz",
+      icon: DocumentDuplicateIcon,
+      onClick: () => navigate("/create-quiz"),
+    },
+    {
       label: "Étudiants",
       icon: UsersIcon,
       onClick: () => navigate("/students"),
     },
     {
       label: "Notes",
-      icon: UsersIcon,
+      icon: AcademicCapIcon,
       onClick: () => navigate("/grades"),
     },
   ];
