@@ -1,0 +1,144 @@
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #d0d0ce;
+  padding: 20px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.loader {
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+  padding: 20px;
+}
+
+
+.login-card {
+  display: flex;
+  flex-direction: row;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 750px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    max-width: 100%;
+  }
+}
+
+.login-card-img-container {
+  width: 50%;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+.login-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.login-card-body {
+  width: 50%;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
+  .login-error-box {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+}
+
+.brand-wrapper {
+  margin-bottom: 1rem;
+}
+
+.brand-logo {
+  width: 120px;
+  height: auto;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.login-error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.login-form-group {
+  margin-bottom: 15px;
+}
+
+.login-form-control {
+  border: 1px solid #ccc;
+  padding: 12px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.login-button {
+  background: black;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 15px;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #ce8738;
+  }
+}
+
+.login-forgot-link {
+  font-size: 14px;
+  color: #555;
+  margin-top: 10px;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Désactive le défilement global uniquement sur la page de connexion
+body.login-page {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}

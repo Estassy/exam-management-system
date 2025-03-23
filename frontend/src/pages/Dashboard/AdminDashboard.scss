@@ -1,0 +1,116 @@
+.admin-dashboard-container {
+  display: flex;
+
+  &.shifted {
+    margin-left: 250px;
+  }
+}
+
+.admin-dashboard-wrapper {
+  flex-grow: 1;
+  padding: 2rem;
+  background: #f3f4f6;
+}
+
+.admin-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+
+  .admin-stat-box {
+    flex: 1;
+    border-radius: 10px;
+    padding: 1.5rem;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+
+    background-color: #bd682b; // fallbac
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+  }
+}
+
+.admin-notifications {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  .admin-notif-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .admin-notif-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .admin-notif-item {
+      background: #fef9c3;
+      border-left: 4px solid #facc15;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &.read {
+        opacity: 0.6;
+        text-decoration: line-through;
+      }
+
+      .admin-notif-message {
+        flex: 1;
+        font-size: 0.95rem;
+        color: #92400e;
+      }
+
+      .admin-notif-buttons {
+        display: flex;
+        gap: 0.5rem;
+
+        .admin-notif-btn {
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          border-radius: 5px;
+          font-weight: 600;
+          cursor: pointer;
+          border: none;
+          transition: background 0.3s;
+
+          &.read {
+            background: #d1fae5;
+            color: #065f46;
+
+            &:hover {
+              background: #a7f3d0;
+            }
+          }
+
+          &.delete {
+            background: #fee2e2;
+            color: #991b1b;
+
+            &:hover {
+              background: #fecaca;
+            }
+          }
+        }
+      }
+    }
+  }
+}

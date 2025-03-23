@@ -1,0 +1,114 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
+
+  .logo-img {
+    height: 50px;
+  }
+
+  .logo-text {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #f97316;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #ea580c;
+    }
+  }
+
+  .role-title {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    text-align: center;
+  }
+
+  .welcome-message {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .profile-link {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .user-photo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #f97316;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+
+      .default-user-icon {
+        font-size: 40px;
+        color: #1e293b;
+        transition: transform 0.3s, color 0.3s;
+
+        &:hover {
+          color: #f97316;
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: white;
+      color: #1e293b;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+
+      .user-name {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #1e293b;
+      }
+
+      .logout {
+        background: #f97316;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #ea580c;
+        }
+      }
+    }
+  }
+}
+

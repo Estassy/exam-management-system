@@ -1,0 +1,98 @@
+.quiz-exams-page {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #f9fafb; /* Fond doux aligné avec votre application */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+  text-align: center;
+
+  .header {
+    display: flex;
+    flex-direction: column; /* Positionner verticalement */
+    align-items: center; /* Centrer le contenu */
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.875rem; /* Aligné avec vos titres principaux */
+      font-weight: bold;
+      color: #ce8738; /* Couleur orange */
+      margin-bottom: 1.5rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 15px; /* Espacement entre les boutons */
+      justify-content: center; /* Centrer les boutons horizontalement */
+      margin-top: 1rem;
+
+      button {
+        background: black;
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+          background-color: #ea580c;
+          transform: scale(1.05);
+        }
+
+        &:active {
+          background-color: #d97706;
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .exam-list,
+  .quiz-list {
+    background: white; /* Fond blanc pour les listes */
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    text-align: left;
+
+    h3 {
+      font-size: 1.25rem; /* Taille alignée avec vos titres secondaires */
+      margin-bottom: 1rem;
+      color: #1e293b; /* Texte sombre pour lisibilité */
+      font-weight: bold;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      .exam-item,
+      .quiz-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        background: #f9fafb; /* Fond aligné au reste */
+        border-radius: 5px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: background 0.3s ease-in-out, transform 0.2s ease;
+
+        &:hover {
+          background: #eceff1; /* Changement subtil au survol */
+          transform: translateX(5px); /* Déplacement horizontal subtil */
+        }
+      }
+    }
+  }
+}

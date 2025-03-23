@@ -1,0 +1,116 @@
+.grade-page {
+  max-width: 1000px; 
+  width: 100%;      
+  margin: 2rem auto;
+  padding: 3rem 2rem; 
+  background: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+
+  h2 {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #ce8738;
+    margin-bottom: 2rem;
+  }
+
+  form {
+  max-width: 650px; // ⬅️ élargi le bloc visuellement
+  margin: 0 auto;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+      }
+
+      select,
+      input {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background: #f9fafb;
+        transition: border-color 0.3s, box-shadow 0.3s;
+
+        &:hover,
+        &:focus {
+          border-color: #ea580c;
+          box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.2);
+          background: white;
+          outline: none;
+        }
+      }
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      background-color: black;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+
+      &:hover {
+        background-color: #ea580c;
+        transform: scale(1.03);
+      }
+
+      &:active {
+        background-color: #d97706;
+        transform: scale(0.98);
+      }
+    }
+
+    .feedback {
+      margin-top: 1.5rem;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 500;
+      text-align: center;
+      font-size: 1rem;
+
+      &.success {
+        background: #e3fcef;
+        color: #065f46;
+        border: 1px solid #10b981;
+      }
+
+      &.error {
+        background: #fef2f2;
+        color: #b91c1c;
+        border: 1px solid #ef4444;
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 640px) {
+    padding: 1rem;
+
+    form {
+      padding: 1.5rem;
+
+      button {
+        font-size: 1rem;
+        padding: 10px 15px;
+      }
+    }
+  }
+}
