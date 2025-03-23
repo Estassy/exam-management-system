@@ -62,6 +62,17 @@
   @media (max-width: 768px) {
     width: 100%;
   }
+
+  .login-error-box {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
 }
 
 .brand-wrapper {

@@ -4,6 +4,7 @@ import com.miage.backend.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,15 +27,17 @@ public class AuthService {
     }
 
     public String login(String username, String password) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Chargement des détails de l’utilisateur
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-        // Génération du token JWT
-        return jwtUtil.generateToken(userDetails);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            return jwtUtil.generateToken(userDetails);
+        } catch (BadCredentialsException ex) {
+            throw new RuntimeException("Identifiants incorrects.");
+        }
     }
+
 }

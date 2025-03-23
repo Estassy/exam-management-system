@@ -28,20 +28,22 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody CreateUserRequest loginRequest) {
-        String token = authService.login(loginRequest.getUsername(), loginRequest.getPassword());
+        try {
+            String token = authService.login(loginRequest.getUsername(), loginRequest.getPassword());
 
-        // Récupérer l'utilisateur à partir de son username
-        User user = userService.getUserByUsername(loginRequest.getUsername());
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utilisateur introuvable");
+            User user = userService.getUserByUsername(loginRequest.getUsername());
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utilisateur introuvable");
+            }
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("user", Map.of("id", user.getId(), "username", user.getUsername(), "role", user.getRole()));
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
-
-        // Retourner le token + le rôle de l'utilisateur
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);
-        response.put("user", Map.of("id", user.getId(), "username", user.getUsername(), "role", user.getRole()));
-
-        return ResponseEntity.ok(response);
     }
+
 }
 

@@ -70,7 +70,15 @@ const LoginPage = () => {
             />
           </div>
           <h3 className="login-title">Connexion</h3>
-          {error && <p className="login-error">{error}</p>}
+          {error && (
+            <div className="login-error-box">
+              <span role="img" aria-label="erreur">
+                ❌
+              </span>{" "}
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className="login-form-group">
               <input

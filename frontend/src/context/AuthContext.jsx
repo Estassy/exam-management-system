@@ -38,20 +38,18 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (username, password) => {
     try {
       const { user, token } = await login(username, password);
-
       const decodedToken = jwtDecode(token);
       const expirationDate = new Date(decodedToken.exp * 1000);
 
       if (expirationDate < new Date()) {
-        console.warn("⚠️ Le token est déjà expiré. Connexion refusée.");
-        return;
+        throw new Error("Le token est expiré.");
       }
 
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
       setUser(user);
     } catch (error) {
-      console.error("❌ Erreur de connexion :", error);
+      throw new Error("Identifiants incorrects"); // on propage l'erreur pour affichage
     }
   };
 
