@@ -4,7 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import "./TeacherDashboard.scss";
 import { getAllStudents } from "../../services/user/userService";
 import { getAllExams } from "../../services/exam/examService";
-import { getGradesByStudent } from "../../services/exam/gradeService";
+import { getGradesByStudent } from "../../services/grade/gradeService";
 import Button from "../../components/UI/Button";
 import { useNavigate } from "react-router-dom";
 import { getCoursesByTeacher } from "../../services/course/courseService";

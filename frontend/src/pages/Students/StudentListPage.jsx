@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAllStudents } from "../../services/user/userService";
-import { getGradesByStudent } from "../../services/exam/gradeService";
+import { getGradesByStudent } from "../../services/grade/gradeService";
 import { useNavigate } from "react-router-dom";
 import {
   HomeIcon,
@@ -28,7 +28,7 @@ const StudentListPage = () => {
       onClick: () => navigate("/courses"),
     },
     {
-      label: "Créer un cours", // ✅ Nouveau bouton
+      label: "Créer un cours",
       icon: PlusCircleIcon,
       onClick: () => navigate("/create-course"),
     },

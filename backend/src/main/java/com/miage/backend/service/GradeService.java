@@ -45,8 +45,8 @@ public class GradeService {
         Exam exam = examRepository.findById(examId)
                 .orElseThrow(() -> new ResourceNotFoundException("Examen non trouvé"));
 
-        // Vérifier si une note existe déjà
-        Optional<Grade> existingGrade = gradeRepository.findByStudentAndCourse(student, course);
+
+        Optional<Grade> existingGrade = gradeRepository.findByStudentAndExam(student, exam);
         if (existingGrade.isPresent()) {
             throw new IllegalStateException("Une note existe déjà pour cet étudiant et ce cours !");
         }

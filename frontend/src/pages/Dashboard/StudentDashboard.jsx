@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./StudentDashboard.scss";
 import { getUpcomingExams } from "../../services/exam/examService";
-import { getStudentResults } from "../../services/exam/gradeService";
+import { getStudentResults } from "../../services/grade/gradeService";
 import { getNotifications } from "../../services/notification/notificationService";
 import { AuthContext } from "../../context/AuthContext";
 import { getUserById } from "../../services/user/userService";

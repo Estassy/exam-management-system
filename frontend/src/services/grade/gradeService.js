@@ -2,9 +2,7 @@ import api from "../api";
 
 const API_URL = "/grades";
 
-/**
- * Ajouter une note à un étudiant
- */
+
 /**
  * Ajouter une note à un étudiant
  */

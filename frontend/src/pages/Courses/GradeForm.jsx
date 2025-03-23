@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllStudents } from "../../services/user/userService";
 import { getAllCourses } from "../../services/course/courseService";
-import { addGrade } from "../../services/exam/gradeService";
+import { addGrade } from "../../services/grade/gradeService";
 import { getAllExams } from "../../services/exam/examService";
 import { useNavigate } from "react-router-dom";
 import {
