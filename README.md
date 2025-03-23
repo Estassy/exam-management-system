@@ -1,104 +1,151 @@
-# Exam Management System
+![ExamEase](./src/assets/images//logo.png)
 
-## 📌 Description
+## ExamEase - Gestion des examens universitaires
 
-Exam Management System est une application complète permettant de gérer des examens en ligne. Elle comprend un backend développé en **Spring Boot + PostgreSQL** et un frontend en **React + Vite**. L'objectif est d'offrir une solution efficace pour l'administration des examens, la gestion des utilisateurs, et l'automatisation des notifications.
+> Une plateforme web pour gérer les examens, utilisateurs (étudiants/enseignants/admins), notifications, notes et quiz.
 
-## 📂 Structure du Projet
-
-Le projet est organisé en deux principales parties :
-
-```
-exam-management-system/
-├── backend/     # API REST avec Spring Boot
-│   ├── src/
-│   ├── pom.xml
-│   ├── application.yml
-│   └── ...
-├── frontend/    # Interface utilisateur avec React
-│   ├── src/
-│   ├── package.json
-│   ├── vite.config.js
-│   └── ...
-├── README.md    # Documentation du projet
-└── .gitignore
-```
-
-## 🛠 Technologies Utilisées
-
-### 🔹 Backend : Spring Boot + PostgreSQL
-
-- **Spring Boot** (Web, Security, JPA, Mail, WebSockets)
-- **PostgreSQL** (Base de données principale)
-- **Lombok** (Simplification du code Java)
-- **JWT (JSON Web Tokens)** (Authentification sécurisée)
-- **Swagger** (Documentation de l'API REST)
-- **Docker** (Optionnel pour la base de données)
-
-### 🔹 Frontend : React + Vite
-
-- **React.js** (Framework principal du frontend)
-- **Vite** (Optimisation du développement)
-- **React Router** (Gestion de la navigation)
-- **Axios** (Appels API vers le backend)
-- **TailwindCSS** (Stylisation moderne)
-
-## ⚙️ Fonctionnalités Principales
-
-### 🛡️ Authentification & Sécurité
-
-- Gestion des utilisateurs (**Admin, Enseignant, Étudiant**)
-- Sécurisation avec **JWT + Spring Security**
-
-### 📚 Gestion des Examens
-
-- CRUD des **examens** (Créer, Modifier, Supprimer, Lister)
-- Association des **enseignants et étudiants** aux examens
-- Génération de **codes d'examen uniques**
-
-### 📋 Gestion des Quiz
-
-- Création et modification des **quiz/questions**
-- Association des **quiz aux examens**
-- Correction automatique des réponses
-
-### 📢 Notifications & Emails
-
-- **Emails automatiques** lors de l’inscription à un examen
-- Notifications en **temps réel avec WebSockets**
-
-### 🔎 Recherche & Filtres avancés
-
-- Recherche des examens par **enseignant, date, statut**
-- Filtrage par **étudiants inscrits**
-
-## 🚀 Installation & Démarrage
-
-### 🔹 Backend (Spring Boot)
+#### Cloner le projet
 
 ```bash
-cd backend
-mvn clean install
-mvn spring-boot:run
+git clone <URL_DU_REPO>
+
+cd
+.
+├── backend/       --> API Spring Boot
+└── frontend/      --> Interface React (Vite)
+
 ```
 
-### 🔹 Frontend (React)
+---
+
+## 🖥️ Frontend – React.js
+
+### 🔧 Prérequis
+
+- [Node.js](https://nodejs.org/) (v16+ recommandé)
+- [npm](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
+
+### 🚀 Lancer le projet
 
 ```bash
 cd frontend
-npm install
-npm run dev
+npm install      # ou yarn install
+npm start     # ou yarn dev
 ```
 
-## ✅ Roadmap & Évolutions Futures
+### 🌐 Accès
 
-- 📜 **Export des examens en PDF**
-- 📊 **Ajout de statistiques et graphiques dans le dashboard**
-- 🎓 **Mode test en ligne pour les étudiants**
-- 🔑 **Clés d’inscription aux examens**
-- 🌙 **Mode sombre pour le frontend**
+> Accéder à l'application via : `http://localhost:3000`
 
-## 📜 Licence
+### 📁 Arborescence utile
 
-Ce projet est sous licence **MIT**. Libre d’utilisation et de modification.
+```
+frontend/
+├── src/
+│   ├── assets/                # Images, logos
+│   ├── components/            # Composants UI
+│   ├── context/               # Contexte Auth & Notifications
+│   ├── pages/                 # Pages principales (Dashboard, Login, etc.)
+│   ├── services/              # Appels API (users, exams, courses, etc.)
+│   ├── App.jsx                # Point d'entrée principal
+│   └── main.jsx               # Bootstrap React app
+```
 
+### 📦 Librairies principales
+
+- `react-router-dom` (navigation)
+- `axios` (requêtes HTTP)
+- `recharts` (graphique résultats)
+- `heroicons` (icônes modernes)
+- `sass` (styles SCSS personnalisés)
+
+---
+
+## ⚙️ Backend – Spring Boot (Java)
+
+### 🔧 Prérequis
+
+- Java 17
+- Maven
+- PostgreSQL (ou H2 pour dev rapide)
+
+### ⚙️ Configuration
+
+Configurer le fichier `application.properties` (ou `application.yml`) :
+
+```properties
+spring:
+  application:
+    name: backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/examease
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  sql:
+    init:
+      mode: always
+      continue-on-error: false
+```
+
+### ▶️ Lancer le backend
+
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+
+> L’API sera disponible via : `http://localhost:8080`
+
+### 📁 Structure backend
+
+```
+backend/
+├── controller/               # Contrôleurs REST
+├── entity/                   # Entités JPA (User, Exam, Promotion, etc.)
+├── repository/               # Interfaces JPA
+├── service/                  # Logique métier
+├── security/                 # JWT, auth manager, filters
+└── util/                     # Utils (JwtUtil, etc.)
+```
+
+---
+
+## 🔐 Authentification
+
+- JWT basé sur Spring Security
+- Rôles : `ADMIN`, `TEACHER`, `STUDENT`
+- Chaque utilisateur reçoit un token après login
+
+---
+
+## ✅ Fonctionnalités principales
+
+- Gestion des utilisateurs (CRUD)
+- Création / affichage des examens
+- Génération d’examens à partir de templates
+- Notifications en temps réel (prof → admin / étudiant)
+- Résultats et graphiques
+- Interface adaptée au rôle (admin, prof, étudiant)
+
+---
+
+## 📸 Aperçu
+
+![Login](./src/assets/images//login.png)
+![AdminDashboard](./screenshots/dashboard.png)
+![TeacherDashboard](./screenshots/dashboard.png)
+![StudentDashboard](./screenshots/dashboard.png)
+
+---
+
+## 🧑‍💻 Contributeurs
+
+- Rizlène
+- Abir
+- Marc
