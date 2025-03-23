@@ -138,9 +138,9 @@ backend/
 ## 📸 Aperçu
 
 ![Login](./frontend/src/assets/images//login.png)
-![AdminDashboard](./frontend/screenshots/dashboard.png)
-![TeacherDashboard](./frontend/screenshots/dashboard.png)
-![StudentDashboard](./frontend/screenshots/dashboard.png)
+![AdminDashboard](./frontend/src/assets/images//dashboardad.jpeg)
+![TeacherDashboard](./frontend/src/assets/images//dashboardprof.jpeg)
+![StudentDashboard](./frontend/src/assets/images//dashboardetu.jpeg)
 
 ---
 
