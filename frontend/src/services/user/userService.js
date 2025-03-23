@@ -34,7 +34,6 @@ export async function createUser(userData) {
 export async function getUserById(userId) {
   try {
     const response = await api.get(`${API_URL}/${userId}`);
-    console.log("🔍 Utilisateur reçu de l'API :", response.data);
     return response.data;
   } catch (error) {
     console.error("Erreur lors de la récupération de l'utilisateur :", error);
@@ -48,7 +47,6 @@ export async function getUserById(userId) {
 export async function getAllStudents() {
   try {
     const users = await getAllUsers();
-    console.log("👨‍🏫 Utilisateurs récupérés :", users);
     return users.filter(user => user.role === "STUDENT");
   } catch (error) {
     console.error("Erreur lors de la récupération des étudiants :", error);

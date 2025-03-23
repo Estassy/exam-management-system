@@ -52,7 +52,8 @@ export async function updateGrade(gradeId, newScore) {
  */
 export async function getStudentResults(studentId) {
     try {
-      const response = await api.get(`${API_URL}/student/${studentId}`);
+      const response = await api.get(`${API_URL}/student/${studentId}/results`);
+      console.log("results Student", response.data);
       return response.data;
     } catch (error) {
       console.error("Erreur lors de la récupération des résultats :", error);
@@ -60,10 +61,33 @@ export async function getStudentResults(studentId) {
     }
 }
 
+
+export async function getStudentAverage(studentId) {
+  try {
+    const response = await api.get(`${API_URL}/student/${studentId}/average`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des résultats :", error);
+    return [];
+  }
+}
+
+export async function getPromotionAverage(studentId) {
+  try {
+    const response = await api.get(`${API_URL}/history/${studentId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des résultats :", error);
+    return [];
+  }
+}
+
 export default {
   addGrade,
   getGradesByStudent,
   updateGrade,
   getStudentResults,
+  getStudentAverage,
+  getPromotionAverage,
 };
 

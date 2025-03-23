@@ -1,24 +1,36 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-import "./StudentDashboard.scss";
-import { getUpcomingExams } from "../../services/exam/examService";
-import { getStudentResults } from "../../services/grade/gradeService";
-import { getNotifications } from "../../services/notification/notificationService";
+import {
+  getPromotionAverage,
+  getStudentAverage,
+  getStudentResults,
+} from "../../services/grade/gradeService";
+import {
+  getNotifications,
+  getNotificationsByUser,
+} from "../../services/notification/notificationService";
 import { AuthContext } from "../../context/AuthContext";
 import { getUserById } from "../../services/user/userService";
+import Sidebar from "../../components/UI/Sidebar";
+import logo from "../../../src/assets/images/logo.png";
 import {
   HomeIcon,
   CalendarDaysIcon,
   UsersIcon,
-  Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
-import Sidebar from "../../components/UI/Sidebar";
-import logo from "../../../src/assets/images/logo.png";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
+import "./StudentDashboard.scss";
+import { getUpcomingExams } from "../../services/exam/examService";
 
 const StudentDashboard = () => {
   const { user, setUser } = useContext(AuthContext);
-
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
   const [results, setResults] = useState([]);
@@ -26,7 +38,7 @@ const StudentDashboard = () => {
   const [averageScore, setAverageScore] = useState(0);
   const [classAverage, setClassAverage] = useState(0);
   const [goal, setGoal] = useState(85);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // État pour la sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const studentMenuItems = [
     { label: "Accueil", icon: HomeIcon, onClick: () => navigate("/dashboard") },
@@ -44,31 +56,47 @@ const StudentDashboard = () => {
   ];
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
   useEffect(() => {
     async function fetchData() {
-      if (!user?.id) return; // Vérifie que l'utilisateur est bien défini
+      if (!user?.id) return;
 
       try {
-        // Récupérer les informations complètes de l'utilisateur
         const fullUserData = await getUserById(user.id);
+
+        console.log("👩‍🎓 Données utilisateur récupérées :", fullUserData);
+
         setUser(fullUserData);
-        const examsData = await getUpcomingExams(user.id);
-        const resultsData = await getStudentResults(user.id);
-        const notificationsData = await getNotifications(user.id);
+
+        const [examsData, resultsData, notificationsData, avg, promoAvg] =
+          await Promise.all([
+            getUpcomingExams(user.id),
+            getStudentResults(user.id),
+            getNotificationsByUser(user.id),
+            getStudentAverage(user.id),
+            getPromotionAverage(user.id),
+          ]);
 
         setExams(examsData);
         setResults(resultsData);
+        console.log("📊 Résultats récupérés :", resultsData);
         setNotifications(notificationsData);
+        setAverageScore(avg);
+        setClassAverage(promoAvg);
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
       }
     }
 
     fetchData();
-  }, [user?.id]); // Relance l'effet uniquement si `user.id` change
+  }, [user?.id]);
 
   return (
-    <div className={`dashboard-container ${isSidebarOpen ? "shifted" : ""}`}>
+    <div
+      className={`student-dashboard-container ${
+        isSidebarOpen ? "shifted" : ""
+      }`}
+    >
       <Sidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
@@ -76,21 +104,19 @@ const StudentDashboard = () => {
         menuItems={studentMenuItems}
       />
 
-      <div className="student-dashboard">
-        <section className="dashboard-section exams-section">
+      <div className="student-dashboard-wrapper">
+        {/* Examens à venir */}
+        <section className="student-section upcoming-exams">
           <h2>📅 Examens à venir</h2>
           {exams.length ? (
-            <ul className="exam-list">
+            <ul className="student-exam-list">
               {exams.map((exam) => (
-                <li key={exam.id} className="exam-item">
-                  <strong>{exam.title}</strong> -{" "}
-                  {new Date(exam.date).toLocaleDateString()} (
-                  {exam.location || "En ligne"})
+                <li key={exam.id} className="student-exam-item">
+                  <strong>{exam.title}</strong> –{" "}
+                  {new Date(exam.date).toLocaleDateString()}
                   <span
                     className={`status ${
-                      exam.status === "Confirmed"
-                        ? "status-confirmed"
-                        : "status-pending"
+                      exam.status === "Confirmed" ? "confirmed" : "pending"
                     }`}
                   >
                     {exam.status === "Confirmed"
@@ -105,69 +131,80 @@ const StudentDashboard = () => {
           )}
         </section>
 
-        <section className="dashboard-section results-section">
-          <h2>📊 Résultats</h2>
-          <div className="results-container">
-            {results.map((result) => (
-              <div key={result.examId} className="result-item">
-                <span>{result.examTitle} :</span>
-                <strong>{result.score}%</strong>
-                <span
-                  className={`trend ${
-                    result.trend > 0 ? "trend-up" : "trend-down"
-                  }`}
-                >
-                  {result.trend > 0
-                    ? `⬆️ +${result.trend}%`
-                    : `⬇️ ${result.trend}%`}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div className="progress">
-            <p>
-              Moyenne actuelle : <strong>{averageScore}%</strong>
-            </p>
-            <p>
-              Moyenne de la classe : <strong>{classAverage}%</strong>
-            </p>
-            <p>
-              🎯 Objectif personnel : <strong>{goal}%</strong>
-            </p>
-          </div>
-        </section>
-
-        <section className="dashboard-section notifications-section">
-          <h2>🔔 Notifications récentes</h2>
-          {notifications.length > 0 ? (
-            <ul className="notification-list">
-              {notifications.map((notif) => (
-                <li
-                  key={notif.id}
-                  className={`notif-item ${
-                    notif.type === "success"
-                      ? "notif-success"
-                      : notif.type === "warning"
-                      ? "notif-warning"
-                      : "notif-error"
-                  }`}
-                >
-                  {notif.message}
-                </li>
+        {/* Grille principale */}
+        <div className="student-main-grid">
+          {/* Résultats & graphique */}
+          <section className="student-section results">
+            <h2>📊 Mes résultats</h2>
+            <div className="student-results-list">
+              {results.map((result) => (
+                <div key={result.examId} className="result-card">
+                  <span>{result.examTitle}</span>
+                  <strong>{result.score}/20</strong>
+                  <span
+                    className={result.trend >= 0 ? "trend-up" : "trend-down"}
+                  >
+                    {result.trend >= 0
+                      ? `⬆️ ${result.trend}%`
+                      : `⬇️ ${Math.abs(result.trend)}%`}
+                  </span>
+                </div>
               ))}
-            </ul>
-          ) : (
-            <p>Aucune notification pour le moment.</p>
-          )}
-        </section>
+            </div>
 
-        <div className="actions">
-          <button onClick={() => navigate("/exams")} className="primary-button">
+            <div className="student-results-chart">
+              <LineChart width={400} height={200} data={results}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="examTitle" />
+                <YAxis domain={[0, 20]} />
+                <Tooltip />
+                <Line type="monotone" dataKey="score" stroke="#3b82f6" />
+                <Line
+                  type="monotone"
+                  dataKey="promotionAverage"
+                  stroke="#f97316"
+                />
+              </LineChart>
+            </div>
+
+            <div className="student-progress">
+              <p>
+                Moyenne actuelle : <strong>{averageScore}/20</strong>
+              </p>
+
+              <p>
+                🎯 Objectif personnel : <strong>{goal}%</strong>
+              </p>
+            </div>
+          </section>
+
+          {/* Notifications */}
+          <section className="student-section notifications">
+            <h2>🔔 Notifications récentes</h2>
+            {notifications.length > 0 ? (
+              <ul className="student-notification-list">
+                {notifications.map((notif) => (
+                  <li key={notif.id} className={`student-notif ${notif.type}`}>
+                    {notif.message}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Aucune notification pour le moment.</p>
+            )}
+          </section>
+        </div>
+
+        <div className="student-actions">
+          <button
+            onClick={() => navigate("/exams")}
+            className="student-btn primary"
+          >
             📖 Voir tous les examens
           </button>
           <button
             onClick={() => navigate("/quizzes")}
-            className="secondary-button"
+            className="student-btn secondary"
           >
             📝 Faire un quiz
           </button>

@@ -1,5 +1,6 @@
 package com.miage.backend.service;
 
+import com.miage.backend.dto.GradeDTO;
 import com.miage.backend.entity.Course;
 import com.miage.backend.entity.Grade;
 import com.miage.backend.entity.User;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class GradeService {
@@ -73,7 +75,55 @@ public class GradeService {
         return gradeRepository.save(grade);
     }
 
-    public List<Grade> getStudentResults(UUID studentId) {
-        return gradeRepository.findByStudentId(studentId);
+    public List<GradeDTO> getStudentResults(UUID studentId) {
+        List<Grade> grades = gradeRepository.findByStudentId(studentId);
+
+        return grades.stream().map(grade -> {
+            GradeDTO dto = new GradeDTO();
+
+            dto.setExamId(grade.getExam().getId());
+            dto.setExamTitle(grade.getExam().getTitle());
+            dto.setScore(grade.getScore());
+
+            // TODO: Calcul réel si tu veux afficher la progression
+            dto.setTrend(0);
+
+            // ✅ Moyenne de la promotion pour l'examen concerné
+            if (grade.getStudent().getPromotion() != null) {
+                UUID promoId = grade.getStudent().getPromotion().getId();
+                double promoAvg = getPromotionAverageForExam(grade.getExam().getId(), promoId);
+                dto.setPromotionAverage(promoAvg);
+            } else {
+                dto.setPromotionAverage(0); // ou null si tu préfères
+            }
+
+            return dto;
+        }).toList();
     }
+
+
+
+    public double getStudentAverage(UUID studentId) {
+        return gradeRepository.findByStudentId(studentId).stream()
+                .mapToDouble(Grade::getScore)
+                .average()
+                .orElse(0.0);
+    }
+
+    public double getPromotionAverageForExam(UUID examId, UUID promotionId) {
+        List<Grade> grades = gradeRepository.findByExamId(examId);
+        List<Grade> filtered = grades.stream()
+                .filter(g -> g.getStudent().getPromotion() != null
+                        && g.getStudent().getPromotion().getId().equals(promotionId))
+                .toList();
+
+        return filtered.stream()
+                .mapToDouble(Grade::getScore)
+                .average()
+                .orElse(0.0);
+    }
+
+
+
+
 }

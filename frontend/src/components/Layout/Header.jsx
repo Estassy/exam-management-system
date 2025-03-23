@@ -29,11 +29,8 @@ const Header = () => {
   }, []);
   useEffect(() => {
     async function fetchData() {
-      // if (!user?.id) return;
-      console.log("👤 ID utilisateur :", user.id);
       try {
         const fullUserData = await getUserById(user.id);
-        console.log("👤 Données utilisateur complètes :", fullUserData);
         setUser(fullUserData); // Met à jour le contexte avec les données complètes
       } catch (error) {
         console.error(

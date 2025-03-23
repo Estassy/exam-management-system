@@ -54,7 +54,7 @@ public class Exam {
             joinColumns = @JoinColumn(name = "exam_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id")
     )
-    @JsonIgnore
+
     private Set<Question> questions = new HashSet<>();
 
 

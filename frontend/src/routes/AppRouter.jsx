@@ -24,7 +24,7 @@ import QuizExamsPage from "../pages/Quizzes/Quiz&ExamsPage";
 import ExamList from "../pages/Exams/ExamList";
 import UserManagement from "../pages/Admin/UserManagement";
 import CoursesPage from "../pages/Courses/CoursesPage";
-import GradeForm from "../pages/Courses/GradeForm";
+import GradeForm from "../pages/Grade/GradeForm";
 import TakeExamPage from "../pages/Exams/TakeExamPage";
 import StudentCoursePage from "../pages/Courses/StudentCoursePage ";
 

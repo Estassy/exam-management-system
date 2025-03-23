@@ -64,12 +64,17 @@ public class ExamTemplateService {
 
         // ✅ Création de l'examen
         Exam exam = new Exam();
-        exam.setTitle(template.getTitle());
+        String baseTitle = template.getTitle().replaceAll("(?i)Modèle\\s*", "").trim();
+        String prefix = baseTitle.matches("^[AEIOUYaeiouy].*") ? "d’" : "de ";
+        exam.setTitle("Examen " + prefix + baseTitle);
         exam.setDate(date);
         exam.setTeacher(teacher);
         exam.setCourse(course);
         exam.setExamTemplate(template);
         exam.getPromotions().add(promotion);
+
+        Set<User> students = promotion.getStudents();
+        exam.getStudents().addAll(students);
 
         exam = examRepository.save(exam);
 

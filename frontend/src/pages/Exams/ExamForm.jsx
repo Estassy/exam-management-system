@@ -158,7 +158,7 @@ const ExamForm = () => {
       if (selectedTemplate) {
         await createExamFromTemplate(
           selectedTemplate,
-          examDate, // ✅ Convertir la date en format ISO8601
+          examDate,
           teacherId,
           selectedCourse,
           selectedPromotion
@@ -167,7 +167,7 @@ const ExamForm = () => {
       } else {
         await createExam({
           title: examTitle,
-          date: examDate, // ✅ Convertir la date en format ISO8601
+          date: examDate,
           teacherId,
           courseId: selectedCourse,
           promotionId: selectedPromotion,

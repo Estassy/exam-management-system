@@ -88,11 +88,6 @@ const QuizExamsPage = () => {
                     <span>
                       {exam.title} - {new Date(exam.date).toLocaleDateString()}
                     </span>
-                    <Button
-                      text="Voir"
-                      variant="outline"
-                      onClick={() => navigate(`/exam/${exam.id}`)}
-                    />
                   </li>
                 ))}
               </ul>

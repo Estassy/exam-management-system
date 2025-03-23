@@ -2,6 +2,8 @@ package com.miage.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.UUID;
 
 @Entity
@@ -50,4 +52,5 @@ public class Grade {
 
     public Course getCourse() { return course; } // 🔥 Ajout du cours
     public void setCourse(Course course) { this.course = course; } // 🔥 Ajout du cours
+
 }

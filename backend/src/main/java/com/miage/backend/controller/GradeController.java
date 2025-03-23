@@ -1,5 +1,6 @@
 package com.miage.backend.controller;
 
+import com.miage.backend.dto.GradeDTO;
 import com.miage.backend.entity.Grade;
 import com.miage.backend.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,23 @@ public class GradeController {
     public ResponseEntity<Grade> updateGrade(@PathVariable UUID gradeId, @RequestParam double newScore) {
         return ResponseEntity.ok(gradeService.updateGrade(gradeId, newScore));
     }
+
+    @GetMapping("/student/{studentId}/results")
+    public ResponseEntity<List<GradeDTO>> getResults(@PathVariable UUID studentId) {
+        return ResponseEntity.ok(gradeService.getStudentResults(studentId));
+    }
+
+    @GetMapping("/student/{studentId}/average")
+    public double getStudentAverageScore(@PathVariable UUID studentId) {
+        return gradeService.getStudentAverage(studentId);
+    }
+
+    @GetMapping("/history/{studentId}")
+    public ResponseEntity<List<GradeDTO>> getGradeHistory(@PathVariable UUID studentId) {
+        return ResponseEntity.ok(gradeService.getStudentResults(studentId));
+    }
+
+
+
+
 }
